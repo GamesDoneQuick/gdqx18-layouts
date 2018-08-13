@@ -22,5 +22,5 @@ export declare enum StopwatchStateEnum {
     NOT_STARTED = "not_started",
     RUNNING = "running",
     PAUSED = "paused",
-    FINISHED = "finished",
+    FINISHED = "finished"
 }

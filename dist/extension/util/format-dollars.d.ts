@@ -4,6 +4,6 @@
  * @param cents - Whether or not to include cents in the formatted string.
  * @returns The formatted string.
  */
-export declare function formatDollars(amount: number | string, {cents}?: {
+export declare function formatDollars(amount: number | string, { cents }?: {
     cents?: boolean;
 }): string;

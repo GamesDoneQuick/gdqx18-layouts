@@ -34,6 +34,7 @@ const adBreakSchema = JSON.parse(fs.readFileSync(path.join(schemasPath, 'types/a
 const adSchema = JSON.parse(fs.readFileSync(path.join(schemasPath, 'types/ad.json'), 'utf8'));
 const debouncedUpdateCurrentIntermissionContent = debounce(_updateCurrentIntermissionContent, 33);
 const debouncedUpdateCurrentIntermissionState = debounce(_updateCurrentIntermissionState, 33);
+const debounceWarnForMissingFiles = debounce(_warnForMissingFiles, 33);
 const clearableTimeouts = new Set();
 const clearableIntervals = new Set();
 
@@ -45,6 +46,7 @@ currentRun.on('change', (newVal: GDQTypes.Run, oldVal: GDQTypes.Run | undefined)
 
 schedule.on('change', () => {
 	debouncedUpdateCurrentIntermissionContent();
+	debounceWarnForMissingFiles();
 });
 
 stopwatch.on('change', (newVal: GDQTypes.Stopwatch, oldVal: GDQTypes.Stopwatch | undefined) => {
@@ -61,6 +63,7 @@ stopwatch.on('change', (newVal: GDQTypes.Stopwatch, oldVal: GDQTypes.Stopwatch |
 
 caspar.replicants.files.on('change', () => {
 	debouncedUpdateCurrentIntermissionState();
+	debounceWarnForMissingFiles();
 });
 
 nodecg.listenFor('intermissions:startAdBreak', async (adBreakId: number) => {
@@ -400,7 +403,6 @@ function _updateCurrentIntermissionState() {
 			});
 
 			if (!casparFile) {
-				log.error(`Ad points to file that does not exist in CasparCG: ${ad.filename}`);
 				ad.state.hasFile = false;
 				oneOrMoreAdsMissingFile = true;
 				return;
@@ -528,6 +530,32 @@ function writeAdToLog(ad: GDQTypes.Ad) {
 		if (err) {
 			log.error('Error appending to log:', err.stack);
 		}
+	});
+}
+
+function _warnForMissingFiles() {
+	if (!schedule.value || !caspar.replicants.files.value) {
+		return;
+	}
+
+	const warnedFiles = new Set();
+
+	// Log an error for every ad which is missing its corresponding file in CasparCG.
+	schedule.value.forEach((item: GDQTypes.ScheduleItem) => {
+		if (item.type !== 'adBreak') {
+			return;
+		}
+
+		item.ads.forEach((ad: GDQTypes.Ad) => {
+			const casparFile = caspar.replicants.files.value.find((file: GDQTypes.CasparFile) => {
+				return file.nameWithExt.toLowerCase() === ad.filename.toLowerCase();
+			});
+
+			if (!casparFile && !warnedFiles.has(ad.filename)) {
+				log.error(`Ad points to file that does not exist in CasparCG: ${ad.filename}`);
+				warnedFiles.add(ad.filename);
+			}
+		});
 	});
 }
 

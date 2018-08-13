@@ -55,7 +55,7 @@ export declare function parseTimeString(timeString: string): number;
  */
 export declare class CountdownTimer extends EventEmitter {
     private readonly interval;
-    constructor(endTime: number, {tickRate}?: {
+    constructor(endTime: number, { tickRate }?: {
         tickRate?: number;
     });
     stop(): void;
@@ -65,7 +65,7 @@ export declare class CountdownTimer extends EventEmitter {
  */
 export declare class CountupTimer extends EventEmitter {
     private readonly interval;
-    constructor({tickRate, offset}?: {
+    constructor({ tickRate, offset }?: {
         tickRate?: number;
         offset?: number;
     });
