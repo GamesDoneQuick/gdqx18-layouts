@@ -2,7 +2,7 @@
 
 > The on-stream graphics used during Summer Games Done Quick 2018.
 
-This is a [NodeCG](http://github.com/nodecg/nodecg) v0.9 bundle. You will need to have NodeCG v0.9 installed to run it.
+This is a [NodeCG](http://github.com/nodecg/nodecg) v1 bundle. You will need to have NodeCG v1 installed to run it.
 
 ## Table of Contents
 - [Video Breakdown](#video-breakdown)
@@ -32,7 +32,7 @@ If you just want a direct link to a build that works and don't mind it maybe bei
 
 ## Requirements
 - [Node.js 8 or greater (8 recommended, newer versions not tested)](https://nodejs.org/)
-- [NodeCG v0.9.x](https://github.com/nodecg/nodecg/releases)
+- [NodeCG v1.x](https://github.com/nodecg/nodecg/releases)
 
 ## Installation
 
