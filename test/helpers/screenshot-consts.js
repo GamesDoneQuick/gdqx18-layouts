@@ -158,7 +158,8 @@ const gameplayLayoutTestCases = [{
 }, {
 	route: `bundles/${BUNDLE_NAME}/graphics/standard_1.html`,
 	additionalDelay: STANDARD_DELAY,
-	replicantPrefills: STANDARD_REPLICANT_PREFILLS
+	replicantPrefills: STANDARD_REPLICANT_PREFILLS,
+	coopTests: [2, 4]
 }, {
 	route: `bundles/${BUNDLE_NAME}/graphics/standard_2.html`,
 	additionalDelay: STANDARD_DELAY,
@@ -308,6 +309,40 @@ gameplayLayoutTestCases.forEach(testCase => {
 			}
 		}
 	});
+
+	if (testCase.coopTests) {
+		testCase.coopTests.forEach(numberOfRunners => {
+			module.exports.TEST_CASES.push({
+				...testCase,
+				nameAppendix: `coop_${numberOfRunners}`,
+				replicantPrefills: {
+					...STANDARD_REPLICANT_PREFILLS,
+					currentRun: {
+						name: 'Pre-Show',
+						longName: 'Pre-Show',
+						console: 'Unknown',
+						commentators: 'Unknown',
+						category: 'Hype',
+						setupTime: '0',
+						order: 1,
+						estimate: '0:32:00',
+						releaseYear: '',
+						runners: [
+							{name: 'SpikeVegeta', stream: 'spikevegeta'},
+							{name: 'Blechy', stream: 'bellery_'},
+							{name: 'Protomagicalgirl', stream: 'protomagicalgirl'},
+							{name: 'JHobz', stream: 'jhobz296'}
+						].slice(0, numberOfRunners),
+						notes: '',
+						coop: true,
+						id: 2640,
+						pk: 2640,
+						type: 'run'
+					}
+				}
+			});
+		});
+	}
 });
 
 // Interview lowerthird tests.
