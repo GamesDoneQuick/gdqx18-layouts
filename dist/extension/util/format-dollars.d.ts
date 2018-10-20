@@ -5,5 +5,5 @@
  * @returns The formatted string.
  */
 export declare function formatDollars(amount: number | string, { cents }?: {
-    cents?: boolean;
+    cents?: boolean | undefined;
 }): string;

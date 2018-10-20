@@ -15,13 +15,34 @@ interface SortableListMoveArgs {
 	useSortMap: boolean;
 }
 
-nodecg.listenFor('sortable-list:moveItemUp', (data: SortableListMoveArgs) => {
-	moveItem(data, 'up');
+nodecg.listenFor('sortable-list:moveItemUp', (data: unknown) => {
+	if (isSortableListMoveArgs(data)) {
+		moveItem(data, 'up');
+	} else {
+		log.error('Invalid data:', data);
+	}
 });
 
-nodecg.listenFor('sortable-list:moveItemDown', (data: SortableListMoveArgs) => {
-	moveItem(data, 'down');
+nodecg.listenFor('sortable-list:moveItemDown', (data: unknown) => {
+	if (isSortableListMoveArgs(data)) {
+		moveItem(data, 'down');
+	} else {
+		log.error('Invalid data:', data);
+	}
 });
+
+function isSortableListMoveArgs(data: unknown): data is SortableListMoveArgs {
+	if (typeof data !== 'object' || data === null) {
+		return false;
+	}
+
+	return data.hasOwnProperty('replicantName') &&
+		data.hasOwnProperty('replicantBundle') &&
+		data.hasOwnProperty('itemIndex') &&
+		data.hasOwnProperty('itemId') &&
+		data.hasOwnProperty('itemIdField') &&
+		data.hasOwnProperty('useSortMap');
+}
 
 function moveItem(data: SortableListMoveArgs, direction: 'up' | 'down') {
 	// Error if the replicant isn't an array, or doesn't have any items.

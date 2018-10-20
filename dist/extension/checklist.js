@@ -19,9 +19,10 @@ if (!equals(persistedValue, checklistDefault)) {
         if (!{}.hasOwnProperty.call(checklistDefault, category)) {
             continue;
         }
-        mergedChecklist[category] = checklistDefault[category].map(task => {
-            if (persistedValue[category]) {
-                const persistedTask = persistedValue[category].find(({ name }) => {
+        const results = checklistDefault[category].map(task => {
+            const persistedGroup = persistedValue[category];
+            if (persistedGroup) {
+                const persistedTask = persistedGroup.find(({ name }) => {
                     return name === task.name;
                 });
                 if (persistedTask) {
@@ -30,6 +31,7 @@ if (!equals(persistedValue, checklistDefault)) {
             }
             return task;
         });
+        mergedChecklist[category] = results;
     }
     checklist.value = mergedChecklist;
 }
@@ -37,15 +39,11 @@ let initializedRecordingTask = false;
 const checklistComplete = nodecg.Replicant('checklistComplete');
 checklist.on('change', (newVal, oldVal) => {
     let foundIncompleteTask = false;
-    for (const category in newVal) { // tslint:disable-line:no-for-in
-        if (!{}.hasOwnProperty.call(newVal, category)) {
-            continue;
+    Object.keys(newVal).forEach(category => {
+        if (!foundIncompleteTask) {
+            foundIncompleteTask = newVal[category].some(task => !task.complete);
         }
-        foundIncompleteTask = newVal[category].some(task => !task.complete);
-        if (foundIncompleteTask) {
-            break;
-        }
-    }
+    });
     checklistComplete.value = !foundIncompleteTask;
     // Recording Cycling
     if (!initializedRecordingTask) {
@@ -82,7 +80,7 @@ function reset() {
         if (!{}.hasOwnProperty.call(checklist.value, category)) {
             continue;
         }
-        checklist.value[category].forEach((task) => {
+        checklist.value[category].forEach(task => {
             task.complete = false;
         });
     }

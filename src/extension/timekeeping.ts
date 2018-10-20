@@ -1,5 +1,7 @@
 'use strict';
 
+import {CurrentRun} from '../types/schemas/currentRun';
+
 const LS_TIMER_PHASE = {
 	NotRunning: 0,
 	Running: 1,
@@ -15,6 +17,8 @@ import * as liveSplitCore from 'livesplit-core';
 import * as nodecgApiContext from './util/nodecg-api-context';
 import * as TimeUtils from './lib/time';
 import * as GDQTypes from '../types';
+import {Replicant} from '../types/nodecg';
+import {Stopwatch} from '../types/schemas/stopwatch';
 
 const lsRun = liveSplitCore.Run.new();
 const segment = liveSplitCore.Segment.new('finish');
@@ -22,9 +26,9 @@ lsRun.pushSegment(segment);
 const timer = liveSplitCore.Timer.new(lsRun);
 
 const nodecg = nodecgApiContext.get();
-const checklistComplete = nodecg.Replicant('checklistComplete');
-const currentRun = nodecg.Replicant('currentRun');
-const stopwatch = nodecg.Replicant('stopwatch');
+const checklistComplete: Replicant<boolean> = nodecg.Replicant('checklistComplete');
+const currentRun: Replicant<CurrentRun> = nodecg.Replicant('currentRun');
+const stopwatch: Replicant<Stopwatch> = nodecg.Replicant('stopwatch');
 
 // Load the existing time and start the stopwatch at that.
 timer.start();
@@ -43,6 +47,10 @@ nodecg.listenFor('startTimer', start);
 nodecg.listenFor('stopTimer', pause);
 nodecg.listenFor('resetTimer', reset);
 nodecg.listenFor('completeRunner', (data: {index: number; forfeit: boolean}) => {
+	if (!currentRun.value) {
+		return;
+	}
+
 	if (currentRun.value.coop) {
 		// Finish all runners.
 		currentRun.value.runners.forEach((runner: GDQTypes.Runner, index: number) => {
@@ -57,6 +65,10 @@ nodecg.listenFor('completeRunner', (data: {index: number; forfeit: boolean}) => 
 	}
 });
 nodecg.listenFor('resumeRunner', (index: number) => {
+	if (!currentRun.value) {
+		return;
+	}
+
 	if (currentRun.value.coop) {
 		// Resume all runners.
 		currentRun.value.runners.forEach((runner: GDQTypes.Runner, runnerIndex: number) => {
@@ -93,6 +105,10 @@ if (nodecg.bundleConfig.footpedal.enabled) {
 	// Listen for buttonId down event from our target gamepad.
 	gamepad.on('down', (_id: any, num: number) => {
 		if (num !== nodecg.bundleConfig.footpedal.buttonId) {
+			return;
+		}
+
+		if (!currentRun.value) {
 			return;
 		}
 
@@ -213,7 +229,7 @@ function completeRunner({index, forfeit}: {index: number; forfeit: boolean}) {
 		};
 	}
 
-	stopwatch.value.results[index].forfeit = forfeit;
+	(stopwatch.value.results[index] as any).forfeit = forfeit;
 	recalcPlaces();
 }
 
@@ -244,6 +260,10 @@ function editTime({index, newTime}: {index: number | string; newTime: string}) {
 		return;
 	}
 
+	if (!currentRun.value) {
+		return;
+	}
+
 	const newMilliseconds = TimeUtils.parseTimeString(newTime);
 	if (isNaN(newMilliseconds)) {
 		return;
@@ -258,8 +278,8 @@ function editTime({index, newTime}: {index: number | string; newTime: string}) {
 		liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000).with((t: any) => timer.setGameTime(t));
 	}
 
-	if (stopwatch.value.results[index]) {
-		stopwatch.value.results[index].time = TimeUtils.createTimeStruct(newMilliseconds);
+	if (typeof index === 'number' && stopwatch.value.results[index]) {
+		(stopwatch.value.results as any)[index].time = TimeUtils.createTimeStruct(newMilliseconds);
 		recalcPlaces();
 	}
 }
@@ -287,15 +307,17 @@ function recalcPlaces() {
 
 	// If every runner is finished, stop ticking and set timer state to "finished".
 	let allRunnersFinished = true;
-	currentRun.value.runners.forEach((runner: GDQTypes.Runner, index: number) => {
-		if (!runner) {
-			return;
-		}
+	if (currentRun.value) {
+		currentRun.value.runners.forEach((runner: GDQTypes.Runner, index: number) => {
+			if (!runner) {
+				return;
+			}
 
-		if (!stopwatch.value.results[index]) {
-			allRunnersFinished = false;
-		}
-	});
+			if (!stopwatch.value.results[index]) {
+				allRunnersFinished = false;
+			}
+		});
+	}
 
 	if (allRunnersFinished) {
 		pause();

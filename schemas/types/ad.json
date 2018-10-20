@@ -72,7 +72,30 @@
 					"type": "boolean",
 					"default": false
 				}
-			}
+			},
+			"required": [
+				"canStart",
+				"started",
+				"canComplete",
+				"completed",
+				"durationFrames",
+				"framesLeft",
+				"frameNumber",
+				"fps",
+				"hasFile"
+			]
 		}
-	}
+	},
+	"required": [
+		"id",
+		"name",
+		"adType",
+		"filename",
+		"duration",
+		"order",
+		"suborder",
+		"sponsorName",
+		"type",
+		"state"
+	]
 }

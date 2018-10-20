@@ -10,16 +10,20 @@ import OBSUtility = require('nodecg-utility-obs');
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
+import {Replicant} from '../types/nodecg';
+import {Gdq3AcurrentLayout} from '../types/schemas/gdq%3AcurrentLayout';
 // @ts-ignore
 import gdqUtils = require('../../shared/lib/gdq-utils');
+import {AutoUploadRecordings} from '../types/schemas/autoUploadRecordings';
+import {Obs3AcyclingRecordings} from '../types/schemas/obs%3AcyclingRecordings';
 
 const nodecg = nodecgApiContext.get();
 
 // We track what _layout_ is active, not necessarily what _scene_ is active.
 // A given layout can be on multiple scenes.
-const currentLayout = nodecg.Replicant('gdq:currentLayout');
-const autoUploadRecordings = nodecg.Replicant('autoUploadRecordings');
-const cyclingRecordingsRep = nodecg.Replicant('obs:cyclingRecordings', {persistent: false});
+const currentLayout: Replicant<Gdq3AcurrentLayout> = nodecg.Replicant('gdq:currentLayout');
+const autoUploadRecordings: Replicant<AutoUploadRecordings> = nodecg.Replicant('autoUploadRecordings');
+const cyclingRecordingsRep: Replicant<Obs3AcyclingRecordings> = nodecg.Replicant('obs:cyclingRecordings', {persistent: false});
 const compositingOBS = new OBSUtility(nodecg, {namespace: 'compositingOBS'});
 const recordingOBS = new OBSUtility(nodecg, {namespace: 'recordingOBS'});
 const encodingOBS = new OBSUtility(nodecg, {namespace: 'encodingOBS'});

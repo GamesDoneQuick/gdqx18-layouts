@@ -88,5 +88,5 @@ function formatPrize(rawPrize: GDQTypes.TrackerObject) {
 			order: rawPrize.fields.endrun__order
 		},
 		type: 'prize'
-	};
+	} as GDQTypes.Prize;
 }

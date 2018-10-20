@@ -19,7 +19,7 @@ const currentRunRep = nodecg.Replicant('currentRun');
 const nextRunRep = nodecg.Replicant('nextRun');
 const runnersRep = nodecg.Replicant('runners', { defaultValue: [], persistent: false });
 const runOrderMap = nodecg.Replicant('runOrderMap', { defaultValue: {}, persistent: false });
-const scheduleRep = nodecg.Replicant('schedule', { defaultValue: [], persistent: false });
+const scheduleRep = nodecg.Replicant('schedule');
 const emitter = new events_1.EventEmitter();
 module.exports = emitter;
 module.exports.update = update;
@@ -43,40 +43,63 @@ nodecg.listenFor('updateSchedule', (_data, cb) => {
         else {
             nodecg.log.info('Schedule unchanged, not updated');
         }
-        cb(null, updated);
+        if (cb && !cb.handled) {
+            cb(null, updated);
+        }
     }, error => {
-        cb(error);
+        if (cb && !cb.handled) {
+            cb(error);
+        }
     });
 });
 nodecg.listenFor('nextRun', (_data, cb) => {
     if (!canSeekScheduleRep.value) {
         nodecg.log.error('Attempted to seek to nextRun while seeking was forbidden.');
-        return cb();
+        if (cb && !cb.handled) {
+            cb();
+        }
+        return;
     }
     _seekToNextRun();
-    cb();
+    if (cb && !cb.handled) {
+        cb();
+    }
 });
 nodecg.listenFor('previousRun', (_data, cb) => {
     if (!canSeekScheduleRep.value) {
         nodecg.log.error('Attempted to seek to previousRun while seeking was forbidden.');
-        return cb();
+        if (cb && !cb.handled) {
+            cb();
+        }
+        return;
     }
     _seekToPreviousRun();
-    cb();
+    if (cb && !cb.handled) {
+        cb();
+    }
 });
 nodecg.listenFor('setCurrentRunByOrder', (order, cb) => {
     if (!canSeekScheduleRep.value) {
         nodecg.log.error('Attempted to seek to arbitrary run order %s while seeking was forbidden.', order);
-        return cb();
+        if (cb && !cb.handled) {
+            cb();
+        }
+        return;
     }
     try {
         _seekToArbitraryRun(order);
     }
     catch (e) {
         nodecg.log.error(e);
-        return cb(e);
+        if (cb && !cb.handled) {
+            cb(e);
+        }
+        return;
     }
-    cb();
+    if (cb && !cb.handled) {
+        cb();
+    }
+    return;
 });
 nodecg.listenFor('modifyRun', (data, cb) => {
     // We lose any properties that have an explicit value of `undefined` in the serialization process.
@@ -95,10 +118,10 @@ nodecg.listenFor('modifyRun', (data, cb) => {
         return runner;
     });
     let run;
-    if (currentRunRep.value.pk === data.pk) {
+    if (currentRunRep.value && currentRunRep.value.pk === data.pk) {
         run = currentRunRep.value;
     }
-    else if (nextRunRep.value.pk === data.pk) {
+    else if (nextRunRep.value && nextRunRep.value.pk === data.pk) {
         run = nextRunRep.value;
     }
     if (run) {
@@ -124,15 +147,15 @@ nodecg.listenFor('modifyRun', (data, cb) => {
 });
 nodecg.listenFor('resetRun', (pk, cb) => {
     let runRep;
-    if (currentRunRep.value.pk === pk) {
+    if (currentRunRep.value && currentRunRep.value.pk === pk) {
         runRep = currentRunRep;
     }
-    else if (nextRunRep.value.pk === pk) {
+    else if (nextRunRep.value && nextRunRep.value.pk === pk) {
         runRep = nextRunRep;
     }
     if (runRep) {
         runRep.value = clone(findRunByPk(pk));
-        if ({}.hasOwnProperty.call(runRep.value, 'originalValues')) {
+        if (runRep.value && {}.hasOwnProperty.call(runRep.value, 'originalValues')) {
             nodecg.log.error('%s had an `originalValues` property after being reset! This is bad! Deleting it...', runRep.value.name);
             delete runRep.value.originalValues;
         }
@@ -219,7 +242,9 @@ function update() {
                 [currentRunRep, nextRunRep].forEach(activeRunReplicant => {
                     if (activeRunReplicant.value && activeRunReplicant.value.pk) {
                         const runFromSchedule = findRunByPk(activeRunReplicant.value.pk);
-                        activeRunReplicant.value = diff_run_1.mergeChangesFromTracker(activeRunReplicant.value, runFromSchedule);
+                        if (runFromSchedule) {
+                            activeRunReplicant.value = diff_run_1.mergeChangesFromTracker(activeRunReplicant.value, runFromSchedule);
+                        }
                     }
                 });
             }
@@ -260,14 +285,17 @@ function update() {
  * Sets currentRun to the predecessor run.
  */
 function _seekToPreviousRun() {
+    if (!currentRunRep.value) {
+        return;
+    }
     const prevRun = scheduleRep.value.slice(0).reverse().find((item) => {
         if (item.type !== 'run') {
             return false;
         }
-        return item.order < currentRunRep.value.order;
+        return item.order < currentRunRep.value.order; // tslint:disable-line:no-non-null-assertion
     });
     nextRunRep.value = clone(currentRunRep.value);
-    currentRunRep.value = clone(prevRun);
+    currentRunRep.value = (prevRun && prevRun.type === 'run') ? clone(prevRun) : null;
     checklist.reset();
     timer.reset();
 }
@@ -277,6 +305,9 @@ function _seekToPreviousRun() {
  * Sets nextRun to the new successor run.
  */
 function _seekToNextRun() {
+    if (!nextRunRep.value) {
+        return;
+    }
     const newNextRun = _findRunAfter(nextRunRep.value);
     currentRunRep.value = clone(nextRunRep.value);
     nextRunRep.value = clone(newNextRun);
@@ -291,12 +322,16 @@ function _seekToNextRun() {
  */
 function _findRunAfter(runOrOrder) {
     const run = _resolveRunOrOrder(runOrOrder);
-    return scheduleRep.value.find((item) => {
+    const foundRun = scheduleRep.value.find((item) => {
         if (item.type !== 'run') {
             return false;
         }
         return item.order > run.order;
     });
+    if (foundRun && foundRun.type === 'run') {
+        return foundRun;
+    }
+    return null;
 }
 /**
  * Sets the currentRun replicant to an arbitrary run, first checking if that run is previous or next,
@@ -498,9 +533,13 @@ function _resolveRunOrOrder(runOrOrder) {
  * @returns The found run, or undefined if not found.
  */
 function findRunByOrder(order) {
-    return scheduleRep.value.find((item) => {
+    const foundRun = scheduleRep.value.find((item) => {
         return item.type === 'run' && item.order === order;
     });
+    if (foundRun && foundRun.type === 'run') {
+        return foundRun;
+    }
+    return null;
 }
 /**
  * Searches scheduleRep for a run with the given `pk` (or `id`).
@@ -508,8 +547,12 @@ function findRunByOrder(order) {
  * @returns The found run, or undefined if not found.
  */
 function findRunByPk(pk) {
-    return scheduleRep.value.find((item) => {
+    const foundRun = scheduleRep.value.find((item) => {
         return item.type === 'run' && item.id === pk;
     });
+    if (foundRun && foundRun.type === 'run') {
+        return foundRun;
+    }
+    return null;
 }
 //# sourceMappingURL=schedule.js.map

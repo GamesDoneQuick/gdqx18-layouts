@@ -6,15 +6,18 @@ import equals = require('deep-equal');
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
+import {Replicant} from '../types/nodecg';
+import {VictorOps3Aincidents} from '../types/schemas/victorOps%3Aincidents';
+import {VictorOps3AroutingKeys} from '../types/schemas/victorOps%3AroutingKeys';
 
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:victorOps`);
-const incidentsReplicant = nodecg.Replicant('victorOps:incidents');
-const routingKeysReplicant = nodecg.Replicant('victorOps:routingKeys');
+const incidentsReplicant: Replicant<VictorOps3Aincidents> = nodecg.Replicant('victorOps:incidents');
+const routingKeysReplicant: Replicant<VictorOps3AroutingKeys> = nodecg.Replicant('victorOps:routingKeys');
 
 log.info('VictorOps integration enabled.');
 
-nodecg.listenFor('victorOps:createIncident', (body: any, cb: Function) => {
+nodecg.listenFor('victorOps:createIncident', (body, cb) => {
 	log.info('Creating incident:', body);
 
 	createIncident({
@@ -27,12 +30,12 @@ nodecg.listenFor('victorOps:createIncident', (body: any, cb: Function) => {
 		}
 	}).then(() => {
 		log.info('Incident successfully created.');
-		if (cb) {
+		if (cb && !cb.handled) {
 			cb();
 		}
 	}).catch(error => {
 		log.error('Failed to create incident:', error);
-		if (cb) {
+		if (cb && !cb.handled) {
 			cb(error);
 		}
 	});

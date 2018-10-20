@@ -12,17 +12,19 @@ import * as nodecgApiContext from './util/nodecg-api-context';
 import * as timer from './timekeeping';
 import * as checklist from './checklist';
 import * as GDQTypes from '../types';
+import {Replicant, ListenForCb} from '../types/nodecg';
 import {GDQUrls} from './urls';
 import {calcOriginalValues, mergeChangesFromTracker} from './lib/diff-run';
+import {CanSeekSchedule} from '../types/schemas/canSeekSchedule';
 
 const nodecg = nodecgApiContext.get();
 const request = RequestPromise.defaults({jar: true}); // <= Automatically saves and re-uses cookies.
-const canSeekScheduleRep = nodecg.Replicant('canSeekSchedule');
-const currentRunRep = nodecg.Replicant('currentRun');
-const nextRunRep = nodecg.Replicant('nextRun');
-const runnersRep = nodecg.Replicant('runners', {defaultValue: [], persistent: false});
-const runOrderMap = nodecg.Replicant('runOrderMap', {defaultValue: {}, persistent: false});
-const scheduleRep = nodecg.Replicant('schedule', {defaultValue: [], persistent: false});
+const canSeekScheduleRep: Replicant<CanSeekSchedule> = nodecg.Replicant('canSeekSchedule');
+const currentRunRep: Replicant<GDQTypes.Run | null> = nodecg.Replicant('currentRun');
+const nextRunRep: Replicant<GDQTypes.Run | null> = nodecg.Replicant('nextRun');
+const runnersRep: Replicant<GDQTypes.Runner[]> = nodecg.Replicant('runners', {defaultValue: [], persistent: false});
+const runOrderMap: Replicant<{[k: string]: number}> = nodecg.Replicant('runOrderMap', {defaultValue: {}, persistent: false});
+const scheduleRep: Replicant<GDQTypes.ScheduleItem[]> = nodecg.Replicant('schedule');
 const emitter = new EventEmitter();
 module.exports = emitter;
 module.exports.update = update;
@@ -39,7 +41,7 @@ update();
 updateInterval = setInterval(update, POLL_INTERVAL);
 
 // Dashboard can invoke manual updates
-nodecg.listenFor('updateSchedule', (_data: any, cb: Function) => {
+nodecg.listenFor('updateSchedule', (_data: any, cb: ListenForCb) => {
 	nodecg.log.info('Manual schedule update button pressed, invoking update...');
 	clearInterval(updateInterval);
 	updateInterval = setInterval(update, POLL_INTERVAL);
@@ -50,49 +52,72 @@ nodecg.listenFor('updateSchedule', (_data: any, cb: Function) => {
 			nodecg.log.info('Schedule unchanged, not updated');
 		}
 
-		cb(null, updated);
+		if (cb && !cb.handled) {
+			cb(null, updated);
+		}
 	}, error => {
-		cb(error);
+		if (cb && !cb.handled) {
+			cb(error);
+		}
 	});
 });
 
-nodecg.listenFor('nextRun', (_data: any, cb: Function) => {
+nodecg.listenFor('nextRun', (_data: any, cb: ListenForCb) => {
 	if (!canSeekScheduleRep.value) {
 		nodecg.log.error('Attempted to seek to nextRun while seeking was forbidden.');
-		return cb();
+		if (cb && !cb.handled) {
+			cb();
+		}
+		return;
 	}
 
 	_seekToNextRun();
-	cb();
+	if (cb && !cb.handled) {
+		cb();
+	}
 });
 
-nodecg.listenFor('previousRun', (_data: any, cb: Function) => {
+nodecg.listenFor('previousRun', (_data: any, cb: ListenForCb) => {
 	if (!canSeekScheduleRep.value) {
 		nodecg.log.error('Attempted to seek to previousRun while seeking was forbidden.');
-		return cb();
+		if (cb && !cb.handled) {
+			cb();
+		}
+		return;
 	}
 
 	_seekToPreviousRun();
-	cb();
+	if (cb && !cb.handled) {
+		cb();
+	}
 });
 
-nodecg.listenFor('setCurrentRunByOrder', (order: number, cb: Function) => {
+nodecg.listenFor('setCurrentRunByOrder', (order: number, cb: ListenForCb) => {
 	if (!canSeekScheduleRep.value) {
 		nodecg.log.error('Attempted to seek to arbitrary run order %s while seeking was forbidden.', order);
-		return cb();
+		if (cb && !cb.handled) {
+			cb();
+		}
+		return;
 	}
 
 	try {
 		_seekToArbitraryRun(order);
 	} catch (e) {
 		nodecg.log.error(e);
-		return cb(e);
+		if (cb && !cb.handled) {
+			cb(e);
+		}
+		return;
 	}
 
-	cb();
+	if (cb && !cb.handled) {
+		cb();
+	}
+	return;
 });
 
-nodecg.listenFor('modifyRun', (data: Partial<GDQTypes.Run>, cb: Function) => {
+nodecg.listenFor('modifyRun', (data: Partial<GDQTypes.Run>, cb: ListenForCb) => {
 	// We lose any properties that have an explicit value of `undefined` in the serialization process.
 	// We need those properties to still exist so our diffing code can work as expected.
 	// A property not existing is not the same thing as a property existing but having a value of undefined.
@@ -113,9 +138,9 @@ nodecg.listenFor('modifyRun', (data: Partial<GDQTypes.Run>, cb: Function) => {
 	});
 
 	let run;
-	if (currentRunRep.value.pk === data.pk) {
+	if (currentRunRep.value && currentRunRep.value.pk === data.pk) {
 		run = currentRunRep.value;
-	} else if (nextRunRep.value.pk === data.pk) {
+	} else if (nextRunRep.value && nextRunRep.value.pk === data.pk) {
 		run = nextRunRep.value;
 	}
 
@@ -140,17 +165,17 @@ nodecg.listenFor('modifyRun', (data: Partial<GDQTypes.Run>, cb: Function) => {
 	}
 });
 
-nodecg.listenFor('resetRun', (pk: number, cb: Function) => {
+nodecg.listenFor('resetRun', (pk: number, cb: ListenForCb) => {
 	let runRep;
-	if (currentRunRep.value.pk === pk) {
+	if (currentRunRep.value && currentRunRep.value.pk === pk) {
 		runRep = currentRunRep;
-	} else if (nextRunRep.value.pk === pk) {
+	} else if (nextRunRep.value && nextRunRep.value.pk === pk) {
 		runRep = nextRunRep;
 	}
 
 	if (runRep) {
 		runRep.value = clone(findRunByPk(pk));
-		if ({}.hasOwnProperty.call(runRep.value, 'originalValues')) {
+		if (runRep.value && {}.hasOwnProperty.call(runRep.value, 'originalValues')) {
 			nodecg.log.error(
 				'%s had an `originalValues` property after being reset! This is bad! Deleting it...',
 				runRep.value.name
@@ -253,7 +278,9 @@ function update() {
 				[currentRunRep, nextRunRep].forEach(activeRunReplicant => {
 					if (activeRunReplicant.value && activeRunReplicant.value.pk) {
 						const runFromSchedule = findRunByPk(activeRunReplicant.value.pk);
-						activeRunReplicant.value = mergeChangesFromTracker(activeRunReplicant.value, runFromSchedule);
+						if (runFromSchedule) {
+							activeRunReplicant.value = mergeChangesFromTracker(activeRunReplicant.value, runFromSchedule);
+						}
 					}
 				});
 			} else {
@@ -291,16 +318,20 @@ function update() {
  * Sets currentRun to the predecessor run.
  */
 function _seekToPreviousRun() {
+	if (!currentRunRep.value) {
+		return;
+	}
+
 	const prevRun = scheduleRep.value.slice(0).reverse().find((item: GDQTypes.ScheduleItem) => {
 		if (item.type !== 'run') {
 			return false;
 		}
 
-		return item.order < currentRunRep.value.order;
+		return item.order < currentRunRep.value!.order; // tslint:disable-line:no-non-null-assertion
 	});
 
 	nextRunRep.value = clone(currentRunRep.value);
-	currentRunRep.value = clone(prevRun);
+	currentRunRep.value = (prevRun && prevRun.type === 'run') ? clone(prevRun) : null;
 	checklist.reset();
 	timer.reset();
 }
@@ -311,6 +342,10 @@ function _seekToPreviousRun() {
  * Sets nextRun to the new successor run.
  */
 function _seekToNextRun() {
+	if (!nextRunRep.value) {
+		return;
+	}
+
 	const newNextRun = _findRunAfter(nextRunRep.value);
 	currentRunRep.value = clone(nextRunRep.value);
 	nextRunRep.value = clone(newNextRun);
@@ -324,15 +359,21 @@ function _seekToNextRun() {
  * @param runOrOrder - Either a run order or a run object to set as the new currentRun.
  * @returns The next run. If this is the last run, then undefined.
  */
-function _findRunAfter(runOrOrder: GDQTypes.Run | number) {
+function _findRunAfter(runOrOrder: GDQTypes.Run | number): GDQTypes.Run | null {
 	const run = _resolveRunOrOrder(runOrOrder);
-	return scheduleRep.value.find((item: GDQTypes.ScheduleItem) => {
+	const foundRun = scheduleRep.value.find((item: GDQTypes.ScheduleItem) => {
 		if (item.type !== 'run') {
 			return false;
 		}
 
 		return item.order > run.order;
 	});
+
+	if (foundRun && foundRun.type === 'run') {
+		return foundRun;
+	}
+
+	return null;
 }
 
 /**
@@ -569,10 +610,16 @@ function _resolveRunOrOrder(runOrOrder: GDQTypes.Run | number) {
  * @param order - The order of the run to find.
  * @returns The found run, or undefined if not found.
  */
-function findRunByOrder(order: number) {
-	return scheduleRep.value.find((item: GDQTypes.ScheduleItem) => {
+function findRunByOrder(order: number): GDQTypes.Run | null {
+	const foundRun = scheduleRep.value.find((item: GDQTypes.ScheduleItem) => {
 		return item.type === 'run' && item.order === order;
 	});
+
+	if (foundRun && foundRun.type === 'run') {
+		return foundRun;
+	}
+
+	return null;
 }
 
 /**
@@ -580,8 +627,14 @@ function findRunByOrder(order: number) {
  * @param pk - The id or pk of the run to find.
  * @returns The found run, or undefined if not found.
  */
-function findRunByPk(pk: number) {
-	return scheduleRep.value.find((item: GDQTypes.ScheduleItem) => {
+function findRunByPk(pk: number): GDQTypes.Run | null {
+	const foundRun = scheduleRep.value.find((item: GDQTypes.ScheduleItem) => {
 		return item.type === 'run' && item.id === pk;
 	});
+
+	if (foundRun && foundRun.type === 'run') {
+		return foundRun;
+	}
+
+	return null;
 }

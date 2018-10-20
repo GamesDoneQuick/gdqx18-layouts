@@ -11,5 +11,6 @@
 		"time": {
 			"$ref": "types/timeStruct.json"
 		}
-	}
+	},
+	"required": ["running", "time"]
 }

@@ -9,6 +9,7 @@
 		},
 		"ads": {
 			"type": "array",
+			"additionalItems": false,
 			"items": {
 				"$ref": "ad.json"
 			}
@@ -40,7 +41,9 @@
 					"type": "boolean",
 					"default": false
 				}
-			}
+			},
+			"required": ["canStart", "cantStartReason", "started", "canComplete", "completed"]
 		}
-	}
+	},
+	"required": ["type", "ads", "id", "state"]
 }

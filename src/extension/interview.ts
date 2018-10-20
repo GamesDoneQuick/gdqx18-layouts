@@ -7,6 +7,14 @@ import * as firebase from 'firebase-admin';
 import * as nodecgApiContext from './util/nodecg-api-context';
 import * as TimeUtils from './lib/time';
 import * as GDQTypes from '../types';
+import {Replicant, ListenForCb} from '../types/nodecg';
+import {Interview3AthrowIncoming} from '../types/schemas/interview%3AthrowIncoming';
+import {Interview3AquestionSortMap} from '../types/schemas/interview%3AquestionSortMap';
+import {Interview3AquestionTweets} from '../types/schemas/interview%3AquestionTweets';
+import {Interview3Astopwatch} from '../types/schemas/interview%3Astopwatch';
+import {Gdq3AcurrentLayout} from '../types/schemas/gdq%3AcurrentLayout';
+import {Interview3AprizePlaylist} from '../types/schemas/interview%3AprizePlaylist';
+import {Interview3AshowPrizesOnMonitor} from '../types/schemas/interview%3AshowPrizesOnMonitor';
 
 const nodecg = nodecgApiContext.get();
 
@@ -16,18 +24,18 @@ firebase.initializeApp({
 });
 
 const database = firebase.database();
-const lowerthirdPulseTimeRemaining = nodecg.Replicant('interview:lowerthirdTimeRemaining', {defaultValue: 0, persistent: false});
-const lowerthirdShowing = nodecg.Replicant('interview:lowerthirdShowing', {defaultValue: false, persistent: false});
-const throwIncoming = nodecg.Replicant('interview:throwIncoming');
-const questionPulseTimeRemaining = nodecg.Replicant('interview:questionTimeRemaining', {defaultValue: 0, persistent: false});
-const questionShowing = nodecg.Replicant('interview:questionShowing', {defaultValue: false, persistent: false});
-const questionSortMap = nodecg.Replicant('interview:questionSortMap');
-const questionTweetsRep = nodecg.Replicant('interview:questionTweets');
-const interviewStopwatch = nodecg.Replicant('interview:stopwatch');
-const currentLayout = nodecg.Replicant('gdq:currentLayout');
-const prizePlaylist = nodecg.Replicant('interview:prizePlaylist');
-const showPrizesOnMonitor = nodecg.Replicant('interview:showPrizesOnMonitor');
-const allPrizes = nodecg.Replicant('allPrizes');
+const lowerthirdPulseTimeRemaining: Replicant<number> = nodecg.Replicant('interview:lowerthirdTimeRemaining', {defaultValue: 0, persistent: false});
+const lowerthirdShowing: Replicant<boolean> = nodecg.Replicant('interview:lowerthirdShowing', {defaultValue: false, persistent: false});
+const throwIncoming: Replicant<Interview3AthrowIncoming> = nodecg.Replicant('interview:throwIncoming');
+const questionPulseTimeRemaining: Replicant<number> = nodecg.Replicant('interview:questionTimeRemaining', {defaultValue: 0, persistent: false});
+const questionShowing: Replicant<boolean> = nodecg.Replicant('interview:questionShowing', {defaultValue: false, persistent: false});
+const questionSortMap: Replicant<Interview3AquestionSortMap> = nodecg.Replicant('interview:questionSortMap');
+const questionTweetsRep: Replicant<Interview3AquestionTweets> = nodecg.Replicant('interview:questionTweets');
+const interviewStopwatch: Replicant<Interview3Astopwatch> = nodecg.Replicant('interview:stopwatch');
+const currentLayout: Replicant<Gdq3AcurrentLayout> = nodecg.Replicant('gdq:currentLayout');
+const prizePlaylist: Replicant<Interview3AprizePlaylist> = nodecg.Replicant('interview:prizePlaylist');
+const showPrizesOnMonitor: Replicant<Interview3AshowPrizesOnMonitor> = nodecg.Replicant('interview:showPrizesOnMonitor');
+const allPrizes: Replicant<GDQTypes.Prize[]> = nodecg.Replicant('allPrizes');
 const pulseIntervalMap = new Map();
 const pulseTimeoutMap = new Map();
 let interviewTimer: TimeUtils.CountupTimer | null;
@@ -66,11 +74,13 @@ nodecg.listenFor('pulseInterviewLowerthird', (duration: number) => {
 	pulse(lowerthirdShowing, lowerthirdPulseTimeRemaining, duration);
 });
 
-nodecg.listenFor('pulseInterviewQuestion', (id: string, cb: Function) => {
+nodecg.listenFor('pulseInterviewQuestion', (id, cb) => {
 	pulse(questionShowing, questionPulseTimeRemaining, 10).then(() => {
 		markQuestionAsDone(id, cb);
 	}).catch(error => {
-		cb(error);
+		if (cb && !cb.handled) {
+			cb(error);
+		}
 	});
 });
 
@@ -152,24 +162,35 @@ nodecg.listenFor('interview:updateQuestionSortMap', updateQuestionSortMap);
 
 nodecg.listenFor('interview:markQuestionAsDone', markQuestionAsDone);
 
-nodecg.listenFor('interview:promoteQuestionToTop', (id: string, cb: Function) => {
+nodecg.listenFor('interview:promoteQuestionToTop', (id, cb) => {
 	if (!_repliesRef) {
-		return cb(new Error('_repliesRef not ready!'));
+		if (cb && !cb.handled) {
+			cb(new Error('_repliesRef not ready!'));
+		}
+		return;
 	}
 
 	if (!id) {
-		return cb();
+		if (cb && !cb.handled) {
+			cb();
+		}
+		return;
 	}
 
 	const itemIndex = questionSortMap.value.findIndex((sortId: string) => sortId === id);
 	if (itemIndex < 0) {
-		return cb(new Error('Tweet ID not found in sort map!'));
+		if (cb && !cb.handled) {
+			cb(new Error('Tweet ID not found in sort map!'));
+		}
+		return;
 	}
 
 	const newArray = questionSortMap.value.slice(0);
 	newArray.splice(0, 0, newArray.splice(itemIndex, 1)[0]);
 	questionSortMap.value = newArray;
-	cb();
+	if (cb && !cb.handled) {
+		cb();
+	}
 });
 
 nodecg.listenFor('interview:end', () => {
@@ -239,13 +260,19 @@ nodecg.listenFor('interview:hidePrizePlaylistOnMonitor', () => {
 	showPrizesOnMonitor.value = false;
 });
 
-function markQuestionAsDone(id: string, cb: Function) {
+function markQuestionAsDone(id: any, cb: ListenForCb | undefined) {
 	if (!_repliesRef) {
-		return cb(new Error('_repliesRef not ready!'));
+		if (cb && !cb.handled) {
+			cb(new Error('_repliesRef not ready!'));
+		}
+		return;
 	}
 
 	if (!id) {
-		return cb();
+		if (cb && !cb.handled) {
+			cb();
+		}
+		return;
 	}
 
 	_repliesRef.child(id).transaction(tweet => {
@@ -260,10 +287,14 @@ function markQuestionAsDone(id: string, cb: Function) {
 		return tweet;
 	}).then(() => {
 		updateQuestionSortMap();
-		cb();
+		if (cb && !cb.handled) {
+			cb();
+		}
 	}).catch(error => {
 		nodecg.log.error('[interview]', error);
-		cb(error);
+		if (cb && !cb.handled) {
+			cb(error);
+		}
 	});
 }
 

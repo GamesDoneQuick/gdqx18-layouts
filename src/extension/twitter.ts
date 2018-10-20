@@ -7,11 +7,14 @@ import * as io from 'socket.io-client';
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
 import * as GDQTypes from '../types';
+import {Replicant} from '../types/nodecg';
+import {Tweets} from '../types/schemas/tweets';
+import {FanartTweets} from '../types/schemas/fanartTweets';
 
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:twitter`);
-const tweets = nodecg.Replicant('tweets');
-const fanartTweets = nodecg.Replicant('fanartTweets');
+const tweets: Replicant<Tweets> = nodecg.Replicant('tweets');
+const fanartTweets: Replicant<FanartTweets> = nodecg.Replicant('fanartTweets');
 
 // Clear queue of tweets when currentRun changes
 nodecg.Replicant('currentRun').on('change', (newVal: GDQTypes.Run, oldVal: GDQTypes.Run | undefined) => {

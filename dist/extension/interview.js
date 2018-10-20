@@ -60,7 +60,9 @@ nodecg.listenFor('pulseInterviewQuestion', (id, cb) => {
     pulse(questionShowing, questionPulseTimeRemaining, 10).then(() => {
         markQuestionAsDone(id, cb);
     }).catch(error => {
-        cb(error);
+        if (cb && !cb.handled) {
+            cb(error);
+        }
     });
 });
 questionShowing.on('change', (newVal) => {
@@ -129,19 +131,30 @@ nodecg.listenFor('interview:updateQuestionSortMap', updateQuestionSortMap);
 nodecg.listenFor('interview:markQuestionAsDone', markQuestionAsDone);
 nodecg.listenFor('interview:promoteQuestionToTop', (id, cb) => {
     if (!_repliesRef) {
-        return cb(new Error('_repliesRef not ready!'));
+        if (cb && !cb.handled) {
+            cb(new Error('_repliesRef not ready!'));
+        }
+        return;
     }
     if (!id) {
-        return cb();
+        if (cb && !cb.handled) {
+            cb();
+        }
+        return;
     }
     const itemIndex = questionSortMap.value.findIndex((sortId) => sortId === id);
     if (itemIndex < 0) {
-        return cb(new Error('Tweet ID not found in sort map!'));
+        if (cb && !cb.handled) {
+            cb(new Error('Tweet ID not found in sort map!'));
+        }
+        return;
     }
     const newArray = questionSortMap.value.slice(0);
     newArray.splice(0, 0, newArray.splice(itemIndex, 1)[0]);
     questionSortMap.value = newArray;
-    cb();
+    if (cb && !cb.handled) {
+        cb();
+    }
 });
 nodecg.listenFor('interview:end', () => {
     database.ref('/active_tweet_id').set(0);
@@ -198,10 +211,16 @@ nodecg.listenFor('interview:hidePrizePlaylistOnMonitor', () => {
 });
 function markQuestionAsDone(id, cb) {
     if (!_repliesRef) {
-        return cb(new Error('_repliesRef not ready!'));
+        if (cb && !cb.handled) {
+            cb(new Error('_repliesRef not ready!'));
+        }
+        return;
     }
     if (!id) {
-        return cb();
+        if (cb && !cb.handled) {
+            cb();
+        }
+        return;
     }
     _repliesRef.child(id).transaction(tweet => {
         if (tweet) {
@@ -213,10 +232,14 @@ function markQuestionAsDone(id, cb) {
         return tweet;
     }).then(() => {
         updateQuestionSortMap();
-        cb();
+        if (cb && !cb.handled) {
+            cb();
+        }
     }).catch(error => {
         nodecg.log.error('[interview]', error);
-        cb(error);
+        if (cb && !cb.handled) {
+            cb(error);
+        }
     });
 }
 /**

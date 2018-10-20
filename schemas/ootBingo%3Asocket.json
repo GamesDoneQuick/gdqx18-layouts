@@ -21,11 +21,13 @@
 			"default": "NodeCG"
 		},
 		"roomCode": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		},
 		"passphrase": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		}
 	},
-	"required": ["status"]
+	"required": ["status", "siteUrl", "socketUrl", "playerName", "roomCode", "passphrase"]
 }

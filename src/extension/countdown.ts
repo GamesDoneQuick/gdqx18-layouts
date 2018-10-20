@@ -3,10 +3,19 @@
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
 import * as TimeUtils from './lib/time';
+import {Replicant} from '../types/nodecg';
+import {Countdown} from '../types/schemas/countdown';
+import {CountdownRunning} from '../types/schemas/countdownRunning';
 
 const nodecg = nodecgApiContext.get();
-const time = nodecg.Replicant('countdown', {defaultValue: TimeUtils.createTimeStruct(600 * 1000), persistent: false});
-const running = nodecg.Replicant('countdownRunning', {defaultValue: false, persistent: false});
+const time: Replicant<Countdown> = nodecg.Replicant('countdown', {
+	defaultValue: TimeUtils.createTimeStruct(600 * 1000),
+	persistent: false
+});
+const running: Replicant<CountdownRunning> = nodecg.Replicant('countdownRunning', {
+	defaultValue: false,
+	persistent: false
+});
 let countdownTimer: TimeUtils.CountdownTimer;
 
 nodecg.listenFor('startCountdown', start);

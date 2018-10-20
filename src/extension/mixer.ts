@@ -23,7 +23,17 @@ const FADE_THRESHOLD = 0.1;
 const DEFAULT_CHANNEL_OBJ = {
 	sd: {muted: true, fadedBelowThreshold: true},
 	hd: {muted: true, fadedBelowThreshold: true}
-};
+} as ChannelSet;
+
+interface ChannelSet {
+	sd: ChannelObject;
+	hd: ChannelObject;
+}
+
+interface ChannelObject {
+	muted: boolean;
+	fadedBelowThreshold: boolean;
+}
 
 const gameAudioChannels = nodecg.Replicant('gameAudioChannels', {
 	defaultValue: [
@@ -35,7 +45,7 @@ const gameAudioChannels = nodecg.Replicant('gameAudioChannels', {
 	persistent: false
 });
 
-const channelToReplicantMap: {[key: number]: boolean} = {};
+const channelToReplicantMap: {[key: number]: ChannelObject} = {};
 nodecg.bundleConfig.osc.gameAudioChannels.forEach((item: GameAudioChannelConfig, index: number) => {
 	if (!gameAudioChannels.value[index]) {
 		return;

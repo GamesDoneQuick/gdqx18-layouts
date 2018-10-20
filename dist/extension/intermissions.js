@@ -63,6 +63,10 @@ nodecg.listenFor('intermissions:startAdBreak', async (adBreakId) => {
         log.error(`Failed to start ad break: Could not find adBreak ID #${adBreakId} in currentIntermission.`);
         return;
     }
+    if (adBreak.type !== 'adBreak') {
+        log.error('Impossible');
+        return;
+    }
     cancelledAdBreak = false;
     currentAdBreak = adBreak;
     try {
@@ -112,6 +116,10 @@ nodecg.listenFor('intermissions:completeAdBreak', (adBreakId) => {
         log.error(`Failed to complete ad break: Could not find adBreak ID #${adBreakId} in currentIntermission.`);
         return;
     }
+    if (adBreak.type !== 'adBreak') {
+        log.error('Impossible');
+        return;
+    }
     if (adBreak === currentAdBreak) {
         finishCurrentAdBreak();
     }
@@ -130,7 +138,7 @@ nodecg.listenFor('intermissions:completeImageAd', (adId) => {
     }
     finishAd(currentlyPlayingAd);
     if (nextAd) {
-        playAd(nextAd).catch(e => {
+        playAd(nextAd).catch((e) => {
             log.error('Failed to play ad:', e);
         });
     }
@@ -375,7 +383,7 @@ function calcIntermissionContent() {
         schedule.value;
     let foundCurrentRun = false;
     scheduleContent.some((item) => {
-        if (item.id === currentRun.value.id) {
+        if (currentRun.value && item.id === currentRun.value.id) {
             foundCurrentRun = true;
             return false;
         }
@@ -436,7 +444,7 @@ function writeAdToLog(ad) {
         ad.sponsorName,
         ad.name,
         ad.filename,
-        currentRun.value.name
+        currentRun.value ? currentRun.value.name : 'Unknown Run'
     ];
     const logStr = data.join(', ');
     log.info('Ad successfully completed:', logStr);

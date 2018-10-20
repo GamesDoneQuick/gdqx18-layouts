@@ -7,13 +7,16 @@ import * as request from 'request-promise';
 import * as nodecgApiContext from './util/nodecg-api-context';
 import * as TimeUtils from './lib/time';
 import * as GDQTypes from '../types';
+import {Replicant} from '../types/nodecg';
+import {Twitch3AcanPlayAd} from '../types/schemas/twitch%3AcanPlayAd';
+import {Stopwatch} from '../types/schemas/stopwatch';
 
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);
-const timeSince = nodecg.Replicant('twitch:timeSinceLastAd', {defaultValue: TimeUtils.createTimeStruct()});
-const timeLeft = nodecg.Replicant('twitch:timeLeftInAd', {defaultValue: TimeUtils.createTimeStruct()});
-const canPlayTwitchAd = nodecg.Replicant('twitch:canPlayAd');
-const stopwatch = nodecg.Replicant('stopwatch');
+const timeSince: Replicant<TimeUtils.TimeStruct> = nodecg.Replicant('twitch:timeSinceLastAd', {defaultValue: TimeUtils.createTimeStruct()});
+const timeLeft: Replicant<TimeUtils.TimeStruct> = nodecg.Replicant('twitch:timeLeftInAd', {defaultValue: TimeUtils.createTimeStruct()});
+const canPlayTwitchAd: Replicant<Twitch3AcanPlayAd> = nodecg.Replicant('twitch:canPlayAd');
+const stopwatch: Replicant<Stopwatch> = nodecg.Replicant('stopwatch');
 const CANT_PLAY_REASONS = {
 	AD_IN_PROGRESS: 'ad in progress',
 	RUN_IN_PROGRESS: 'run in progress',
@@ -35,7 +38,9 @@ if (timeLeft.value.raw > 0) {
 }
 
 [timeLeft, timeSince, stopwatch].forEach(replicant => {
-	replicant.on('change', updateCanPlay);
+	(replicant as any).on('change', () => {
+		updateCanPlay();
+	});
 });
 
 nodecg.listenFor('twitch:playAd', (durationSeconds: number) => {

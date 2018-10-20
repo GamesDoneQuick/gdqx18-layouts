@@ -9,23 +9,23 @@
 				"additionalProperties": false,
 				"properties": {
 					"name": {
-						"type": "string",
-						"required": true
+						"type": "string"
 					},
 					"shortName": {
-						"type": "string",
-						"required": false
+						"type": "string"
 					},
 					"complete": {
-						"type": "boolean",
-						"required": true
+						"type": "boolean"
 					}
-				}
+				},
+				"required": ["name", "complete"]
 			}
 		}
 	},
 
 	"type": "object",
+	"title": "checklist",
+	"additionalProperties": false,
 	"properties": {
 		"extraContent": {
 			"$ref": "#/definitions/checklistGroup"
@@ -39,10 +39,17 @@
 		"audioEngineerDuties": {
 			"$ref": "#/definitions/checklistGroup"
 		},
-		"other": {
+		"special": {
 			"$ref": "#/definitions/checklistGroup"
 		}
 	},
+	"required": [
+		"extraContent",
+		"techStationDuties",
+		"stageTechDuties",
+		"audioEngineerDuties",
+		"special"
+	],
 
 	"default": {
 		"extraContent": [

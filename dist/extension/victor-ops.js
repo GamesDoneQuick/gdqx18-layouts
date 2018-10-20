@@ -22,12 +22,12 @@ nodecg.listenFor('victorOps:createIncident', (body, cb) => {
         }
     }).then(() => {
         log.info('Incident successfully created.');
-        if (cb) {
+        if (cb && !cb.handled) {
             cb();
         }
     }).catch(error => {
         log.error('Failed to create incident:', error);
-        if (cb) {
+        if (cb && !cb.handled) {
             cb(error);
         }
     });

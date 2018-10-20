@@ -1,8 +1,10 @@
 {
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "array",
+	"additionalItems": false,
 	"items": {
 		"type": "object",
+		"additionalProperties": false,
 		"properties": {
 			"name": {
 				"type": "string"
@@ -31,7 +33,8 @@
 			"duration": {
 				"type": "number"
 			}
-		}
+		},
+		"required": ["name", "nameWithExt", "type", "size", "changed", "frames", "frameTime", "frameRate", "duration"]
 	},
 	"default": []
 }

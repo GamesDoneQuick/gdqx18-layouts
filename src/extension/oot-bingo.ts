@@ -8,21 +8,21 @@ import equal = require('deep-equal');
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
+import {Replicant} from '../types/nodecg';
+import {OotBingo3Aboard} from '../types/schemas/ootBingo%3Aboard';
+import {OotBingo3Asocket} from '../types/schemas/ootBingo%3Asocket';
 
 const SOCKET_KEY_REGEX = /temporarySocketKey\s+=\s+"(\S+)"/;
 
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:oot-bingo`);
 const request = RequestPromise.defaults({jar: true}); // <= Automatically saves and re-uses cookies.
-const boardRep = nodecg.Replicant('ootBingo:board');
-const socketRep = nodecg.Replicant('ootBingo:socket');
+const boardRep: Replicant<OotBingo3Aboard> = nodecg.Replicant('ootBingo:board');
+const socketRep: Replicant<OotBingo3Asocket> = nodecg.Replicant('ootBingo:socket');
 let fullUpdateInterval: NodeJS.Timer;
 let websocket: WebSocket | null = null;
 
-const noop = () => {}; // tslint:disable-line:no-empty
-
-nodecg.listenFor('ootBingo:joinRoom', async (data: any, callback: Function) => {
-	callback = callback || noop; // tslint:disable-line:no-parameter-reassignment
+nodecg.listenFor('ootBingo:joinRoom', async (data, callback) => {
 	try {
 		socketRep.value = {
 			...socketRep.value,
@@ -36,64 +36,83 @@ nodecg.listenFor('ootBingo:joinRoom', async (data: any, callback: Function) => {
 			playerName: data.playerName
 		});
 		log.info(`Successfully joined room ${data.roomCode}.`);
-		callback();
+		if (callback && !callback.handled) {
+			callback();
+		}
 	} catch (error) {
 		socketRep.value.status = 'error';
 		log.error(`Failed to join room ${data.roomCode}:`, error);
-		callback(error);
+		if (callback && !callback.handled) {
+			callback(error);
+		}
 	}
 });
 
-nodecg.listenFor('ootBingo:leaveRoom', (_data: any, callback: Function) => {
-	callback = callback || noop; // tslint:disable-line:no-parameter-reassignment
+nodecg.listenFor('ootBingo:leaveRoom', (_data, callback) => {
 	try {
 		clearInterval(fullUpdateInterval);
 		destroyWebsocket();
 		socketRep.value.status = 'disconnected';
-		callback();
+		if (callback && !callback.handled) {
+			callback();
+		}
 	} catch (error) {
 		log.error('Failed to leave room:', error);
-		callback(error);
+		if (callback && !callback.handled) {
+			callback(error);
+		}
 	}
 });
 
-nodecg.listenFor('ootBingo:selectLine', (lineString: string, callback: Function) => {
-	callback = callback || noop; // tslint:disable-line:no-parameter-reassignment
+nodecg.listenFor('ootBingo:selectLine', (lineString, callback) => {
 	try {
 		boardRep.value.selectedLine = lineString;
-		callback();
+		if (callback && !callback.handled) {
+			callback();
+		}
 	} catch (error) {
-		callback(error);
+		if (callback && !callback.handled) {
+			callback(error);
+		}
 	}
 });
 
-nodecg.listenFor('ootBingo:toggleLineFocus', (_data: string, callback: Function) => {
-	callback = callback || noop; // tslint:disable-line:no-parameter-reassignment
+nodecg.listenFor('ootBingo:toggleLineFocus', (_data, callback) => {
 	try {
 		boardRep.value.lineFocused = !boardRep.value.lineFocused;
-		callback();
+		if (callback && !callback.handled) {
+			callback();
+		}
 	} catch (error) {
-		callback(error);
+		if (callback && !callback.handled) {
+			callback(error);
+		}
 	}
 });
 
-nodecg.listenFor('ootBingo:toggleCard', (_data: string, callback: Function) => {
-	callback = callback || noop; // tslint:disable-line:no-parameter-reassignment
+nodecg.listenFor('ootBingo:toggleCard', (_data, callback) => {
 	try {
 		boardRep.value.cardHidden = !boardRep.value.cardHidden;
-		callback();
+		if (callback && !callback.handled) {
+			callback();
+		}
 	} catch (error) {
-		callback(error);
+		if (callback && !callback.handled) {
+			callback(error);
+		}
 	}
 });
 
-nodecg.listenFor('ootBingo:toggleEmbiggen', (_data: string, callback: Function) => {
-	callback = callback || noop; // tslint:disable-line:no-parameter-reassignment
+nodecg.listenFor('ootBingo:toggleEmbiggen', (_data, callback) => {
 	try {
 		boardRep.value.embiggen = !boardRep.value.embiggen;
-		callback();
+		if (callback && !callback.handled) {
+			callback();
+		}
 	} catch (error) {
-		callback(error);
+		if (callback && !callback.handled) {
+			callback(error);
+		}
 	}
 });
 
@@ -273,10 +292,12 @@ function destroyWebsocket() {
 	}
 
 	try {
-		websocket.onopen = noop;
-		websocket.onmessage = noop;
-		websocket.onclose = noop;
+		/* tslint:disable:no-empty */
+		websocket.onopen = () => {};
+		websocket.onmessage = () => {};
+		websocket.onclose = () => {};
 		websocket.close();
+		/* tslint:enable:no-empty */
 	} catch (_error) { // tslint:disable-line:no-unused
 		// Intentionally discard error.
 	}

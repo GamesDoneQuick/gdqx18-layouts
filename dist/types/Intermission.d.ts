@@ -24,7 +24,6 @@ export interface AdBreak {
     id: number;
     type: 'adBreak';
     ads: Ad[];
-    order: number;
     state: {
         canStart: boolean;
         cantStartReason: string;

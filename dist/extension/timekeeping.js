@@ -37,6 +37,9 @@ nodecg.listenFor('startTimer', start);
 nodecg.listenFor('stopTimer', pause);
 nodecg.listenFor('resetTimer', reset);
 nodecg.listenFor('completeRunner', (data) => {
+    if (!currentRun.value) {
+        return;
+    }
     if (currentRun.value.coop) {
         // Finish all runners.
         currentRun.value.runners.forEach((runner, index) => {
@@ -51,6 +54,9 @@ nodecg.listenFor('completeRunner', (data) => {
     }
 });
 nodecg.listenFor('resumeRunner', (index) => {
+    if (!currentRun.value) {
+        return;
+    }
     if (currentRun.value.coop) {
         // Resume all runners.
         currentRun.value.runners.forEach((runner, runnerIndex) => {
@@ -82,6 +88,9 @@ if (nodecg.bundleConfig.footpedal.enabled) {
     // Listen for buttonId down event from our target gamepad.
     gamepad.on('down', (_id, num) => {
         if (num !== nodecg.bundleConfig.footpedal.buttonId) {
+            return;
+        }
+        if (!currentRun.value) {
             return;
         }
         if (stopwatch.value.state === GDQTypes.StopwatchStateEnum.RUNNING) {
@@ -217,6 +226,9 @@ function editTime({ index, newTime }) {
     if (!newTime) {
         return;
     }
+    if (!currentRun.value) {
+        return;
+    }
     const newMilliseconds = TimeUtils.parseTimeString(newTime);
     if (isNaN(newMilliseconds)) {
         return;
@@ -228,7 +240,7 @@ function editTime({ index, newTime }) {
         stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
         liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000).with((t) => timer.setGameTime(t));
     }
-    if (stopwatch.value.results[index]) {
+    if (typeof index === 'number' && stopwatch.value.results[index]) {
         stopwatch.value.results[index].time = TimeUtils.createTimeStruct(newMilliseconds);
         recalcPlaces();
     }
@@ -252,14 +264,16 @@ function recalcPlaces() {
     });
     // If every runner is finished, stop ticking and set timer state to "finished".
     let allRunnersFinished = true;
-    currentRun.value.runners.forEach((runner, index) => {
-        if (!runner) {
-            return;
-        }
-        if (!stopwatch.value.results[index]) {
-            allRunnersFinished = false;
-        }
-    });
+    if (currentRun.value) {
+        currentRun.value.runners.forEach((runner, index) => {
+            if (!runner) {
+                return;
+            }
+            if (!stopwatch.value.results[index]) {
+                allRunnersFinished = false;
+            }
+        });
+    }
     if (allRunnersFinished) {
         pause();
         stopwatch.value.state = GDQTypes.StopwatchStateEnum.FINISHED;

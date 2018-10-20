@@ -30,7 +30,9 @@ if (timeLeft.value.raw > 0) {
     resetTimeLeftTicker(timeLeft.value.raw - missedMilliseconds);
 }
 [timeLeft, timeSince, stopwatch].forEach(replicant => {
-    replicant.on('change', updateCanPlay);
+    replicant.on('change', () => {
+        updateCanPlay();
+    });
 });
 nodecg.listenFor('twitch:playAd', (durationSeconds) => {
     if (!canPlayTwitchAd.value.canPlay) {

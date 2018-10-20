@@ -13,6 +13,10 @@ import debounce = require('lodash.debounce');
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
+import {Replicant} from '../types/nodecg';
+import {CurrentRun} from '../types/schemas/currentRun';
+import {Caspar3Afiles} from '../types/schemas/caspar%3Afiles';
+import {Caspar3Aconnected} from '../types/schemas/caspar%3Aconnected';
 
 let foregroundFileName = '';
 let currentFrame = 0;
@@ -23,9 +27,9 @@ let ignoreForegroundUntilNextPlay = false;
 
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:caspar`);
-const currentRun = nodecg.Replicant('currentRun');
-const files = nodecg.Replicant('caspar:files', {persistent: false});
-const connected = nodecg.Replicant('caspar:connected');
+const currentRun: Replicant<CurrentRun> = nodecg.Replicant('currentRun');
+const files: Replicant<Caspar3Afiles> = nodecg.Replicant('caspar:files', {persistent: false});
+const connected: Replicant<Caspar3Aconnected> = nodecg.Replicant('caspar:connected');
 const connection = new CasparCG.CasparCG({
 	host: nodecg.bundleConfig.casparcg.host,
 	port: nodecg.bundleConfig.casparcg.port,
@@ -63,7 +67,7 @@ connection.clear(1);
 
 export function play(filename: string) {
 	log.info('Attempting to play %s...', filename);
-	return connection.play(1, 0, filename).then(() => {
+	return (connection as any).play(1, 0, filename).then(() => {
 		ignoreForegroundUntilNextPlay = false;
 	});
 }
@@ -110,7 +114,12 @@ const udpPort = new osc.UDPPort({
 });
 
 const emitForegroundChanged = debounce(() => {
-	log.info('Media began playing: %s, %s, %s', new Date().toISOString(), foregroundFileName, currentRun.value.name);
+	log.info(
+		'Media began playing: %s, %s, %s',
+		new Date().toISOString(),
+		foregroundFileName,
+		currentRun.value ? currentRun.value.name : 'Unknown Run'
+	);
 	oscEvents.emit('foregroundChanged', foregroundFileName);
 }, 250);
 
@@ -199,7 +208,13 @@ function updateFiles() {
 		}
 
 		connection.cls().then(reply => {
-			const remapped = (reply.response.data as {[key: string]: any}[]).map(data => {
+			const remapped = reply.response.data.filter((data: unknown) => {
+				if (typeof data !== 'object' || data === null) {
+					return false;
+				}
+
+				return data.hasOwnProperty('name');
+			}).map((data: {name: string}) => {
 				const nameWithExt = foundFiles.find(foundFile => {
 					return path.parse(foundFile).name.toLowerCase() === data.name.toLowerCase();
 				});
@@ -210,8 +225,10 @@ function updateFiles() {
 					return null;
 				}
 
-				data.nameWithExt = nameWithExt;
-				return data;
+				return {
+					...data,
+					nameWithExt
+				};
 			});
 
 			if (!hadError) {

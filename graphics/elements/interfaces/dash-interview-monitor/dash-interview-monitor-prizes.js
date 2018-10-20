@@ -52,6 +52,9 @@
 			});
 
 			prizePlaylistSortMapRep.on('change', (newVal, oldVal, operations) => {
+				if (!newVal) {
+					return;
+				}
 				this._sortMapVal = newVal;
 				this.$.repeat.render();
 

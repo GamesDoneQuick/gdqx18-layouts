@@ -99,7 +99,7 @@ const udpPort = new osc.UDPPort({
     metadata: true
 });
 const emitForegroundChanged = debounce(() => {
-    log.info('Media began playing: %s, %s, %s', new Date().toISOString(), foregroundFileName, currentRun.value.name);
+    log.info('Media began playing: %s, %s, %s', new Date().toISOString(), foregroundFileName, currentRun.value ? currentRun.value.name : 'Unknown Run');
     exports.oscEvents.emit('foregroundChanged', foregroundFileName);
 }, 250);
 udpPort.on('message', (message) => {
@@ -174,7 +174,12 @@ function updateFiles() {
             return;
         }
         connection.cls().then(reply => {
-            const remapped = reply.response.data.map(data => {
+            const remapped = reply.response.data.filter((data) => {
+                if (typeof data !== 'object' || data === null) {
+                    return false;
+                }
+                return data.hasOwnProperty('name');
+            }).map((data) => {
                 const nameWithExt = foundFiles.find(foundFile => {
                     return path.parse(foundFile).name.toLowerCase() === data.name.toLowerCase();
                 });
@@ -183,8 +188,7 @@ function updateFiles() {
                     hadError = true;
                     return null;
                 }
-                data.nameWithExt = nameWithExt;
-                return data;
+                return Object.assign({}, data, { nameWithExt });
             });
             if (!hadError) {
                 if (equals(remapped, files.value)) {

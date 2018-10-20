@@ -35,5 +35,15 @@
 			"type": "number",
 			"default": 0
 		}
-	}
+	},
+	"required": [
+		"days",
+		"hours",
+		"minutes",
+		"seconds",
+		"milliseconds",
+		"formatted",
+		"raw",
+		"timestamp"
+	]
 }

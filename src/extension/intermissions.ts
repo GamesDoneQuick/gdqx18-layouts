@@ -15,6 +15,11 @@ import * as nodecgApiContext from './util/nodecg-api-context';
 import * as obs from './obs';
 import * as TimeUtils from './lib/time';
 import * as GDQTypes from '../types';
+import {Replicant} from '../types/nodecg';
+import {CurrentIntermission} from '../types/schemas/currentIntermission';
+import {CanSeekSchedule} from '../types/schemas/canSeekSchedule';
+import {CurrentRun} from '../types/schemas/currentRun';
+import {Stopwatch} from '../types/schemas/stopwatch';
 
 const AD_LOG_PATH = 'logs/ad_log.csv';
 
@@ -24,11 +29,11 @@ let nextAd: GDQTypes.Ad | null = null;
 let cancelledAdBreak = false;
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:intermission`);
-const currentIntermission = nodecg.Replicant('currentIntermission');
-const canSeekSchedule = nodecg.Replicant('canSeekSchedule');
-const currentRun = nodecg.Replicant('currentRun');
-const schedule = nodecg.Replicant('schedule');
-const stopwatch = nodecg.Replicant('stopwatch');
+const currentIntermission: Replicant<CurrentIntermission> = nodecg.Replicant('currentIntermission');
+const canSeekSchedule: Replicant<CanSeekSchedule> = nodecg.Replicant('canSeekSchedule');
+const currentRun: Replicant<CurrentRun> = nodecg.Replicant('currentRun');
+const schedule: Replicant<GDQTypes.ScheduleItem[]> = nodecg.Replicant('schedule');
+const stopwatch: Replicant<Stopwatch> = nodecg.Replicant('stopwatch');
 const schemasPath = path.resolve(__dirname, '../../schemas/');
 const adBreakSchema = JSON.parse(fs.readFileSync(path.join(schemasPath, 'types/adBreak.json'), 'utf8'));
 const adSchema = JSON.parse(fs.readFileSync(path.join(schemasPath, 'types/ad.json'), 'utf8'));
@@ -73,6 +78,11 @@ nodecg.listenFor('intermissions:startAdBreak', async (adBreakId: number) => {
 
 	if (!adBreak) {
 		log.error(`Failed to start ad break: Could not find adBreak ID #${adBreakId} in currentIntermission.`);
+		return;
+	}
+
+	if (adBreak.type !== 'adBreak') {
+		log.error('Impossible');
 		return;
 	}
 
@@ -133,6 +143,11 @@ nodecg.listenFor('intermissions:completeAdBreak', (adBreakId: number) => {
 		return;
 	}
 
+	if (adBreak.type !== 'adBreak') {
+		log.error('Impossible');
+		return;
+	}
+
 	if (adBreak === currentAdBreak) {
 		finishCurrentAdBreak();
 	} else {
@@ -154,7 +169,7 @@ nodecg.listenFor('intermissions:completeImageAd', (adId: number) => {
 	finishAd(currentlyPlayingAd);
 
 	if (nextAd) {
-		playAd(nextAd).catch(e => {
+		playAd(nextAd).catch((e: Error) => {
 			log.error('Failed to play ad:', e);
 		});
 	} else {
@@ -442,7 +457,7 @@ function calcIntermissionContent() {
 
 	let foundCurrentRun = false;
 	scheduleContent.some((item: GDQTypes.ScheduleItem) => {
-		if (item.id === currentRun.value.id) {
+		if (currentRun.value && item.id === currentRun.value.id) {
 			foundCurrentRun = true;
 			return false;
 		}
@@ -513,7 +528,7 @@ function writeAdToLog(ad: GDQTypes.Ad) {
 		ad.sponsorName,
 		ad.name,
 		ad.filename,
-		currentRun.value.name
+		currentRun.value ? currentRun.value.name : 'Unknown Run'
 	];
 
 	const logStr = data.join(', ');

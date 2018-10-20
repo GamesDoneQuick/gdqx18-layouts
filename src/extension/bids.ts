@@ -10,12 +10,14 @@ import * as BB from 'bluebird';
 import * as nodecgApiContext from './util/nodecg-api-context';
 import {GDQUrls} from './urls';
 import {TrackerObject, ChildBid, ParentBid} from '../types';
+import {Bits3Atotal} from '../types/schemas/bits%3Atotal';
+import {Replicant} from '../types/nodecg';
 
 const nodecg = nodecgApiContext.get();
 const POLL_INTERVAL = 60 * 1000;
-const currentBidsRep = nodecg.Replicant('currentBids', {defaultValue: []});
-const allBidsRep = nodecg.Replicant('allBids', {defaultValue: []});
-const bitsTotal = nodecg.Replicant('bits:total');
+const currentBidsRep: Replicant<ParentBid[]> = nodecg.Replicant('currentBids', {defaultValue: []});
+const allBidsRep: Replicant<ParentBid[]> = nodecg.Replicant('allBids', {defaultValue: []});
+const bitsTotal: Replicant<Bits3Atotal> = nodecg.Replicant('bits:total');
 
 // Get latest bid data every POLL_INTERVAL milliseconds
 update();

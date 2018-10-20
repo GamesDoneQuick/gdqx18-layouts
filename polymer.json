@@ -3,7 +3,8 @@
 		"rules": ["polymer-2"],
 		"ignoreWarnings": [
 			"unknown-superclass",
-			"unknown-polymer-behavior"
+			"unknown-polymer-behavior",
+			"multiple-global-declarations"
 		]
 	},
 	"sources": [

@@ -5,11 +5,32 @@ const nodecgApiContext = require("./util/nodecg-api-context");
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:sortable-list`);
 nodecg.listenFor('sortable-list:moveItemUp', (data) => {
-    moveItem(data, 'up');
+    if (isSortableListMoveArgs(data)) {
+        moveItem(data, 'up');
+    }
+    else {
+        log.error('Invalid data:', data);
+    }
 });
 nodecg.listenFor('sortable-list:moveItemDown', (data) => {
-    moveItem(data, 'down');
+    if (isSortableListMoveArgs(data)) {
+        moveItem(data, 'down');
+    }
+    else {
+        log.error('Invalid data:', data);
+    }
 });
+function isSortableListMoveArgs(data) {
+    if (typeof data !== 'object' || data === null) {
+        return false;
+    }
+    return data.hasOwnProperty('replicantName') &&
+        data.hasOwnProperty('replicantBundle') &&
+        data.hasOwnProperty('itemIndex') &&
+        data.hasOwnProperty('itemId') &&
+        data.hasOwnProperty('itemIdField') &&
+        data.hasOwnProperty('useSortMap');
+}
 function moveItem(data, direction) {
     // Error if the replicant isn't an array, or doesn't have any items.
     const replicant = nodecg.Replicant(data.replicantName, data.replicantBundle);

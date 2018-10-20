@@ -148,7 +148,7 @@
 		_foo() {
 			clearTimeout(clearTimeout(this._fooTimeout));
 			if (countdownRunning.value === false) {
-				if (countdownTime.value.raw <= 0) {
+				if (countdownTime.value && countdownTime.value.raw <= 0) {
 					this._fooTimeout = setTimeout(() => {
 						this.hideTimer();
 					}, 120);

@@ -8,6 +8,7 @@
 			"type": "array",
 			"minItems": 25,
 			"maxItems": 25,
+			"additionalItems": false,
 			"items": {
 				"type": "object",
 				"additionalProperties": false,
@@ -53,6 +54,14 @@
 			"type": "boolean"
 		}
 	},
+
+	"required": [
+		"cells",
+		"selectedLine",
+		"lineFocused",
+		"cardHidden",
+		"embiggen"
+	],
 
 	"default": {
 		"selectedLine": "none",

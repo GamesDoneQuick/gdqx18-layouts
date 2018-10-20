@@ -107,11 +107,11 @@ function manuallyUpdateTotal(silent, cb) {
         else {
             nodecg.log.info('Donation total unchanged, not updated');
         }
-        if (cb) {
+        if (cb && !cb.handled) {
             cb(null, updated);
         }
     }).catch(error => {
-        if (cb) {
+        if (cb && !cb.handled) {
             cb(error);
         }
     });

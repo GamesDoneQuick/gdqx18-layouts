@@ -8,12 +8,14 @@
 		},
 		"interviewees": {
 			"type": "array",
+			"additionalItems": false,
 			"items": {
 				"type": "string"
 			}
 		},
 		"interviewers": {
 			"type": "array",
+			"additionalItems": false,
 			"items": {
 				"type": "string"
 			}
@@ -34,5 +36,15 @@
 			"type": "string",
 			"enum": ["interview"]
 		}
-	}
+	},
+	"required": [
+		"id",
+		"interviewees",
+		"interviewers",
+		"duration",
+		"order",
+		"subject",
+		"suborder",
+		"type"
+	]
 }

@@ -16,6 +16,7 @@
 			"type": "array",
 			"minItems": 4,
 			"maxItems": 4,
+			"additionalItems": false,
 			"items": {
 				"type": ["object", "null"],
 				"additionalProperties": false,
@@ -33,10 +34,15 @@
 						"type": "boolean",
 						"default": false
 					}
-				}
+				},
+				"required": ["time", "place", "forfeit"]
 			},
-			"default": [null, null, null, null],
-			"required": ["time", "place", "forfeit"]
+			"default": [null, null, null, null]
 		}
-	}
+	},
+	"required": [
+		"state",
+		"time",
+		"results"
+	]
 }

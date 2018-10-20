@@ -7,14 +7,15 @@ import * as clone from 'clone';
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
 import * as obs from './obs';
-import * as Checklist from '../types/Checklist';
+import {Replicant} from '../types/nodecg';
+import {Checklist, ChecklistGroup} from '../types/schemas/checklist';
 
 const nodecg = nodecgApiContext.get();
 
 // To edit the list of checklist items, edit the "default" value of schemas/checklist.json.
 // Any changes you make will be fully picked up and integrated next time NodeCG starts.
-const checklist = nodecg.Replicant('checklist');
-const checklistDefault = checklist.schema.default as Checklist.List;
+const checklist: Replicant<Checklist> = nodecg.Replicant('checklist');
+const checklistDefault = checklist.schema.default as Checklist;
 
 // Reconcile differences between persisted value and what we expect the checklistDefault to be.
 const persistedValue = checklist.value;
@@ -26,9 +27,10 @@ if (!equals(persistedValue, checklistDefault)) {
 			continue;
 		}
 
-		mergedChecklist[category] = checklistDefault[category].map(task => {
-			if (persistedValue[category]) {
-				const persistedTask = persistedValue[category].find(({name}: {name: string}) => {
+		const results = ((checklistDefault as any)[category] as ChecklistGroup).map(task => {
+			const persistedGroup = (persistedValue as any)[category] as ChecklistGroup;
+			if (persistedGroup) {
+				const persistedTask = persistedGroup.find(({name}) => {
 					return name === task.name;
 				});
 
@@ -39,6 +41,7 @@ if (!equals(persistedValue, checklistDefault)) {
 
 			return task;
 		});
+		((mergedChecklist as any)[category] as ChecklistGroup) = results;
 	}
 
 	checklist.value = mergedChecklist;
@@ -46,20 +49,14 @@ if (!equals(persistedValue, checklistDefault)) {
 
 let initializedRecordingTask = false;
 const checklistComplete = nodecg.Replicant('checklistComplete');
-checklist.on('change', (newVal: Checklist.List, oldVal: Checklist.List | null) => {
+checklist.on('change', (newVal, oldVal) => {
 	let foundIncompleteTask = false;
 
-	for (const category in newVal) { // tslint:disable-line:no-for-in
-		if (!{}.hasOwnProperty.call(newVal, category)) {
-			continue;
+	Object.keys(newVal).forEach(category => {
+		if (!foundIncompleteTask) {
+			foundIncompleteTask = ((newVal as any)[category] as ChecklistGroup).some(task => !task.complete);
 		}
-
-		foundIncompleteTask = newVal[category].some(task => !task.complete);
-
-		if (foundIncompleteTask) {
-			break;
-		}
-	}
+	});
 
 	checklistComplete.value = !foundIncompleteTask;
 
@@ -106,7 +103,7 @@ export function reset() {
 			continue;
 		}
 
-		checklist.value[category].forEach((task: Checklist.Task) => {
+		((checklist.value as any)[category] as ChecklistGroup).forEach(task => {
 			task.complete = false;
 		});
 	}

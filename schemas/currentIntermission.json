@@ -9,6 +9,7 @@
 		},
 		"content": {
 			"type": "array",
+			"additionalItems": false,
 			"items": {
 				"oneOf": [
 					{ "$ref": "types/adBreak.json" },
@@ -17,6 +18,7 @@
 			}
 		}
 	},
+	"required": ["preOrPost", "content"],
 	"default": {
 		"preOrPost": "post",
 		"content": []

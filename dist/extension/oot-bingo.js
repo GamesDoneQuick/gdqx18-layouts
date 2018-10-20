@@ -15,9 +15,7 @@ const boardRep = nodecg.Replicant('ootBingo:board');
 const socketRep = nodecg.Replicant('ootBingo:socket');
 let fullUpdateInterval;
 let websocket = null;
-const noop = () => { }; // tslint:disable-line:no-empty
 nodecg.listenFor('ootBingo:joinRoom', async (data, callback) => {
-    callback = callback || noop; // tslint:disable-line:no-parameter-reassignment
     try {
         socketRep.value = Object.assign({}, socketRep.value, data);
         await joinRoom({
@@ -28,65 +26,84 @@ nodecg.listenFor('ootBingo:joinRoom', async (data, callback) => {
             playerName: data.playerName
         });
         log.info(`Successfully joined room ${data.roomCode}.`);
-        callback();
+        if (callback && !callback.handled) {
+            callback();
+        }
     }
     catch (error) {
         socketRep.value.status = 'error';
         log.error(`Failed to join room ${data.roomCode}:`, error);
-        callback(error);
+        if (callback && !callback.handled) {
+            callback(error);
+        }
     }
 });
 nodecg.listenFor('ootBingo:leaveRoom', (_data, callback) => {
-    callback = callback || noop; // tslint:disable-line:no-parameter-reassignment
     try {
         clearInterval(fullUpdateInterval);
         destroyWebsocket();
         socketRep.value.status = 'disconnected';
-        callback();
+        if (callback && !callback.handled) {
+            callback();
+        }
     }
     catch (error) {
         log.error('Failed to leave room:', error);
-        callback(error);
+        if (callback && !callback.handled) {
+            callback(error);
+        }
     }
 });
 nodecg.listenFor('ootBingo:selectLine', (lineString, callback) => {
-    callback = callback || noop; // tslint:disable-line:no-parameter-reassignment
     try {
         boardRep.value.selectedLine = lineString;
-        callback();
+        if (callback && !callback.handled) {
+            callback();
+        }
     }
     catch (error) {
-        callback(error);
+        if (callback && !callback.handled) {
+            callback(error);
+        }
     }
 });
 nodecg.listenFor('ootBingo:toggleLineFocus', (_data, callback) => {
-    callback = callback || noop; // tslint:disable-line:no-parameter-reassignment
     try {
         boardRep.value.lineFocused = !boardRep.value.lineFocused;
-        callback();
+        if (callback && !callback.handled) {
+            callback();
+        }
     }
     catch (error) {
-        callback(error);
+        if (callback && !callback.handled) {
+            callback(error);
+        }
     }
 });
 nodecg.listenFor('ootBingo:toggleCard', (_data, callback) => {
-    callback = callback || noop; // tslint:disable-line:no-parameter-reassignment
     try {
         boardRep.value.cardHidden = !boardRep.value.cardHidden;
-        callback();
+        if (callback && !callback.handled) {
+            callback();
+        }
     }
     catch (error) {
-        callback(error);
+        if (callback && !callback.handled) {
+            callback(error);
+        }
     }
 });
 nodecg.listenFor('ootBingo:toggleEmbiggen', (_data, callback) => {
-    callback = callback || noop; // tslint:disable-line:no-parameter-reassignment
     try {
         boardRep.value.embiggen = !boardRep.value.embiggen;
-        callback();
+        if (callback && !callback.handled) {
+            callback();
+        }
     }
     catch (error) {
-        callback(error);
+        if (callback && !callback.handled) {
+            callback(error);
+        }
     }
 });
 recover().catch(error => {
@@ -239,10 +256,12 @@ function destroyWebsocket() {
         return;
     }
     try {
-        websocket.onopen = noop;
-        websocket.onmessage = noop;
-        websocket.onclose = noop;
+        /* tslint:disable:no-empty */
+        websocket.onopen = () => { };
+        websocket.onmessage = () => { };
+        websocket.onclose = () => { };
         websocket.close();
+        /* tslint:enable:no-empty */
     }
     catch (_error) { // tslint:disable-line:no-unused
         // Intentionally discard error.

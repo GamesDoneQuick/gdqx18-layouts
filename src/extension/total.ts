@@ -7,12 +7,15 @@ import * as request from 'request-promise';
 import {formatDollars} from './util';
 import * as nodecgApiContext from './util/nodecg-api-context';
 import {GDQUrls} from './urls';
+import {Replicant, ListenForCb} from '../types/nodecg';
+import {Bits3Atotal} from '../types/schemas/bits%3Atotal';
+import {Total} from '../types/schemas/total';
 
 const nodecg = nodecgApiContext.get();
-const autoUpdateTotal = nodecg.Replicant('autoUpdateTotal');
-const bitsTotal = nodecg.Replicant('bits:total');
-const recordTrackerEnabled = nodecg.Replicant('recordTrackerEnabled');
-const total = nodecg.Replicant('total');
+const autoUpdateTotal: Replicant<boolean> = nodecg.Replicant('autoUpdateTotal');
+const bitsTotal: Replicant<Bits3Atotal> = nodecg.Replicant('bits:total');
+const recordTrackerEnabled: Replicant<boolean> = nodecg.Replicant('recordTrackerEnabled');
+const total: Replicant<Total> = nodecg.Replicant('total');
 
 autoUpdateTotal.on('change', (newVal: boolean) => {
 	if (newVal) {
@@ -107,7 +110,7 @@ nodecg.listenFor('updateTotal', manuallyUpdateTotal);
  * @param [silent = false] - Whether to print info to logs or not.
  * @param [cb] - The callback to invoke after the total has been updated.
  */
-function manuallyUpdateTotal(silent: boolean, cb?: Function) {
+function manuallyUpdateTotal(silent: boolean, cb?: ListenForCb) {
 	if (!silent) {
 		nodecg.log.info('Manual donation total update button pressed, invoking update...');
 	}
@@ -120,11 +123,11 @@ function manuallyUpdateTotal(silent: boolean, cb?: Function) {
 			nodecg.log.info('Donation total unchanged, not updated');
 		}
 
-		if (cb) {
+		if (cb && !cb.handled) {
 			cb(null, updated);
 		}
 	}).catch(error => {
-		if (cb) {
+		if (cb && !cb.handled) {
 			cb(error);
 		}
 	});

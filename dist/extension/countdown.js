@@ -4,8 +4,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const nodecgApiContext = require("./util/nodecg-api-context");
 const TimeUtils = require("./lib/time");
 const nodecg = nodecgApiContext.get();
-const time = nodecg.Replicant('countdown', { defaultValue: TimeUtils.createTimeStruct(600 * 1000), persistent: false });
-const running = nodecg.Replicant('countdownRunning', { defaultValue: false, persistent: false });
+const time = nodecg.Replicant('countdown', {
+    defaultValue: TimeUtils.createTimeStruct(600 * 1000),
+    persistent: false
+});
+const running = nodecg.Replicant('countdownRunning', {
+    defaultValue: false,
+    persistent: false
+});
 let countdownTimer;
 nodecg.listenFor('startCountdown', start);
 nodecg.listenFor('stopCountdown', stop);
