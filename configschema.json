@@ -114,7 +114,7 @@
 			"properties": {
 				"enabled": {
 					"type": "boolean",
-					"default": true
+					"default": false
 				},
 				"buttonId": {
 					"type": "number",
