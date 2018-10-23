@@ -12,10 +12,10 @@ import OBSUtility = require('nodecg-utility-obs');
 import * as nodecgApiContext from './util/nodecg-api-context';
 import {Replicant} from '../types/nodecg';
 import {Gdq3AcurrentLayout} from '../types/schemas/gdq%3AcurrentLayout';
-// @ts-ignore
-import gdqUtils = require('../../shared/lib/gdq-utils');
 import {AutoUploadRecordings} from '../types/schemas/autoUploadRecordings';
 import {Obs3AcyclingRecordings} from '../types/schemas/obs%3AcyclingRecordings';
+// @ts-ignore
+import gdqUtils = require('../../shared/lib/gdq-utils');
 
 const nodecg = nodecgApiContext.get();
 

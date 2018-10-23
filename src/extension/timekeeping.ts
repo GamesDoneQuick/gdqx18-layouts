@@ -12,6 +12,8 @@ const LS_TIMER_PHASE = {
 // Packages
 import * as clone from 'clone';
 import * as liveSplitCore from 'livesplit-core';
+import gamepad = require('gamepad');
+import * as usbDetect from 'usb-detection';
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
@@ -85,11 +87,6 @@ nodecg.listenFor('resumeRunner', (index: number) => {
 nodecg.listenFor('editTime', editTime);
 
 if (nodecg.bundleConfig.footpedal.enabled) {
-	// tslint:disable:no-var-requires
-	const gamepad = require('gamepad');
-	const usbDetect = require('usb-detection');
-	// tslint:enable:no-var-requires
-
 	gamepad.init();
 	usbDetect.startMonitoring();
 
@@ -103,7 +100,7 @@ if (nodecg.bundleConfig.footpedal.enabled) {
 	});
 
 	// Listen for buttonId down event from our target gamepad.
-	gamepad.on('down', (_id: any, num: number) => {
+	gamepad.on('down', (_id, num) => {
 		if (num !== nodecg.bundleConfig.footpedal.buttonId) {
 			return;
 		}

@@ -17,7 +17,7 @@
     "deep-equal": "^1.0.1",
     "express": "^4.16.3",
     "firebase-admin": "^6.0.0",
-    "gamepad": "^1.5.2",
+    "gamepad": "1.5.2",
     "json-schema-defaults": "^0.3.0",
     "livesplit-core": "^0.8.1",
     "lodash.assign": "^4.0.9",
@@ -35,7 +35,7 @@
     "tslib": "^1.9.1",
     "twemoji": "^2.0.5",
     "twitchps": "^0.5.5",
-    "usb-detection": "^3.0.3",
+    "usb-detection": "^4.0.0",
     "ws": "^5.2.0"
   },
   "devDependencies": {

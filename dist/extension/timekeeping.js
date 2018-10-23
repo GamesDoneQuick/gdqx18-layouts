@@ -9,6 +9,8 @@ const LS_TIMER_PHASE = {
 // Packages
 const clone = require("clone");
 const liveSplitCore = require("livesplit-core");
+const gamepad = require("gamepad");
+const usbDetect = require("usb-detection");
 // Ours
 const nodecgApiContext = require("./util/nodecg-api-context");
 const TimeUtils = require("./lib/time");
@@ -72,10 +74,6 @@ nodecg.listenFor('resumeRunner', (index) => {
 });
 nodecg.listenFor('editTime', editTime);
 if (nodecg.bundleConfig.footpedal.enabled) {
-    // tslint:disable:no-var-requires
-    const gamepad = require('gamepad');
-    const usbDetect = require('usb-detection');
-    // tslint:enable:no-var-requires
     gamepad.init();
     usbDetect.startMonitoring();
     // Poll for events
