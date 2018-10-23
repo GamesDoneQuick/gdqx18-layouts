@@ -38,7 +38,7 @@ class AtomTronlines extends Polymer.Element {
 			 */
 			backgroundColor: {
 				type: String,
-				value: '#051113',
+				value: '#050505',
 				elementTester: {
 					type: 'color'
 				},
@@ -132,7 +132,7 @@ class AtomTronlines extends Polymer.Element {
 			 */
 			nodeColor: {
 				type: String,
-				value: '#ffffff',
+				value: '#6082d6',
 				elementTester: {
 					type: 'color'
 				}
@@ -143,7 +143,7 @@ class AtomTronlines extends Polymer.Element {
 			 */
 			tailStartColor: {
 				type: String,
-				value: '#ff0080',
+				value: '#02a6ff',
 				elementTester: {
 					type: 'color'
 				}
@@ -154,7 +154,7 @@ class AtomTronlines extends Polymer.Element {
 			 */
 			tailEndColor: {
 				type: String,
-				value: '#fa00f9',
+				value: '#0079ff',
 				elementTester: {
 					type: 'color'
 				}

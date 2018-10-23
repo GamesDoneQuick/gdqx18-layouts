@@ -100,7 +100,7 @@
 			svgDoc.viewbox(-1, -1, 2, 2);
 			this._svgDoc = svgDoc;
 
-			svgDoc.circle(2).fill({color: '#FF0099', opacity: '0.25'}).move(-1, -1);
+			svgDoc.circle(2).fill({color: '#ffee54', opacity: '0.25'}).move(-1, -1);
 
 			const anglePI = (360 * ROTATION_FACTOR) * (Math.PI / 180);
 			const gradientCoords = {
@@ -112,8 +112,8 @@
 
 			const gradient = svgDoc
 				.gradient('linear', stop => {
-					stop.at(0, '#ef965e');
-					stop.at(1, '#fdd853');
+					stop.at(0, '#57c7ef');
+					stop.at(1, '#63f1fd');
 				})
 				.from(gradientCoords.x1, gradientCoords.y1)
 				.to(gradientCoords.x2, gradientCoords.y2);

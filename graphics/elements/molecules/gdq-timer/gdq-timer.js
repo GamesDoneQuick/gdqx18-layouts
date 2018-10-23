@@ -45,7 +45,7 @@
 				if (oldVal) {
 					if (newVal.state === 'running' && oldVal.state !== 'running') {
 						timerTL.from(this.$.startFlash, 1, {
-							opacity: 1,
+							opacity: 0.5,
 							ease: Power2.easeIn
 						});
 					} else if (newVal.state !== 'running' && newVal.state !== oldVal.state) {
@@ -55,7 +55,7 @@
 
 					if (newVal.state === 'finished' && oldVal.state !== 'finished') {
 						timerTL.from(this.$.startFlash, 1, {
-							opacity: 1,
+							opacity: 0.5,
 							ease: Power2.easeIn
 						});
 					}

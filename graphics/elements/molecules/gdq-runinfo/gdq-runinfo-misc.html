@@ -10,6 +10,7 @@
 			:host {
 				font-size: 22px;
 				@apply --layout-vertical;
+				z-index: 2;
 			}
 
 			.row > * {
@@ -23,12 +24,12 @@
 
 			#center {
 				margin: 0 1px;
-				background-color: #201010;
+				background-color: #1D1D1D;
 				@apply --layout-horizontal;
 			}
 
 			#center-content {
-				border: 1px solid #963B08;
+				border: 1px solid #FFFFFF;
 				border-left: none;
 				border-right: none;
 				@apply --layout-flex;
@@ -61,10 +62,10 @@
 
 			.wingBody {
 				height: 100%;
-				border: 1px solid #963B08;
+				border: 1px solid #FFFFFF;
 				border-left: 0;
 				border-right: 0;
-				background: #201010;
+				background: #1D1D1D;
 				box-sizing: border-box;
 				@apply --layout-flex;
 				@apply --layout-horizontal;
@@ -74,9 +75,9 @@
 			atom-chevron {
 				width: 16px;
 				height: 100%;
-				--atom-chevron-background: #1D1020;
-				--atom-chevron-fill-color: #FE8627;
-				--atom-chevron-stroke-color: #963B08;
+				--atom-chevron-background: #1D1D1D;
+				--atom-chevron-fill-color: #76aad6;
+				--atom-chevron-stroke-color: #FFFFFF;
 				@apply --layout-flex-none;
 			}
 
@@ -84,7 +85,7 @@
 				height: 100%;
 				z-index: 1;
 				--atom-greeble-fill-color: #FFDF79;
-				--atom-greeble-stroke-color: #FE8022;
+				--atom-greeble-stroke-color: #FFFFFF;
 			}
 
 			atom-gradient-text {
@@ -104,8 +105,8 @@
 				color: transparent;
 				background-image: linear-gradient(
 					to bottom,
-					#FFDF8C 0%,
-					#FFB800 100%
+					#FFFFFF 0%,
+					#FFFFFF 100%
 				);
 				-webkit-background-clip: text;
 			}
@@ -136,10 +137,10 @@
 				top: var(--gdq-runinfo-misc-voffset, -1px);
 				--atom-gradient-text-gradient: linear-gradient(
 					180deg,
-					#FFFB93 0%,
-					#FD5B00 100%
+					#ffffff 0%,
+					#89a7d6 100%
 				);
-				--atom-gradient-text-shadow: 0 0 18px rgba(255, 82, 58, 0.8);
+				--atom-gradient-text-shadow: 0 0 18px rgba(154, 242, 255, 0.8);
 			}
 		</style>
 

@@ -70,10 +70,10 @@
 				background-image: var(--atom-gradient-text-gradient, linear-gradient(
 					180deg,
 					#FFFFFF 0%,
-					#B1B8F4 100%
+					#B1B1B1 100%
 				));
 				-webkit-background-clip: text;
-				--atom-gradient-text-shadow: 0 0 16px rgba(58, 216, 255, 0.8);
+				--atom-gradient-text-shadow: 0 0 16px rgba(255, 255, 255, 0.8);
 			}
 
 			.colon {
@@ -91,7 +91,6 @@
 		</style>
 
 		<div id="innerRect">
-			<div id="startFlash"></div>
 			<atom-binary-clock
 				id="binaryClock"
 				pulsating="[[notStarted]]"
@@ -112,6 +111,7 @@
 				<span class="decimalPoint">.</span>
 				<span class="decimalValue">[[_formatMilliseconds(milliseconds)]]</span>
 			</div>
+			<div id="startFlash"></div>
 		</div>
 	</template>
 
