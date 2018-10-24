@@ -17,7 +17,16 @@
 					type: String,
 					notify: true
 				},
-				dialogBid: Object
+				dialogBid: Object,
+				bidTypes: {
+					type: Array,
+					value() {
+						return [
+							'choice-many',
+							'choice-binary'
+						];
+					}
+				}
 			};
 		}
 
@@ -72,6 +81,10 @@
 			}
 
 			this.relevantBids = allBids.value.filter(bid => {
+				if (!this.bidTypes.includes(bid.type)) {
+					return false;
+				}
+
 				if (bid.speedrun in runOrderMap.value) {
 					return runOrderMap.value[bid.speedrun] >= currentRun.value.order;
 				}
