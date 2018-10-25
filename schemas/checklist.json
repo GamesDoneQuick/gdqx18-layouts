@@ -53,8 +53,7 @@
 
 	"default": {
 		"extraContent": [
-			{"name": "Check for Advertisement", "shortName": "Check for Ad", "complete": false},
-			{"name": "Check for Interview", "complete": false}
+			{"name": "Check for Sent segment", "complete": false}
 		],
 		"techStationDuties": [
 			{"name": "Check Tech Notes", "complete": false},
