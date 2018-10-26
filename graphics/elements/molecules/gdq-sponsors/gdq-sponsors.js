@@ -2,7 +2,7 @@
 (function () {
 	'use strict';
 
-	const DISPLAY_DURATION = 3;
+	const DISPLAY_DURATION = 20;
 	const EMPTY_OBJ = {};
 
 	class GdqSponsors extends GdqBreakLoop {
