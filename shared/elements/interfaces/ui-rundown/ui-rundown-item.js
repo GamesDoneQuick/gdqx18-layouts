@@ -41,8 +41,10 @@ class UiRundownItem extends Polymer.Element {
 					this.$.bottomLeft.appendChild(span);
 				});
 
-				this.$.bottomLeft.lastChild.textContent =
-					this.$.bottomLeft.lastChild.textContent.substr(0, this.$.bottomLeft.lastChild.textContent.length - 2);
+				if (this.$.bottomLeft.lastChild) {
+					this.$.bottomLeft.lastChild.textContent =
+						this.$.bottomLeft.lastChild.textContent.substr(0, this.$.bottomLeft.lastChild.textContent.length - 2);
+				}
 				break;
 			case 'adBreak':
 				this.name = 'Ad Break';
