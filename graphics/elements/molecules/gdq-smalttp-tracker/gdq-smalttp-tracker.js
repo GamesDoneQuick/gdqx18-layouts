@@ -34,7 +34,6 @@
 				updated.state = 0;
 			} else {
 				updated.state++;
-				console.log('advanced!');
 			}
 		}
 
@@ -49,7 +48,6 @@
 		}
 
 		_calcCellSrc(itemOrPrize) {
-			console.log('calculating');
 			let src = itemOrPrize.name;
 			if (itemOrPrize.state > 1) {
 				src += itemOrPrize.state;
