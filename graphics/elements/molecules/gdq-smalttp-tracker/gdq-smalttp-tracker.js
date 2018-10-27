@@ -29,7 +29,7 @@
 		}
 
 		_advance(e) {
-			const updated = e.target.item;
+			const updated = e.model.item;
 			if (updated.state === updated.maxState) {
 				updated.state = 0;
 			} else {
