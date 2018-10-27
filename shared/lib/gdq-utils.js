@@ -12,7 +12,7 @@
 }(typeof self === 'undefined' ? this : self, () => {
 	'use strict';
 
-	const GAME_SCENE_NAME_REGEX = /^(Standard|Widescreen|GBA|Gameboy|3DS|DS|LttP|OoT|Mario)/;
+	const GAME_SCENE_NAME_REGEX = /^(Standard|Widescreen|GBA|Gameboy|3DS|DS|LttP|OoT|Mario|SM\/ALttP)/;
 
 	const preloadedImages = new Set();
 	const preloaderPromises = new Map();
