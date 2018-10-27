@@ -6,11 +6,12 @@
  */
 
 // Packages
-import * as clone from 'clone';
 import osc = require('osc');
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
+import {Replicant} from '../types/nodecg';
+import {GameAudioChannels} from '../types/schemas/gameAudioChannels';
 
 interface GameAudioChannelConfig {
 	sd: number | null;
@@ -20,30 +21,13 @@ interface GameAudioChannelConfig {
 const nodecg = nodecgApiContext.get();
 const X32_UDP_PORT = 10023;
 const FADE_THRESHOLD = 0.1;
-const DEFAULT_CHANNEL_OBJ = {
-	sd: {muted: true, fadedBelowThreshold: true},
-	hd: {muted: true, fadedBelowThreshold: true}
-} as ChannelSet;
-
-interface ChannelSet {
-	sd: ChannelObject;
-	hd: ChannelObject;
-}
 
 interface ChannelObject {
 	muted: boolean;
 	fadedBelowThreshold: boolean;
 }
 
-const gameAudioChannels = nodecg.Replicant('gameAudioChannels', {
-	defaultValue: [
-		clone(DEFAULT_CHANNEL_OBJ),
-		clone(DEFAULT_CHANNEL_OBJ),
-		clone(DEFAULT_CHANNEL_OBJ),
-		clone(DEFAULT_CHANNEL_OBJ)
-	],
-	persistent: false
-});
+const gameAudioChannels: Replicant<GameAudioChannels> = nodecg.Replicant('gameAudioChannels', {persistent: false});
 
 const channelToReplicantMap: {[key: number]: ChannelObject} = {};
 nodecg.bundleConfig.osc.gameAudioChannels.forEach((item: GameAudioChannelConfig, index: number) => {

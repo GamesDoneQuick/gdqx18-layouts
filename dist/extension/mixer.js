@@ -5,26 +5,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Doing so causes the osc lib to actually encode it as a null argument (,N). Instead, use an empty array ([]).
  */
 // Packages
-const clone = require("clone");
 const osc = require("osc");
 // Ours
 const nodecgApiContext = require("./util/nodecg-api-context");
 const nodecg = nodecgApiContext.get();
 const X32_UDP_PORT = 10023;
 const FADE_THRESHOLD = 0.1;
-const DEFAULT_CHANNEL_OBJ = {
-    sd: { muted: true, fadedBelowThreshold: true },
-    hd: { muted: true, fadedBelowThreshold: true }
-};
-const gameAudioChannels = nodecg.Replicant('gameAudioChannels', {
-    defaultValue: [
-        clone(DEFAULT_CHANNEL_OBJ),
-        clone(DEFAULT_CHANNEL_OBJ),
-        clone(DEFAULT_CHANNEL_OBJ),
-        clone(DEFAULT_CHANNEL_OBJ)
-    ],
-    persistent: false
-});
+const gameAudioChannels = nodecg.Replicant('gameAudioChannels', { persistent: false });
 const channelToReplicantMap = {};
 nodecg.bundleConfig.osc.gameAudioChannels.forEach((item, index) => {
     if (!gameAudioChannels.value[index]) {
