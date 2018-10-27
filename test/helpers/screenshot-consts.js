@@ -161,6 +161,9 @@ const gameplayLayoutTestCases = [{
 	replicantPrefills: STANDARD_REPLICANT_PREFILLS,
 	coopTests: [2, 4]
 }, {
+	route: `bundles/${BUNDLE_NAME}/graphics/standard_1_smalttp.html`,
+	additionalDelay: STANDARD_DELAY
+}, {
 	route: `bundles/${BUNDLE_NAME}/graphics/standard_2.html`,
 	additionalDelay: STANDARD_DELAY,
 	replicantPrefills: STANDARD_REPLICANT_PREFILLS
@@ -196,6 +199,7 @@ gameplayLayoutTestCases.forEach(testCase => {
 		nameAppendix: 'not_started',
 		replicantPrefills: {
 			...STANDARD_REPLICANT_PREFILLS,
+			smalttpData: undefined,
 			gameAudioChannels: [{
 				sd: {muted: false, fadedBelowThreshold: false},
 				hd: {muted: false, fadedBelowThreshold: false}

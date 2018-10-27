@@ -142,6 +142,11 @@
         "height": 845
       },
       {
+        "file": "standard_1_smalttp.html",
+        "width": 1600,
+        "height": 845
+      },
+      {
         "file": "standard_2.html",
         "width": 1600,
         "height": 845
@@ -235,6 +240,11 @@
         "file": "lttp_tracker.html",
         "width": 300,
         "height": 469
+      },
+      {
+        "file": "smalttp_tracker.html",
+        "width": 451,
+        "height": 226
       },
       {
         "file": "omnibar.html",
