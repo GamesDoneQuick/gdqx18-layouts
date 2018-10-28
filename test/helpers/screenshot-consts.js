@@ -162,7 +162,9 @@ const gameplayLayoutTestCases = [{
 	coopTests: [2, 4]
 }, {
 	route: `bundles/${BUNDLE_NAME}/graphics/standard_1_smalttp.html`,
-	additionalDelay: STANDARD_DELAY
+	replicantPrefills: {
+		smalttpData: undefined
+	}
 }, {
 	route: `bundles/${BUNDLE_NAME}/graphics/standard_2.html`,
 	additionalDelay: STANDARD_DELAY,
@@ -199,7 +201,7 @@ gameplayLayoutTestCases.forEach(testCase => {
 		nameAppendix: 'not_started',
 		replicantPrefills: {
 			...STANDARD_REPLICANT_PREFILLS,
-			smalttpData: undefined,
+			...testCase.replicantPrefills,
 			gameAudioChannels: [{
 				sd: {muted: false, fadedBelowThreshold: false},
 				hd: {muted: false, fadedBelowThreshold: false}
@@ -219,6 +221,7 @@ gameplayLayoutTestCases.forEach(testCase => {
 		nameAppendix: 'running',
 		replicantPrefills: {
 			...STANDARD_REPLICANT_PREFILLS,
+			...testCase.replicantPrefills,
 			stopwatch: {
 				state: 'running',
 				time: {
@@ -245,6 +248,7 @@ gameplayLayoutTestCases.forEach(testCase => {
 		additionalDelay: FINISHED_DELAY,
 		replicantPrefills: {
 			...STANDARD_REPLICANT_PREFILLS,
+			...testCase.replicantPrefills,
 			stopwatch: {
 				state: 'finished',
 				time: {
@@ -321,6 +325,7 @@ gameplayLayoutTestCases.forEach(testCase => {
 				nameAppendix: `coop_${numberOfRunners}`,
 				replicantPrefills: {
 					...STANDARD_REPLICANT_PREFILLS,
+					...testCase.replicantPrefills,
 					currentRun: {
 						name: 'Pre-Show',
 						longName: 'Pre-Show',

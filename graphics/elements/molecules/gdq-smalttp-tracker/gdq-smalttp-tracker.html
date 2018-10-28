@@ -6,20 +6,13 @@
 			:host {
 				display: flex;
 				width: 451px;
-				height: 226px;
-				border: 1px solid #0bdfff;
+				height: 271px;
 				box-sizing: border-box;
 				image-rendering: pixelated;
 				--cell-size: 44px;
 				--grid-gap: 1px;
-			}
-
-			#body {
-				display: flex;
-				flex-grow: 1;
-				height: 100%;
-				overflow: hidden;
-				position: relative;
+				padding-left: 1px;
+				padding-top: 1px;
 			}
 
 			#grid {
@@ -28,7 +21,7 @@
 				height: 100%;
 				display: grid;
 				grid-template-columns: repeat(10, var(--cell-size));
-				grid-template-rows: repeat(5, var(--cell-size));
+				grid-template-rows: repeat(6, var(--cell-size));
 				grid-gap: var(--grid-gap);
 				grid-auto-flow: row;
 				z-index: 1;
@@ -47,33 +40,66 @@
 				position: absolute;
 				left: 0;
 				top: 0;
-				height: var(--cell-size);
+				height: calc(
+					(var(--cell-size) * 2) + 3px);
 				width: 100%;
 				background-color: white;
+			}
+
+			#redBackground {
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				background-color: #974e37;
+				height: calc(var(--cell-size) + 3px);
+				width: 100%;
+
 			}
 
 			iron-image {
 				width: 100%;
 				height: 100%;
+				pointer-events: none;
 			}
 
 			.cell {
 				background-color: black;
 				padding: 7px;
 				@apply --layout-vertical;
+				color: #ffffff;
+				font-size: 12px;
+				font-family: sans-serif;
+				text-align: center;
 			}
 
 			.cell--dimmed iron-image {
 				opacity: 0.25;
 			}
+
+			.cell--highlight {
+				background-color: #0e3a60;
+			}
 		</style>
 
 		<div id="tealBackground"></div>
 		<div id="whiteBackground"></div>
+		<div id="redBackground"></div>
+
+		<div id="admin"></div>
 
 		<div id="grid">
 			<template is="dom-repeat" items="[[items]]" mutable-data>
-				<div class$="[[_calcCellClass(item, index)]]" item="[[item]]" on-click="_advance">
+				<template is="dom-if" if="[[item.boss]]">
+					<div class$="[[_calcToggleClass(item, index)]]" class="cell" on-click="_highlight">
+						<iron-image
+							src="[[importPath]]img/dungeon3.png"
+							sizing="contain">
+						</iron-image>
+					</div>
+				</template>
+			</template>
+			<template is="dom-repeat" items="[[items]]" mutable-data>
+				<div class$="[[_calcCellClass(item, index)]]" on-click="_advance">
 					<iron-image
 						src="[[importPath]]img/[[_calcCellSrc(item)]].png"
 						sizing="contain">

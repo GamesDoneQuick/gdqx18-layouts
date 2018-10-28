@@ -37,11 +37,29 @@
 			}
 		}
 
+		_highlight(e) {
+			e.model.item.highlight = !e.model.item.highlight;
+		}
+
 		_calcCellClass(itemOrPrize) {
 			const classes = new Set(['cell']);
 
 			if (itemOrPrize.state === 0) {
 				classes.add('cell--dimmed');
+			}
+
+			if (itemOrPrize.highlight === true) {
+				classes.add('cell--highlight');
+			}
+
+			return Array.from(classes).join(' ');
+		}
+
+		_calcToggleClass(itemOrPrize) {
+			const classes = new Set(['cell']);
+
+			if (itemOrPrize.highlight === true) {
+				classes.add('cell--highlight');
 			}
 
 			return Array.from(classes).join(' ');
