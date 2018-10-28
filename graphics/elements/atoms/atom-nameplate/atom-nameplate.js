@@ -86,31 +86,38 @@
 		}
 
 		updateName({alias = '?', twitchAlias = '?', rotate = true} = {}) {
+			const doTheDangThing = () => {
+				this.name = alias;
+				this.twitch = twitchAlias;
+
+				this.$.namesName.classList.add('hidden');
+				this.$.namesTwitch.classList.remove('hidden');
+
+				if (!this.twitch) {
+					this._nameTL.pause();
+					this.$.namesName.classList.remove('hidden');
+					this.$.namesTwitch.classList.add('hidden');
+					TweenLite.to(this.$.names, this.nameFadeDuration, {opacity: 1, ease: NAME_FADE_IN_EASE});
+				} else if (rotate) {
+					this._nameTL.restart();
+				} else {
+					this._nameTL.pause();
+					TweenLite.to(this.$.names, this.nameFadeDuration, {opacity: 1, ease: NAME_FADE_IN_EASE});
+				}
+
+				Polymer.RenderStatus.afterNextRender(this, this.fitName);
+			};
+
+			if (window.__SCREENSHOT_TESTING__) {
+				doTheDangThing();
+				return;
+			}
+
 			TweenLite.to(this.$.names, this.nameFadeDuration, {
 				opacity: 0,
 				ease: NAME_FADE_OUT_EASE,
 				callbackScope: this,
-				onComplete() {
-					this.name = alias;
-					this.twitch = twitchAlias;
-
-					this.$.namesName.classList.add('hidden');
-					this.$.namesTwitch.classList.remove('hidden');
-
-					if (!this.twitch) {
-						this._nameTL.pause();
-						this.$.namesName.classList.remove('hidden');
-						this.$.namesTwitch.classList.add('hidden');
-						TweenLite.to(this.$.names, this.nameFadeDuration, {opacity: 1, ease: NAME_FADE_IN_EASE});
-					} else if (rotate) {
-						this._nameTL.restart();
-					} else {
-						this._nameTL.pause();
-						TweenLite.to(this.$.names, this.nameFadeDuration, {opacity: 1, ease: NAME_FADE_IN_EASE});
-					}
-
-					Polymer.RenderStatus.afterNextRender(this, this.fitName);
-				}
+				onComplete: doTheDangThing
 			});
 		}
 
