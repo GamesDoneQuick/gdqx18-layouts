@@ -44,7 +44,7 @@
 		{"name": "bombos", "state": 0, "maxState": 1, "boss": false},
 		{"name": "glove", "state": 0, "maxState": 2, "boss": false},
 		{"name": "lantern", "state": 0, "maxState": 1, "boss": false},
-		{"name": "bottle", "state": 0, "maxState": 5, "boss": false},
+		{"name": "bottle", "state": 0, "maxState": 4, "boss": false},
 		{"name": "net", "state": 0, "maxState": 1, "boss": false},
 		{"name": "sword", "state": 0, "maxState": 4, "boss": false},
 		{"name": "boss10", "state": 0, "maxState": 1, "boss": false},
