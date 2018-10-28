@@ -203,11 +203,13 @@
 				<div id="leftColumn">
 					<div id="bidsAndPrizes" class="material">
 						<paper-tabs selected="{{selectedBidsAndPrizesTab}}">
-							<paper-tab>INCENTIVES/BIDS</paper-tab>
-							<paper-tab>PRIZES AVAILABLE</paper-tab>
+							<paper-tab>CHALLENGES</paper-tab>
+							<paper-tab>BID WARS</paper-tab>
+							<paper-tab>PRIZES</paper-tab>
 						</paper-tabs>
 
 						<iron-pages selected="[[selectedBidsAndPrizesTab]]">
+							<dash-host-bids id="challenges" class="material" bid-types='["challenge"]'></dash-host-bids>
 							<dash-host-bids id="bids" class="material"></dash-host-bids>
 							<dash-host-prizes id="prizes" class="material"></dash-host-prizes>
 						</iron-pages>
