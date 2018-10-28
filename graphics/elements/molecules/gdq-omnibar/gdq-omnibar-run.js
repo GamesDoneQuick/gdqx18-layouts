@@ -40,7 +40,7 @@ class GdqOmnibarRun extends Polymer.Element {
 			return '12 Runners';
 		}
 
-		let concatenatedRunners = run.runners[0].name;
+		let concatenatedRunners = run.runners[0] ? run.runners[0].name : '';
 		if (run.runners.length > 1) {
 			concatenatedRunners = run.runners.slice(1).reduce((prev, curr, index, array) => {
 				if (index === array.length - 1) {
