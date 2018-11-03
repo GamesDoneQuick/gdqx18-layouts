@@ -1,18 +1,15 @@
 /// <reference path="../../../bower_components/paper-input/paper-input.d.ts" />
+import {Scores} from '../../../src/types/schemas/scores'
 (() => {
 	'use strict';
 
-	interface Fuck {
-		[k: number]: number;
-	}
-
 	const {customElement, property} = Polymer.decorators;
-	const scoresRep = nodecg.Replicant<Fuck>('scores');
+	const scoresRep = nodecg.Replicant<Scores>('scores');
 
 	@customElement('gdq-marioscores')
 	class GdqMarioScores extends Polymer.Element {
 		@property({type: Object})
-		scores: Fuck;
+		scores: Scores;
 
 		ready() {
 			super.ready();
