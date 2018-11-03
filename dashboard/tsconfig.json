@@ -11,7 +11,9 @@
 	},
 	"include": [
 		"**/*.ts",
-		"../../../types/browser.d.ts"
+		"../../../types/browser.d.ts",
+		"../bower_components/polymer/types/polymer-element.d.ts",
+		"../bower_components/polymer-decorators/polymer-decorators.d.ts"
 	],
 	"references": [{"path": "../src/types"}]
 }
