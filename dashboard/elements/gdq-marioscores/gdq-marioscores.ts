@@ -1,4 +1,3 @@
-/// <reference path="../../../bower_components/paper-input/paper-input.d.ts" />
 import {Scores} from '../../../src/types/schemas/scores';
 
 window.addEventListener('load', () => {

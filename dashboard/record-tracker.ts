@@ -1,4 +1,3 @@
-/// <reference path="../bower_components/paper-toggle-button/paper-toggle-button.d.ts" />
 import {RecordTrackerEnabled} from '../src/types/schemas/recordTrackerEnabled'
 (() => {
 	const $toggle = document.getElementById('toggle') as PaperToggleButtonElement;
