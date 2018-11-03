@@ -11,6 +11,8 @@
 	});
 
 	$toggle.addEventListener('change', e => {
-		recordTrackerEnabled.value = e.target.checked;
+		if (e && e.target) {
+			recordTrackerEnabled.value = Boolean((e.target as PaperToggleButtonElement).checked);
+		}
 	});
 })();
