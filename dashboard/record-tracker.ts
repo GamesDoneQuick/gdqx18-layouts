@@ -1,10 +1,11 @@
 /// <reference path="../bower_components/paper-toggle-button/paper-toggle-button.d.ts" />
+import {RecordTrackerEnabled} from '../src/types/schemas/recordTrackerEnabled'
 (() => {
 	const $toggle = document.getElementById('toggle') as PaperToggleButtonElement;
 	if (!$toggle) {
 		return;
 	}
-	const recordTrackerEnabled = nodecg.Replicant<boolean>('recordTrackerEnabled');
+	const recordTrackerEnabled = nodecg.Replicant<RecordTrackerEnabled>('recordTrackerEnabled');
 
 	recordTrackerEnabled.on('change', newVal => {
 		$toggle.checked = Boolean(newVal);
