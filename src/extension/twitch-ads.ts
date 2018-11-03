@@ -13,8 +13,8 @@ import {Stopwatch} from '../types/schemas/stopwatch';
 
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);
-const timeSince: Replicant<TimeUtils.TimeStruct> = nodecg.Replicant('twitch:timeSinceLastAd', {defaultValue: TimeUtils.createTimeStruct()});
-const timeLeft: Replicant<TimeUtils.TimeStruct> = nodecg.Replicant('twitch:timeLeftInAd', {defaultValue: TimeUtils.createTimeStruct()});
+const timeSince: Replicant<GDQTypes.TimeStruct> = nodecg.Replicant('twitch:timeSinceLastAd', {defaultValue: TimeUtils.createTimeStruct()});
+const timeLeft: Replicant<GDQTypes.TimeStruct> = nodecg.Replicant('twitch:timeLeftInAd', {defaultValue: TimeUtils.createTimeStruct()});
 const canPlayTwitchAd: Replicant<Twitch3AcanPlayAd> = nodecg.Replicant('twitch:canPlayAd');
 const stopwatch: Replicant<Stopwatch> = nodecg.Replicant('stopwatch');
 const CANT_PLAY_REASONS = {
