@@ -11,7 +11,8 @@
 	},
 	"linterOptions": {
 		"exclude": [
-			"src/types/schemas/currentIntermission.d.ts"
+			"src/types/schemas/currentIntermission.d.ts",
+			"bower_components/**"
 		]
 	}
 }
