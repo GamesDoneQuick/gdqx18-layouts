@@ -1,8 +1,7 @@
 /// <reference path="../../../bower_components/paper-input/paper-input.d.ts" />
-import {Scores} from '../../../src/types/schemas/scores'
-(() => {
-	'use strict';
+import {Scores} from '../../../src/types/schemas/scores';
 
+window.addEventListener('load', () => {
 	const {customElement, property} = Polymer.decorators;
 	const scoresRep = nodecg.Replicant<Scores>('scores');
 
@@ -34,6 +33,6 @@ import {Scores} from '../../../src/types/schemas/scores'
 		}
 	}
 
-	// I don't need this but tsc complains that GdqMarioScores is unused without it.
+// I don't need this but tsc complains that GdqMarioScores is unused without it.
 	(window as any).GdqMarioScores = GdqMarioScores;
-})();
+});
