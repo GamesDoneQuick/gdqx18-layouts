@@ -59,9 +59,6 @@
     "app-root-path": "^2.1.0",
     "ava": "^1.0.0-beta.4",
     "chai": "^4.1.2",
-    "eslint": "^4.12.1",
-    "eslint-config-xo": "^0.19.0",
-    "eslint-plugin-html": "^4.0.1",
     "istanbul": "^0.4.3",
     "json-schema-to-typescript": "^6.0.1",
     "nodecg-screenshot-tester": "^2.1.2",
@@ -380,9 +377,8 @@
     "url": "git://github.com/GamesDoneQuick/gdqx18-layouts.git"
   },
   "scripts": {
-    "static": "npm run static:ts && npm run static:js && npm run static:polymer",
+    "static": "npm run static:ts && npm run static:polymer",
     "static:ts": "tslint -c tslint.json 'src/**/*.ts'",
-    "static:js": "eslint **/*.js **/*.html",
     "static:polymer": "polymer lint",
     "pretest": "npm run static",
     "test": "ava test",
