@@ -6,7 +6,8 @@
 		"inlineSourceMap": true,
 		"declaration": false,
 		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true
+		"emitDecoratorMetadata": true,
+		"skipLibCheck": true
 	},
 	"include": [
 		"**/*.ts",
