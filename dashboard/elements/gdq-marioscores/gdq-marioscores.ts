@@ -37,5 +37,6 @@
 		}
 	}
 
+	// I don't need this but tsc complains that GdqMarioScores is unused without it.
 	(window as any).GdqMarioScores = GdqMarioScores;
 })();
