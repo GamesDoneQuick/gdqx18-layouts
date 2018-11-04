@@ -7,7 +7,6 @@
 		"inlineSourceMap": true,
 		"declaration": false,
 		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
 		"skipLibCheck": true
 	},
 	"include": [
