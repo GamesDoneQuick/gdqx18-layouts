@@ -32,6 +32,6 @@ window.addEventListener('load', () => {
 		}
 	}
 
-	// I don't need this but tsc complains that GdqMarioScores is unused without it.
+	// This assignment to window is unnecessary, but tsc complains that the class is unused without it.
 	(window as any).GdqMarioScores = GdqMarioScores;
 });
