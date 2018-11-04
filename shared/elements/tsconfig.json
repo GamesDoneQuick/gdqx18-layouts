@@ -1,0 +1,18 @@
+{
+	"extends": "../../tsconfig",
+	"compilerOptions": {
+		"module": "es2015",
+		"importHelpers": false,
+		"sourceMap": false,
+		"inlineSourceMap": true,
+		"declaration": false,
+		"experimentalDecorators": true,
+		"skipLibCheck": true
+	},
+	"include": [
+		"**/*.ts",
+		"../../../../types/browser.d.ts",
+		"../../bower_components/**/*.d.ts"
+	],
+	"references": [{"path": "../../src/types"}]
+}
