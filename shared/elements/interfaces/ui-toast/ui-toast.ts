@@ -1,4 +1,4 @@
-export interface IUiToast extends Element {
+export interface IUiToast extends Polymer.Element {
 	_successToastText: string;
 	_errorToastText: string;
 	showSuccessToast(text: string): void;
