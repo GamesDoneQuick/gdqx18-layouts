@@ -12,7 +12,7 @@ export interface Tweet {
 	};
 	in_reply_to_user_id: string;
 	gdqRetweetId?: string;
-	gdqMedia?: {[key: string]: any}[];
+	gdqMedia?: TweetMedia[];
 }
 
 export interface User {
@@ -23,7 +23,7 @@ export interface User {
 }
 
 export interface TweetEntities {
-	media?: {[key: string]: any}[];
+	media?: TweetMedia[];
 }
 
 export interface TwitterAccountActivityPayload {
@@ -40,4 +40,8 @@ export interface TweetCreateEvents extends Tweet {
 	quoted_status: Tweet;
 	retweeted_status: Tweet;
 	user: User;
+}
+
+export interface TweetMedia {
+	[key: string]: any;
 }

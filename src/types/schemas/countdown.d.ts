@@ -5,13 +5,13 @@
  */
 
 export interface Countdown {
-	days?: number;
-	hours?: number;
-	minutes?: number;
-	seconds?: number;
-	milliseconds?: number;
-	formatted?: string;
-	raw?: number;
-	timestamp?: number;
+	days: number;
+	hours: number;
+	minutes: number;
+	seconds: number;
+	milliseconds: number;
+	formatted: string;
+	raw: number;
+	timestamp: number;
 	[k: string]: any;
 }
