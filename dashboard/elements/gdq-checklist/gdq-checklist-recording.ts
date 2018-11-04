@@ -1,5 +1,6 @@
 import {Stopwatch} from '../../../src/types/schemas/stopwatch';
 import {Checklist, ChecklistGroup} from '../../../src/types/schemas/checklist';
+import {IUiToast} from '../../../shared/elements/interfaces/ui-toast/ui-toast'
 
 window.addEventListener('load', () => {
 	const {customElement, property, observe} = Polymer.decorators;
@@ -72,7 +73,7 @@ window.addEventListener('load', () => {
 
 			nodecg.listenFor('obs:recordingsCycled', error => {
 				// @TODO: how do we reference the UiToast typings here?
-				const toast = this.$.toast as UiToast;
+				const toast = this.$.toast as IUiToast;
 
 				if (error) {
 					let errorString = error;

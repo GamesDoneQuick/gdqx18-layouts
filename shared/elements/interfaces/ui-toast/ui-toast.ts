@@ -1,3 +1,10 @@
+export interface IUiToast extends Element {
+	_successToastText: string;
+	_errorToastText: string;
+	showSuccessToast(text: string): void;
+	showErrorToast(text: string): void;
+}
+
 window.addEventListener('load', () => {
 	const {customElement, property} = Polymer.decorators;
 
@@ -6,7 +13,7 @@ window.addEventListener('load', () => {
 	 * @polymer
 	 */
 	@customElement('ui-toast')
-	class UiToast extends Polymer.Element {
+	class UiToast extends Polymer.Element implements IUiToast {
 		@property({type: String})
 		_successToastText: string;
 
