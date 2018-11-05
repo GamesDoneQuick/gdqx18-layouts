@@ -1,19 +1,31 @@
-(function () {
-	'use strict';
+import {NextRun} from '../../../src/types/schemas/nextRun';
+import {ScheduleItem} from '../../../src/types/Schedule';
+import {Run} from '../../../src/types/Run';
+import {IGdqScheduleRuninfo} from './gdq-schedule-runinfo';
+import {IGdqRunEditor} from '../gdq-run-editor/gdq-run-editor';
+import {CurrentRun} from '../../../src/types/schemas/currentRun';
 
-	const canSeekSchedule = nodecg.Replicant('canSeekSchedule');
-	const currentRun = nodecg.Replicant('currentRun');
-	const nextRun = nodecg.Replicant('nextRun');
-	const schedule = nodecg.Replicant('schedule');
+window.addEventListener('load', () => {
+	const {customElement, property} = Polymer.decorators;
+	const canSeekSchedule = nodecg.Replicant<boolean>('canSeekSchedule');
+	const currentRun = nodecg.Replicant<CurrentRun>('currentRun');
+	const nextRun = nodecg.Replicant<NextRun>('nextRun');
+	const schedule = nodecg.Replicant<ScheduleItem[]>('schedule');
 
 	/**
 	 * @customElement
 	 * @polymer
 	 */
+	@customElement('gdq-schedule')
 	class GdqSchedule extends Polymer.Element {
-		static get is() {
-			return 'gdq-schedule';
-		}
+		@property({type: Boolean})
+		_pendingSetCurrentRunByOrderMessageResponse: boolean;
+
+		@property({type: Boolean})
+		_pendingNextRunMessageResponse: boolean;
+
+		@property({type: Boolean})
+		_pendingPreviousRunMessageResponse: boolean;
 
 		ready() {
 			super.ready();
@@ -27,9 +39,10 @@
 					return;
 				}
 
-				this.$.typeahead.items = newVal
+				// We don't have typings for vaadin-combo-box@^2.0.0
+				(this.$.typeahead as any).items = newVal
 					.filter(item => item.type === 'run')
-					.map(speedrun => speedrun.name);
+					.map(speedrun => (speedrun as Run).name);
 				this._checkButtons();
 			});
 
@@ -38,17 +51,23 @@
 					return;
 				}
 
-				this.$.currentRun.setRun(newVal);
+				const currentRunEl = this.$.currentRun as IGdqScheduleRuninfo;
+				currentRunEl.setRun(newVal as Run);
 				this._checkButtons();
 			});
 
 			nextRun.on('change', newVal => {
+				if (!newVal) {
+					return;
+				}
+
 				// Disable "next" button if at end of schedule
+				const nextRunEl = this.$.nextRun as IGdqScheduleRuninfo;
 				if (newVal) {
-					this.$.nextRun.setRun(newVal);
+					nextRunEl.setRun(newVal as Run);
 					this.$.editNext.removeAttribute('disabled');
 				} else {
-					this.$.nextRun.setRun({});
+					nextRunEl.setRun({} as Run);
 					this.$.editNext.setAttribute('disabled', 'true');
 				}
 
@@ -59,14 +78,15 @@
 		/**
 		 * Takes the current value of the typeahead and loads that as the current speedrun.
 		 * Shows a helpful error toast if no matching speedrun could be found.
-		 * @returns {undefined}
 		 */
 		takeTypeahead() {
-			if (!this.$.typeahead.value) {
+			// We don't have typings for vaadin-combo-box@^2.0.0
+			const typeahead = this.$.typeahead as any;
+			if (!typeahead.value || !schedule.value) {
 				return;
 			}
 
-			const nameToFind = this.$.typeahead.value;
+			const nameToFind = typeahead.value;
 
 			// Find the run based on the name.
 			const matched = schedule.value.some(run => {
@@ -79,8 +99,8 @@
 					this._checkButtons();
 					nodecg.sendMessage('setCurrentRunByOrder', run.order, () => {
 						this._pendingSetCurrentRunByOrderMessageResponse = false;
-						this.$.typeahead.value = '';
-						this.$.typeahead._suggestions = [];
+						typeahead.value = '';
+						typeahead._suggestions = [];
 						this._checkButtons();
 					});
 					return true;
@@ -90,27 +110,28 @@
 			});
 
 			if (!matched) {
-				this.$.toast.show(`Could not find speedrun with name "${nameToFind}".`);
+				(this.$.toast as PaperToastElement).show(`Could not find speedrun with name "${nameToFind}".`);
 			}
 		}
 
 		fetchLatestSchedule() {
+			const toast = this.$.toast as PaperToastElement;
 			this.$.fetchLatestSchedule.setAttribute('disabled', 'true');
 			nodecg.sendMessage('updateSchedule', (err, updated) => {
 				this.$.fetchLatestSchedule.removeAttribute('disabled');
 
 				if (err) {
 					nodecg.log.warn(err.message);
-					this.$.toast.show('Error updating schedule. Check console.');
+					toast.show('Error updating schedule. Check console.');
 					return;
 				}
 
 				if (updated) {
 					nodecg.log.info('Schedule successfully updated');
-					this.$.toast.show('Successfully updated schedule.');
+					toast.show('Successfully updated schedule.');
 				} else {
 					nodecg.log.info('Schedule unchanged, not updated');
-					this.$.toast.show('Schedule unchanged, not updated.');
+					toast.show('Schedule unchanged, not updated.');
 				}
 			});
 		}
@@ -134,17 +155,27 @@
 		}
 
 		editCurrent() {
-			const editor = this.$.editor;
+			if (!currentRun.value) {
+				return;
+			}
+
+			const editor = this.$.editor as IGdqRunEditor;
+			const editDialog = this.$.editDialog as PaperDialogElement;
 			editor.title = `Edit Current Run (#${currentRun.value.order})`;
-			editor.loadRun(currentRun.value);
-			this.$.editDialog.open();
+			editor.loadRun(currentRun.value as Run);
+			editDialog.open();
 		}
 
 		editNext() {
-			const editor = this.$.editor;
+			if (!nextRun.value) {
+				return;
+			}
+
+			const editor = this.$.editor as IGdqRunEditor;
+			const editDialog = this.$.editDialog as PaperDialogElement;
 			editor.title = `Edit Next Run (#${nextRun.value.order})`;
-			editor.loadRun(nextRun.value);
-			this.$.editDialog.open();
+			editor.loadRun(nextRun.value as Run);
+			editDialog.open();
 		}
 
 		_checkButtons() {
@@ -178,6 +209,9 @@
 				// If there is any run in the schedule with an earlier order than currentRun,
 				// then there must be a prevRun.
 				const prevRunExists = schedule.value.find(run => {
+					if (run.type !== 'run' || !currentRun.value) {
+						return false;
+					}
 					return run.order < currentRun.value.order;
 				});
 				if (!prevRunExists) {
@@ -188,7 +222,7 @@
 			}
 
 			// Disable take button if there's no takeTypeahead value.
-			if (!this.$.typeahead.value) {
+			if (!(this.$.typeahead as any).value) {
 				shouldDisableTake = true;
 			}
 
@@ -211,13 +245,14 @@
 			}
 		}
 
-		_typeaheadKeyup(e) {
+		_typeaheadKeyup(e: KeyboardEvent) {
 			// Enter key
-			if (e.which === 13 && this.$.typeahead.inputValue) {
+			if (e.which === 13 && (this.$.typeahead as any).inputValue) {
 				this.takeTypeahead();
 			}
 		}
 	}
 
-	customElements.define(GdqSchedule.is, GdqSchedule);
-})();
+	// This assignment to window is unnecessary, but tsc complains that the class is unused without it.
+	(window as any).GdqSchedule = GdqSchedule;
+});
