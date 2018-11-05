@@ -18,24 +18,29 @@
 			"maxItems": 4,
 			"additionalItems": false,
 			"items": {
-				"type": ["object", "null"],
-				"additionalProperties": false,
-				"properties": {
-					"time": {
-						"$ref": "types/timeStruct.json"
-					},
-					"place": {
-						"type": "number",
-						"minimum": 0,
-						"maximum": 4,
-						"multipleOf": 1.0
-					},
-					"forfeit": {
-						"type": "boolean",
-						"default": false
+				"oneOf": [
+					{ "type": "null" },
+					{
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"time": {
+								"$ref": "types/timeStruct.json"
+							},
+							"place": {
+								"type": "number",
+								"minimum": 0,
+								"maximum": 4,
+								"multipleOf": 1.0
+							},
+							"forfeit": {
+								"type": "boolean",
+								"default": false
+							}
+						},
+						"required": ["time", "place", "forfeit"]
 					}
-				},
-				"required": ["time", "place", "forfeit"]
+				]
 			},
 			"default": [null, null, null, null]
 		}
