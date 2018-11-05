@@ -5,7 +5,7 @@
  */
 
 export interface Total {
-	raw?: number;
-	formatted?: string;
+	raw: number;
+	formatted: string;
 	[k: string]: any;
 }
