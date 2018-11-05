@@ -377,9 +377,8 @@
     "url": "git://github.com/GamesDoneQuick/gdqx18-layouts.git"
   },
   "scripts": {
-    "static": "npm run static:ts && npm run static:polymer",
+    "static": "npm run static:ts",
     "static:ts": "tslint -c tslint.json 'src/**/*.ts'",
-    "static:polymer": "polymer lint",
     "pretest": "npm run static",
     "test": "ava test",
     "prebuild": "npm run test && npm run schema-types",
