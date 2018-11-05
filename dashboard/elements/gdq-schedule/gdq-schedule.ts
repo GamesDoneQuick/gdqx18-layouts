@@ -46,16 +46,6 @@ window.addEventListener('load', () => {
 				this._checkButtons();
 			});
 
-			currentRun.on('change', newVal => {
-				if (!newVal) {
-					return;
-				}
-
-				const currentRunEl = this.$.currentRun as IGdqScheduleRuninfo;
-				currentRunEl.setRun(newVal as Run);
-				this._checkButtons();
-			});
-
 			nextRun.on('change', newVal => {
 				if (!newVal) {
 					return;
@@ -72,6 +62,19 @@ window.addEventListener('load', () => {
 				}
 
 				this._checkButtons();
+			});
+
+			// This one needs to be slightly delayed to avoid a bootup race condition.
+			Polymer.RenderStatus.beforeNextRender(this, () => {
+				currentRun.on('change', newVal => {
+					if (!newVal) {
+						return;
+					}
+
+					const currentRunEl = this.$.currentRun as IGdqScheduleRuninfo;
+					currentRunEl.setRun(newVal as Run);
+					this._checkButtons();
+				});
 			});
 		}
 
