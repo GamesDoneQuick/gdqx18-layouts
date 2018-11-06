@@ -1,51 +1,39 @@
-/* global Random */
-(function () {
+// @TODO: not sure how to make this work
+const Random = (window as any).Random as Random;
+
+window.addEventListener('load', () => {
 	const NUM_BITS = 4;
+	const {customElement, property} = Polymer.decorators;
 
 	/**
 	 * @customElement
 	 * @polymer
 	 */
+	@customElement('atom-arrow-block')
 	class AtomBinaryClock extends Polymer.Element {
-		static get is() {
-			return 'atom-binary-clock';
-		}
+		@property({type: Number, observer: AtomBinaryClock.prototype._updateHours})
+		hours: number;
 
-		static get properties() {
-			return {
-				hours: {
-					type: Number,
-					observer: '_updateHours'
-				},
-				minutes: {
-					type: Number,
-					observer: '_updateMinutes'
-				},
-				seconds: {
-					type: Number,
-					observer: '_updateSeconds'
-				},
-				milliseconds: {
-					type: Number,
-					observer: '_updateMilliseconds'
-				},
-				pulsating: {
-					type: Boolean,
-					value: false,
-					reflectToAttribute: true
-				},
-				randomized: {
-					type: Boolean,
-					value: false,
-					reflectToAttribute: true,
-					observer: '_randomizedChanged'
-				}
-			};
-		}
+		@property({type: Number, observer: AtomBinaryClock.prototype._updateMinutes})
+		minutes: number;
+
+		@property({type: Number, observer: AtomBinaryClock.prototype._updateSeconds})
+		seconds: number;
+
+		@property({type: Number, observer: AtomBinaryClock.prototype._updateSeconds})
+		milliseconds: number;
+
+		@property({type: Boolean, reflectToAttribute: true})
+		pulsating = false;
+
+		@property({type: Boolean, reflectToAttribute: true, observer: AtomBinaryClock.prototype._randomizedChanged})
+		randomized = false;
+
+		_randomFlashingInterval: number | undefined;
 
 		ready() {
 			super.ready();
-			const cells = Array.from(this.shadowRoot.querySelectorAll('.cell'));
+			const cells = Array.from(this.shadowRoot!.querySelectorAll('.cell'));
 
 			[
 				'hourOnes',
@@ -61,7 +49,7 @@
 		}
 
 		startRandomFlashing() {
-			if (window.__SCREENSHOT_TESTING__) {
+			if ((window as any).__SCREENSHOT_TESTING__) {
 				return;
 			}
 
@@ -72,17 +60,18 @@
 			this._randomFlashingInterval = setInterval(() => {
 				this.flashRandomCell();
 			}, 100);
+			return this._randomFlashingInterval;
 		}
 
 		stopRandomFlashing() {
-			const cells = Array.from(this.shadowRoot.querySelectorAll('.cell--flash'));
+			const cells = Array.from(this.shadowRoot!.querySelectorAll('.cell--flash'));
 			cells.forEach(cell => cell.classList.remove('cell--flash'));
 			clearInterval(this._randomFlashingInterval);
-			this._randomFlashingInterval = null;
+			this._randomFlashingInterval = undefined;
 		}
 
 		flashRandomCell() {
-			const availableCells = Array.from(this.shadowRoot.querySelectorAll('.cell:not(.cell--flash)'));
+			const availableCells = Array.from(this.shadowRoot!.querySelectorAll('.cell:not(.cell--flash)'));
 			if (availableCells.length === 0) {
 				return;
 			}
@@ -112,7 +101,7 @@
 			this._setColumn(numberPlace(this.milliseconds, 100), this._$millisecondHundredthsCells);
 		}
 
-		_randomizedChanged(newVal) {
+		_randomizedChanged(newVal: boolean) {
 			if (newVal) {
 				this.startRandomFlashing();
 			} else {
@@ -120,8 +109,8 @@
 			}
 		}
 
-		_setColumn(number, cells) {
-			number
+		_setColumn(num: number, cells) {
+			num
 				.toString(2)
 				.padStart(NUM_BITS, '0')
 				.split('')
@@ -132,17 +121,18 @@
 		}
 	}
 
-	customElements.define(AtomBinaryClock.is, AtomBinaryClock);
+	// This assignment to window is unnecessary, but tsc complains that the class is unused without it.
+	(window as any).AtomBinaryClock = AtomBinaryClock;
 
-	function numberPlace(number, place) {
+	function numberPlace(num: number, place: number) {
 		if (typeof place !== 'number') {
 			throw new Error('must provide a place and it must be a number');
 		}
 
 		if (place === 1) {
-			return number % 10;
+			return num % 10;
 		}
 
-		return Math.floor(number / place);
+		return Math.floor(num / place);
 	}
-})();
+});

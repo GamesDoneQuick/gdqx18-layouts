@@ -7,6 +7,7 @@
     "Chris Hanel <chrishanel@gmail.com>"
   ],
   "dependencies": {
+    "@types/random-js": "^1.0.31",
     "bluebird": "^3.4.0",
     "body-parser": "^1.18.3",
     "bower-npm-resolver": "^0.8.2",
