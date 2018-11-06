@@ -13,8 +13,7 @@
 		"**/*.ts",
 		"../../../types/browser.d.ts",
 		"../bower_components/**/*.d.ts",
-		"../bower_components/svg.js/svg.js.d.ts",
-		"../node_modules/@types/random-js/index.d.ts"
+		"../bower_components/svg.js/svg.js.d.ts"
 	],
 	"references": [{"path": "../src/types"}]
 }

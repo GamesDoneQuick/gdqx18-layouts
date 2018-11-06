@@ -1,6 +1,3 @@
-// @TODO: not sure how to make this work
-const Random = (window as any).Random as Random;
-
 window.addEventListener('load', () => {
 	const NUM_BITS = 4;
 	const {customElement, property} = Polymer.decorators;
@@ -30,6 +27,12 @@ window.addEventListener('load', () => {
 		randomized = false;
 
 		_randomFlashingInterval: number | undefined;
+		_$hourOnesCells: NodeListOf<HTMLDivElement>;
+		_$minuteTensCells: NodeListOf<HTMLDivElement>;
+		_$minuteOnesCells: NodeListOf<HTMLDivElement>;
+		_$secondTensCells: NodeListOf<HTMLDivElement>;
+		_$secondOnesCells: NodeListOf<HTMLDivElement>;
+		_$millisecondHundredthsCells: NodeListOf<HTMLDivElement>;
 
 		ready() {
 			super.ready();
@@ -44,7 +47,7 @@ window.addEventListener('load', () => {
 				'millisecondHundredths'
 			].forEach((columnName, index) => {
 				const offset = index * NUM_BITS;
-				this[`_$${columnName}Cells`] = cells.slice(offset, offset + NUM_BITS);
+				(this as any)[`_$${columnName}Cells`] = cells.slice(offset, offset + NUM_BITS);
 			});
 		}
 
@@ -57,7 +60,7 @@ window.addEventListener('load', () => {
 				return this._randomFlashingInterval;
 			}
 
-			this._randomFlashingInterval = setInterval(() => {
+			this._randomFlashingInterval = window.setInterval(() => {
 				this.flashRandomCell();
 			}, 100);
 			return this._randomFlashingInterval;
@@ -109,7 +112,7 @@ window.addEventListener('load', () => {
 			}
 		}
 
-		_setColumn(num: number, cells) {
+		_setColumn(num: number, cells: NodeListOf<HTMLDivElement>) {
 			num
 				.toString(2)
 				.padStart(NUM_BITS, '0')

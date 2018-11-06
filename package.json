@@ -19,6 +19,7 @@
     "express": "^4.16.3",
     "firebase-admin": "^6.0.0",
     "gamepad": "1.5.2",
+    "gsap": "^2.0.2",
     "json-schema-defaults": "^0.3.0",
     "livesplit-core": "^0.8.1",
     "lodash.assign": "^4.0.9",
@@ -30,6 +31,7 @@
     "object-path": "^0.11.3",
     "osc": "^2.2.1",
     "parse-ms": "^1.0.1",
+    "random-js": "^1.0.8",
     "request": "^2.67.0",
     "request-promise": "^4.2.1",
     "socket.io-client": "^2.1.1",
@@ -40,11 +42,14 @@
     "ws": "^5.2.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.5",
     "@types/body-parser": "^1.17.0",
     "@types/cheerio": "^0.22.7",
     "@types/deep-diff": "0.0.31",
     "@types/deep-equal": "^1.0.1",
     "@types/express": "^4.16.0",
+    "@types/gsap": "^1.20.0",
     "@types/lodash.assign": "^4.2.3",
     "@types/lodash.debounce": "^4.0.3",
     "@types/lodash.merge": "^4.6.3",
@@ -59,6 +64,7 @@
     "@types/ws": "^5.1.2",
     "app-root-path": "^2.1.0",
     "ava": "^1.0.0-beta.4",
+    "babel-plugin-bare-import-rewrite": "^1.0.0",
     "chai": "^4.1.2",
     "istanbul": "^0.4.3",
     "json-schema-to-typescript": "^6.0.1",
@@ -386,12 +392,13 @@
     "build": "npm run build:extension && npm run build:shared && npm run build:graphics && npm run build:dashboard",
     "build:extension": "trash dist && tsc -b src/extension",
     "build:dashboard": "tsc -b dashboard",
-    "build:graphics": "tsc -b graphics",
+    "build:graphics": "tsc -b graphics && babel graphics -d graphics",
     "build:shared": "tsc -b shared",
     "build:fast": "npm run build:extension && npm run build:shared && npm run build:graphics && npm run build:dashboard",
     "generate-fixture-screenshots": "generate-fixture-screenshots",
     "debug-fixture-screenshots": "generate-fixture-screenshots --debug",
     "mock-donations": "node ./scripts/test_donation_server",
-    "schema-types": "node scripts/schema-types.js"
+    "schema-types": "node scripts/schema-types.js",
+    "webpack": "webpack --config webpack.config.js"
   }
 }

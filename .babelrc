@@ -1,0 +1,10 @@
+{
+	"plugins": [
+		["bare-import-rewrite", {
+			"modulesDir": "/bundles/gdqx18-layouts/node_modules"
+		}]
+	],
+	"ignore": [
+		"graphics/app"
+	]
+}
