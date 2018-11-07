@@ -1,101 +1,103 @@
-/* eslint-env browser */
-/* global TimelineLite SplitText */
-(function () {
-	'use strict';
+import { TimelineLite } from "/bundles/gdqx18-layouts/node_modules/gsap/index.js";
+import { SplitText } from "./vendor/SplitText.js"; // Reference GSAP plugins to prevent them from being tree-shaken out of the build.
 
-	// A simple placeholder empty object used to create empty padding tweens.
-	const EMPTY_OBJ = {};
+window._gsapPlugins = [SplitText]; // A simple placeholder empty object used to create empty padding tweens.
 
-	// Used to remember what splits and split types have previously been used on elements.
-	const memoryMap = new WeakMap();
+var EMPTY_OBJ = {}; // Used to remember what splits and split types have previously been used on elements.
 
-	/**
-	 * Creates an animation for a "type-in" effect on an HTML element.
-	 * Uses GSAP's SplitText library.
-	 *
-	 * @param {HTMLElement} element - The element to play this animation on.
-	 * @param {Object} options - Optional options.
-	 * @param {'chars'|'chars,words'|'chars,words,lines'} options.splitType - Controls whether to split the
-	 * text into chars, chars and words, or chars, words, and lines.
-	 * @param {Number} options.typeInterval - The amount of time, in seconds,
-	 * between each individual character being shown.
-	 * @returns {TimelineLite} - A GSAP TimelineLite instance.
-	 */
-	function typeAnim(element, {splitType = 'chars,words', typeInterval = 0.03} = {}) {
-		const tl = new TimelineLite();
+var memoryMap = new WeakMap();
+/**
+ * Creates an animation for a "type-in" effect on an HTML element.
+ * Uses GSAP's SplitText library.
+ *
+ * @param element - The element to play this animation on.
+ * @param options - Optional options.
+ * @param options.splitType - Controls whether to split the
+ * text into chars, chars and words, or chars, words, and lines.
+ * @param options.typeInterval - The amount of time, in seconds,
+ * between each individual character being shown.
+ * @returns A GSAP TimelineLite instance.
+ */
 
-		const split = new SplitText(element, {
-			type: splitType,
-			charsClass: 'character',
-			linesClass: 'line'
-		});
+export function typeAnim(element, _a) {
+  var _b = _a === void 0 ? {} : _a,
+      _c = _b.splitType,
+      splitType = _c === void 0 ? 'chars,words' : _c,
+      _d = _b.typeInterval,
+      typeInterval = _d === void 0 ? 0.03 : _d;
 
-		memoryMap.set(element, {split});
+  var tl = new TimelineLite();
+  var split = new SplitText(element, {
+    type: splitType,
+    charsClass: 'character',
+    linesClass: 'line'
+  });
+  memoryMap.set(element, {
+    split: split
+  });
 
-		switch (splitType) {
-			case 'chars':
-				tl.staggerFromTo(split.chars, 0.001, {
-					visibility: 'hidden'
-				}, {
-					visibility: 'visible'
-				}, typeInterval);
+  switch (splitType) {
+    case 'chars':
+      tl.staggerFromTo(split.chars, 0.001, {
+        visibility: 'hidden'
+      }, {
+        visibility: 'visible'
+      }, typeInterval);
+      break;
 
-				break;
-			case 'chars,words':
-			case 'chars,words,lines':
-				split.words.forEach(word => {
-					tl.staggerFromTo(word.children, 0.001, {
-						visibility: 'hidden'
-					}, {
-						visibility: 'visible'
-					}, typeInterval);
+    case 'chars,words':
+    case 'chars,words,lines':
+      split.words.forEach(function (word) {
+        tl.staggerFromTo(word.children, 0.001, {
+          visibility: 'hidden'
+        }, {
+          visibility: 'visible'
+        }, typeInterval);
+        tl.to(EMPTY_OBJ, typeInterval, EMPTY_OBJ);
+      });
+      break;
 
-					tl.to(EMPTY_OBJ, typeInterval, EMPTY_OBJ);
-				});
-				break;
-			default:
-				throw new Error(`Unexpected splitType "${splitType}"`);
-		}
+    default:
+      throw new Error("Unexpected splitType \"" + splitType + "\"");
+  }
 
-		return tl;
-	}
+  return tl;
+}
+/**
+ * Creates an animation for a "type-out" or "un-type" effect on an HTML element.
+ * The element must have previously used the "typeAnim" method to define its "split" property.
+ * Uses GSAP's SplitText library.
+ *
+ * @param element - The element to play this animation on.
+ * @param typeInterval - The amount of time, in seconds, between each individual character being shown.
+ * @returns A GSAP TimelineLite instance.
+ */
 
-	/**
-	 * Creates an animation for a "type-out" or "un-type" effect on an HTML element.
-	 * The element must have previously used the "typeAnim" method to define its "split" property.
-	 * Uses GSAP's SplitText library.
-	 *
-	 * @param {HTMLElement} element - The element to play this animation on.
-	 * @param {Number} typeInterval - The amount of time, in seconds, between each individual character being shown.
-	 * @returns {TimelineLite} - A GSAP TimelineLite instance.
-	 */
-	function untypeAnim(element, typeInterval = 0.03) {
-		const tl = new TimelineLite();
-		if (!memoryMap.has(element)) {
-			return tl;
-		}
+export function untypeAnim(element, typeInterval) {
+  if (typeInterval === void 0) {
+    typeInterval = 0.03;
+  }
 
-		const split = memoryMap.get(element).split;
+  var tl = new TimelineLite();
 
-		if (split.words) {
-			split.words.forEach(word => {
-				tl.staggerTo(word.children, 0.001, {
-					visibility: 'hidden'
-				}, typeInterval);
+  if (!memoryMap.has(element)) {
+    return tl;
+  }
 
-				tl.to(EMPTY_OBJ, typeInterval, EMPTY_OBJ);
-			});
-		} else {
-			tl.staggerFrom(split.chars, 0.001, {
-				visibility: 'hidden'
-			}, typeInterval);
-		}
+  var split = memoryMap.get(element).split;
 
-		return tl;
-	}
+  if (split.words) {
+    split.words.forEach(function (word) {
+      tl.staggerTo(word.children, 0.001, {
+        visibility: 'hidden'
+      }, typeInterval);
+      tl.to(EMPTY_OBJ, typeInterval, EMPTY_OBJ);
+    });
+  } else {
+    tl.staggerFrom(split.chars, 0.001, {
+      visibility: 'hidden'
+    }, typeInterval);
+  }
 
-	window.TypeAnims = {
-		type: typeAnim,
-		untype: untypeAnim
-	};
-})();
+  return tl;
+}

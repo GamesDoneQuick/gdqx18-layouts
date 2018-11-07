@@ -1,58 +1,54 @@
-(function () {
-	'use strict';
+import {TimelineLite} from 'gsap';
 
-	const EMPTY_OBJ = {};
+export interface ICompanionElement extends HTMLElement {
+	show(): TimelineLite;
+	hide(): TimelineLite;
+}
 
+const {property} = Polymer.decorators;
+const EMPTY_OBJ = {};
+
+/**
+ * @mixinFunction
+ * @polymer
+ */
+export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
 	/**
-	 * @customElement
+	 * @mixinClass
 	 * @polymer
 	 */
-	class AtomInterrupt extends Polymer.Element {
-		static get is() {
-			return 'atom-interrupt';
-		}
+	abstract class InterruptMixin extends base {
+		@property({type: Object})
+		companionElement: ICompanionElement | null;
 
-		static get properties() {
-			return {
-				companionElement: {
-					type: Object
-				},
-				timeline: {
-					type: TimelineLite,
-					value() {
-						return new TimelineLite({autoRemoveChildren: true});
-					}
-				},
+		@property({type: Object})
+		timeline: TimelineLite = new TimelineLite({autoRemoveChildren: true});
 
-				/**
-				 * The message name to bind to.
-				 */
-				bindToMessage: {
-					type: String
-				},
+		/**
+		 * The message name to bind to.
+		 */
+		@property({type: String})
+		bindToMessage: string;
 
-				/**
-				 * How long, in seconds, to hold items for after they have finished entering.
-				 */
-				itemDisplayDuration: {
-					type: Number,
-					value: 9
-				},
+		/**
+		 * How long, in seconds, to hold items for after they have finished entering.
+		 */
+		@property({type: Number})
+		itemDisplayDuration: number = 9;
 
-				/**
-				 * If true, it means that we're currently showing an item,
-				 * and are at a point in the animation where we can show another one
-				 * without performing a full exit/enter cycle again.
-				 */
-				canExtend: {
-					type: Boolean,
-					readOnly: true,
-					notify: true,
-					observer: '_canExtendChanged',
-					value: false
-				}
-			};
-		}
+		/**
+		 * If true, it means that we're currently showing an item,
+		 * and are at a point in the animation where we can show another one
+		 * without performing a full exit/enter cycle again.
+		 */
+		@property({type: Boolean, notify: true, observer: InterruptMixin.prototype._canExtendChanged, readOnly: true})
+		canExtend: boolean = false;
+
+		// TODO: check if abstract shit works
+		abstract _createEntranceAnim(_item: any): TimelineLite;
+		abstract _createChangeAnim(_item: any): TimelineLite;
+		abstract _createExitAnim(): TimelineLite;
+		abstract _addReset(): void;
 
 		ready() {
 			super.ready();
@@ -70,25 +66,25 @@
 		 * If this.companionElement is defined, this method will run this.companionElement.hide()
 		 * before playing the entrance animation for this element.
 		 *
-		 * @param {Object} item - The item to show.
-		 * @returns {TimelineLite} - A GSAP TimelineLite instance.
+		 * @param item - The item to show.
+		 * @returns - A GSAP TimelineLite instance.
 		 */
-		playItem(item) {
+		playItem(item: any) {
 			const tl = this.timeline;
 
 			if (!item) {
 				return tl;
 			}
 
-			let companionElementsArray;
+			let companionElementsArray: ICompanionElement[];
 			if (Array.isArray(this.companionElement)) {
 				companionElementsArray = this.companionElement;
 			} else {
-				companionElementsArray = [this.companionElement];
+				companionElementsArray = [this.companionElement as ICompanionElement];
 			}
 
 			companionElementsArray.filter(companionElement => {
-				return companionElement && typeof companionElement.hide === 'function';
+				return companionElement && typeof (companionElement as any).hide === 'function';
 			});
 
 			if (this.canExtend) {
@@ -102,7 +98,7 @@
 
 				// Wait for prizes to hide, if applicable.
 				tl.call(() => {
-					this._setCanExtend(true);
+					(this as any)._setCanExtend(true);
 					if (companionElementsArray.length <= 0) {
 						return;
 					}
@@ -117,7 +113,7 @@
 					companionExitTl.call(() => {
 						tl.resume(null, false);
 					});
-				}, null, null, '+=0.03');
+				}, undefined, null, '+=0.03');
 
 				if (companionElementsArray.length > 0) {
 					tl.addPause();
@@ -125,24 +121,23 @@
 
 				tl.add(this._createEntranceAnim(item), '+=0.03');
 
-				if (window.__SCREENSHOT_TESTING__) {
+				if ((window as any).__SCREENSHOT_TESTING__) {
 					return tl;
 				}
 
 				tl.add(this._createHold());
-				tl.addLabel('exit');
+				tl.addLabel('exit', '+=0');
 
 				const exitAnim = new TimelineLite({
-					callbackScope: this,
-					onStart() {
-						this._setCanExtend(false);
+					onStart: () => {
+						(this as any)._setCanExtend(false);
 					}
 				});
 				exitAnim.add(this._createExitAnim());
 				tl.add(exitAnim);
 
 				if (companionElementsArray.length > 0) {
-					tl.addLabel('companionEnter');
+					tl.addLabel('companionEnter', '+=0');
 					companionElementsArray.forEach(companionElement => {
 						tl.add(companionElement.show(), 'companionEnter');
 					});
@@ -158,8 +153,7 @@
 		/**
 		 * Creates a dummy tween which can be used to hold something as-is
 		 * for itemDisplayDuration seconds.
-		 * @private
-		 * @returns {TimelineLite} - A GSAP animation timeline.
+		 * @returns - A GSAP animation timeline.
 		 */
 		_createHold() {
 			const tl = new TimelineLite();
@@ -167,13 +161,12 @@
 			return tl;
 		}
 
-		_canExtendChanged(newVal) {
+		_canExtendChanged(newVal: boolean) {
 			if (newVal) {
 				this.dispatchEvent(new CustomEvent('can-extend'));
 			}
 		}
 	}
 
-	customElements.define(AtomInterrupt.is, AtomInterrupt);
-	window.AtomInterrupt = AtomInterrupt;
-})();
+	return InterruptMixin;
+});

@@ -6,7 +6,6 @@
 		"forceConsistentCasingInFileNames": true,
 		"importHelpers": true,
 		"lib": [
-			"dom",
 			"es2017"
 		],
 		"listFiles": false,
@@ -25,11 +24,7 @@
 		"pretty": true,
 		"sourceMap": true,
 		"strictNullChecks": true,
-		"target": "es2017",
-		"traceResolution": false,
-		"types": [
-			"node"
-		]
+		"traceResolution": false
 	},
 	"compileOnSave": false
 }

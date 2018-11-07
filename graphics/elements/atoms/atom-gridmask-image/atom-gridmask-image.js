@@ -1,64 +1,63 @@
-var __decorate = this && this.__decorate || function (decorators, target, key, desc) {
-  var c = arguments.length,
-      r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-      d;
-  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-  return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
+import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
 import { TimelineLite, TweenLite, Sine } from "/bundles/gdqx18-layouts/node_modules/gsap/index.js";
 import * as Random from "/bundles/gdqx18-layouts/node_modules/random-js/lib/random.js";
-const SVG = window.svgjs;
-window.addEventListener('load', () => {
-  const {
-    customElement,
-    property
-  } = Polymer.decorators;
+var SVG = window.svgjs;
+window.addEventListener('load', function () {
+  var _a = Polymer.decorators,
+      customElement = _a.customElement,
+      property = _a.property;
   /**
    * @customElement
    * @polymer
    */
 
-  let AtomGridmaskImage = class AtomGridmaskImage extends Polymer.Element {
-    /**
-     * @customElement
-     * @polymer
-     */
-    constructor() {
-      super(...arguments);
-      this.strokeSize = 0;
-      this.withBackground = false;
-      this.cellSize = 21;
-      this.cellStagger = 0.002;
+  var AtomGridmaskImage =
+  /** @class */
+  function (_super) {
+    tslib_1.__extends(AtomGridmaskImage, _super);
+
+    function AtomGridmaskImage() {
+      var _this = _super !== null && _super.apply(this, arguments) || this;
+
+      _this.strokeSize = 0;
+      _this.withBackground = false;
+      _this.cellSize = 21;
+      _this.cellStagger = 0.002;
       /**
        * https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/preserveAspectRatio
        */
 
-      this.preserveAspectRatio = 'xMidYMid';
-      this.entering = false;
-      this.exiting = false;
-      this._initialized = false;
+      _this.preserveAspectRatio = 'xMidYMid';
+      _this.entering = false;
+      _this.exiting = false;
+      _this._initialized = false;
+      return _this;
     }
 
-    ready() {
-      super.ready();
-      Polymer.RenderStatus.beforeNextRender(this, () => {
-        this._initSVG();
+    AtomGridmaskImage.prototype.ready = function () {
+      var _this = this;
 
-        TweenLite.set(this.$svg.imageMaskCells, {
+      _super.prototype.ready.call(this);
+
+      Polymer.RenderStatus.beforeNextRender(this, function () {
+        _this._initSVG();
+
+        TweenLite.set(_this.$svg.imageMaskCells, {
           opacity: 0
         });
       });
-    }
+    };
 
-    enter() {
-      const tl = new TimelineLite();
-      const shuffledMaskCells = Random.shuffle(Random.engines.browserCrypto, this.$svg.imageMaskCells.slice(0));
-      let didImageEntranceOnStart;
+    AtomGridmaskImage.prototype.enter = function () {
+      var _this = this;
+
+      var tl = new TimelineLite();
+      var shuffledMaskCells = Random.shuffle(Random.engines.browserCrypto, this.$svg.imageMaskCells.slice(0));
+      var didImageEntranceOnStart;
       tl.staggerTo(shuffledMaskCells, 0.224, {
         opacity: 1,
         ease: Sine.easeInOut,
-        onStart: () => {
+        onStart: function () {
           // We only want this onStart handler to run once.
           // There is no "onStartAll" equivalent, only an "onCompleteAll".
           if (didImageEntranceOnStart) {
@@ -66,25 +65,28 @@ window.addEventListener('load', () => {
           }
 
           didImageEntranceOnStart = true;
-          this.entering = true;
+          _this.entering = true;
         }
-      }, this.cellStagger, 0, () => {
-        this.entering = false;
-        this.dispatchEvent(new CustomEvent('entered'));
+      }, this.cellStagger, 0, function () {
+        _this.entering = false;
+
+        _this.dispatchEvent(new CustomEvent('entered'));
       });
       return tl;
-    }
+    };
 
-    exit({
-      onComplete = () => {}
-    } = {}) {
-      const tl = new TimelineLite();
-      const shuffledMaskCells = Random.shuffle(Random.engines.browserCrypto, this.$svg.imageMaskCells.slice(0));
-      let didOnStart = false;
+    AtomGridmaskImage.prototype.exit = function (_a) {
+      var _this = this;
+
+      var _b = (_a === void 0 ? {} : _a).onComplete,
+          onComplete = _b === void 0 ? function () {} : _b;
+      var tl = new TimelineLite();
+      var shuffledMaskCells = Random.shuffle(Random.engines.browserCrypto, this.$svg.imageMaskCells.slice(0));
+      var didOnStart = false;
       tl.staggerTo(shuffledMaskCells, 0.224, {
         opacity: 0,
         ease: Sine.easeInOut,
-        onStart: () => {
+        onStart: function () {
           // We only want this onStart handler to run once.
           // There is no "onStartAll" equivalent, only an "onCompleteAll".
           if (didOnStart) {
@@ -92,35 +94,36 @@ window.addEventListener('load', () => {
           }
 
           didOnStart = true;
-          this.exiting = true;
+          _this.exiting = true;
         }
-      }, this.cellStagger, 0, () => {
+      }, this.cellStagger, 0, function () {
         if (typeof onComplete === 'function') {
           onComplete();
         }
 
-        this.exiting = false;
-        this.dispatchEvent(new CustomEvent('exited'));
+        _this.exiting = false;
+
+        _this.dispatchEvent(new CustomEvent('exited'));
       });
       return tl;
-    }
+    };
 
-    _initSVG() {
+    AtomGridmaskImage.prototype._initSVG = function () {
       if (this._initialized) {
         throw new Error('this element has already been initialized');
       }
 
       this._initialized = true;
       this.$svg = {};
-      const STROKE_SIZE = this.strokeSize;
-      const ELEMENT_WIDTH = this.clientWidth;
-      const ELEMENT_HEIGHT = this.clientHeight;
-      const IMAGE_MASK_CELL_SIZE = this.cellSize;
-      const IMAGE_MASK_ROWS = Math.ceil(ELEMENT_HEIGHT / IMAGE_MASK_CELL_SIZE);
-      const IMAGE_MASK_COLUMNS = Math.ceil(ELEMENT_WIDTH / IMAGE_MASK_CELL_SIZE);
-      const svgDoc = SVG(this);
-      const mask = svgDoc.mask();
-      const image = svgDoc.image(this.fallbackSrc);
+      var STROKE_SIZE = this.strokeSize;
+      var ELEMENT_WIDTH = this.clientWidth;
+      var ELEMENT_HEIGHT = this.clientHeight;
+      var IMAGE_MASK_CELL_SIZE = this.cellSize;
+      var IMAGE_MASK_ROWS = Math.ceil(ELEMENT_HEIGHT / IMAGE_MASK_CELL_SIZE);
+      var IMAGE_MASK_COLUMNS = Math.ceil(ELEMENT_WIDTH / IMAGE_MASK_CELL_SIZE);
+      var svgDoc = SVG(this);
+      var mask = svgDoc.mask();
+      var image = svgDoc.image(this.fallbackSrc);
       this.$svg.svgDoc = svgDoc;
       this.$svg.image = image;
       this.$svg.imageMaskCells = [];
@@ -129,7 +132,7 @@ window.addEventListener('load', () => {
       });
 
       if (this.withBackground) {
-        const bgRect = svgDoc.rect();
+        var bgRect = svgDoc.rect();
         bgRect.fill({
           color: 'black',
           opacity: 0.25
@@ -148,12 +151,12 @@ window.addEventListener('load', () => {
       } // Generate the exitMask rects
 
 
-      for (let r = 0; r < IMAGE_MASK_ROWS; r++) {
-        const y = r * IMAGE_MASK_CELL_SIZE;
+      for (var r = 0; r < IMAGE_MASK_ROWS; r++) {
+        var y = r * IMAGE_MASK_CELL_SIZE;
 
-        for (let c = 0; c < IMAGE_MASK_COLUMNS; c++) {
-          const x = c * IMAGE_MASK_CELL_SIZE;
-          const rect = svgDoc.rect(IMAGE_MASK_CELL_SIZE, IMAGE_MASK_CELL_SIZE);
+        for (var c = 0; c < IMAGE_MASK_COLUMNS; c++) {
+          var x = c * IMAGE_MASK_CELL_SIZE;
+          var rect = svgDoc.rect(IMAGE_MASK_CELL_SIZE, IMAGE_MASK_CELL_SIZE);
           rect.move(x, y);
           rect.fill({
             color: '#FFFFFF'
@@ -166,16 +169,16 @@ window.addEventListener('load', () => {
       image.front();
       image.maskWith(mask);
       this.resize();
-    }
+    };
 
-    resize() {
+    AtomGridmaskImage.prototype.resize = function () {
       if (!this._initialized) {
         return;
       }
 
-      const STROKE_SIZE = this.strokeSize;
-      const ELEMENT_WIDTH = this.clientWidth;
-      const ELEMENT_HEIGHT = this.clientHeight;
+      var STROKE_SIZE = this.strokeSize;
+      var ELEMENT_WIDTH = this.clientWidth;
+      var ELEMENT_HEIGHT = this.clientHeight;
       this.$svg.svgDoc.size(ELEMENT_WIDTH, ELEMENT_HEIGHT);
       this.$svg.image.size(ELEMENT_WIDTH, ELEMENT_HEIGHT);
 
@@ -192,49 +195,50 @@ window.addEventListener('load', () => {
           this.$svg.image.size(ELEMENT_WIDTH - STROKE_SIZE * 2, ELEMENT_HEIGHT - STROKE_SIZE * 2);
         }
       }
-    }
+    };
 
-  };
+    tslib_1.__decorate([property({
+      type: Number
+    })], AtomGridmaskImage.prototype, "strokeSize");
 
-  __decorate([property({
-    type: Number
-  })], AtomGridmaskImage.prototype, "strokeSize", void 0);
+    tslib_1.__decorate([property({
+      type: Boolean
+    })], AtomGridmaskImage.prototype, "withBackground");
 
-  __decorate([property({
-    type: Boolean
-  })], AtomGridmaskImage.prototype, "withBackground", void 0);
+    tslib_1.__decorate([property({
+      type: Number
+    })], AtomGridmaskImage.prototype, "cellSize");
 
-  __decorate([property({
-    type: Number
-  })], AtomGridmaskImage.prototype, "cellSize", void 0);
+    tslib_1.__decorate([property({
+      type: Number
+    })], AtomGridmaskImage.prototype, "cellStagger");
 
-  __decorate([property({
-    type: Number
-  })], AtomGridmaskImage.prototype, "cellStagger", void 0);
+    tslib_1.__decorate([property({
+      type: String
+    })], AtomGridmaskImage.prototype, "fallbackSrc");
 
-  __decorate([property({
-    type: String
-  })], AtomGridmaskImage.prototype, "fallbackSrc", void 0);
+    tslib_1.__decorate([property({
+      type: String
+    })], AtomGridmaskImage.prototype, "preserveAspectRatio");
 
-  __decorate([property({
-    type: String
-  })], AtomGridmaskImage.prototype, "preserveAspectRatio", void 0);
+    tslib_1.__decorate([property({
+      type: Boolean,
+      notify: true
+    })], AtomGridmaskImage.prototype, "entering");
 
-  __decorate([property({
-    type: Boolean,
-    notify: true
-  })], AtomGridmaskImage.prototype, "entering", void 0);
+    tslib_1.__decorate([property({
+      type: Boolean,
+      notify: true
+    })], AtomGridmaskImage.prototype, "exiting");
 
-  __decorate([property({
-    type: Boolean,
-    notify: true
-  })], AtomGridmaskImage.prototype, "exiting", void 0);
+    tslib_1.__decorate([property({
+      type: Boolean
+    })], AtomGridmaskImage.prototype, "_initialized");
 
-  __decorate([property({
-    type: Boolean
-  })], AtomGridmaskImage.prototype, "_initialized", void 0);
+    AtomGridmaskImage = tslib_1.__decorate([customElement('atom-gridmask-image')], AtomGridmaskImage);
+    return AtomGridmaskImage;
+  }(Polymer.Element); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
 
-  AtomGridmaskImage = __decorate([customElement('atom-gridmask-imag')], AtomGridmaskImage); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
 
-  window.AtomArrowBlock = AtomGridmaskImage;
+  window.AtomGridmaskImage = AtomGridmaskImage;
 });

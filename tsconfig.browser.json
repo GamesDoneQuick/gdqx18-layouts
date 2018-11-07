@@ -1,0 +1,23 @@
+{
+	"extends": "./tsconfig.base",
+	"compilerOptions": {
+		"module": "es2015",
+		"sourceMap": false,
+		"inlineSourceMap": true,
+		"declaration": false,
+		"experimentalDecorators": true,
+		"skipLibCheck": true,
+		"paths": {
+			"tslib" : ["node_modules/tslib/tslib.d.ts"]
+		}
+	},
+	"include": [
+		"dashboard/**/*.ts",
+		"graphics/**/*.ts",
+		"shared/**/*.ts",
+		"bower_components/**/*.d.ts",
+		"bower_components/svg.js/svg.js.d.ts",
+		"../../types/browser.d.ts"
+	],
+	"references": [{"path": "src/types"}]
+}

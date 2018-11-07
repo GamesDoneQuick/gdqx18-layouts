@@ -4,7 +4,14 @@
 			"modulesDir": "/bundles/gdqx18-layouts/node_modules"
 		}]
 	],
+	"only": [
+		"./dashboard",
+		"./graphics",
+		"./shared"
+	],
 	"ignore": [
-		"graphics/app"
+		"./graphics/app",
+		"./bower_components",
+		"./node_modules"
 	]
 }

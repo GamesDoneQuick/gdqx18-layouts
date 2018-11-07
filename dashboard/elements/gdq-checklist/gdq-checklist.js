@@ -1,68 +1,90 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-window.addEventListener('load', () => {
-    const { customElement, property } = Polymer.decorators;
-    const checklist = nodecg.Replicant('checklist');
-    let GdqChecklist = class GdqChecklist extends Polymer.MutableData(Polymer.Element) {
-        ready() {
-            super.ready();
-            checklist.on('change', newVal => {
-                if (!newVal) {
-                    return;
-                }
-                this.extraContent = newVal.extraContent;
-                this.techStationDuties = newVal.techStationDuties;
-                this.stageTechDuties = newVal.stageTechDuties;
-                this.audioReady = newVal.audioEngineerDuties.every(task => task.complete);
-                const cycleRecordingsTask = newVal.special.find(task => task.name === 'Cycle Recordings');
-                if (cycleRecordingsTask) {
-                    this.recordingsCycled = cycleRecordingsTask.complete;
-                }
-            });
-            this._checkboxChanged = this._checkboxChanged.bind(this);
-            this.addEventListener('change', this._checkboxChanged);
+import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
+window.addEventListener('load', function () {
+  var _a = Polymer.decorators,
+      customElement = _a.customElement,
+      property = _a.property;
+  var checklist = nodecg.Replicant('checklist');
+
+  var GdqChecklist =
+  /** @class */
+  function (_super) {
+    tslib_1.__extends(GdqChecklist, _super);
+
+    function GdqChecklist() {
+      return _super !== null && _super.apply(this, arguments) || this;
+    }
+
+    GdqChecklist.prototype.ready = function () {
+      var _this = this;
+
+      _super.prototype.ready.call(this);
+
+      checklist.on('change', function (newVal) {
+        if (!newVal) {
+          return;
         }
-        _checkboxChanged(e) {
-            const target = e.composedPath()[0];
-            const category = target.getAttribute('category');
-            const name = target.hasAttribute('name') ?
-                target.getAttribute('name') :
-                target.innerText.trim();
-            if (!category) {
-                return;
-            }
-            checklist.value[category].find(task => {
-                if (task.name === name) {
-                    task.complete = Boolean(target.checked);
-                    return true;
-                }
-                return false;
-            });
+
+        _this.extraContent = newVal.extraContent;
+        _this.techStationDuties = newVal.techStationDuties;
+        _this.stageTechDuties = newVal.stageTechDuties;
+        _this.audioReady = newVal.audioEngineerDuties.every(function (task) {
+          return task.complete;
+        });
+        var cycleRecordingsTask = newVal.special.find(function (task) {
+          return task.name === 'Cycle Recordings';
+        });
+
+        if (cycleRecordingsTask) {
+          _this.recordingsCycled = cycleRecordingsTask.complete;
         }
+      });
+      this._checkboxChanged = this._checkboxChanged.bind(this);
+      this.addEventListener('change', this._checkboxChanged);
     };
-    __decorate([
-        property({ type: Array })
-    ], GdqChecklist.prototype, "stageTechDuties", void 0);
-    __decorate([
-        property({ type: Array })
-    ], GdqChecklist.prototype, "extraContent", void 0);
-    __decorate([
-        property({ type: Array })
-    ], GdqChecklist.prototype, "techStationDuties", void 0);
-    __decorate([
-        property({ type: Boolean })
-    ], GdqChecklist.prototype, "audioReady", void 0);
-    __decorate([
-        property({ type: Boolean })
-    ], GdqChecklist.prototype, "recordingsCycled", void 0);
-    GdqChecklist = __decorate([
-        customElement('gdq-checklist')
-    ], GdqChecklist);
-    // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
-    window.GdqChecklist = GdqChecklist;
+
+    GdqChecklist.prototype._checkboxChanged = function (e) {
+      var target = e.composedPath()[0];
+      var category = target.getAttribute('category');
+      var name = target.hasAttribute('name') ? target.getAttribute('name') : target.innerText.trim();
+
+      if (!category) {
+        return;
+      }
+
+      checklist.value[category].find(function (task) {
+        if (task.name === name) {
+          task.complete = Boolean(target.checked);
+          return true;
+        }
+
+        return false;
+      });
+    };
+
+    tslib_1.__decorate([property({
+      type: Array
+    })], GdqChecklist.prototype, "stageTechDuties");
+
+    tslib_1.__decorate([property({
+      type: Array
+    })], GdqChecklist.prototype, "extraContent");
+
+    tslib_1.__decorate([property({
+      type: Array
+    })], GdqChecklist.prototype, "techStationDuties");
+
+    tslib_1.__decorate([property({
+      type: Boolean
+    })], GdqChecklist.prototype, "audioReady");
+
+    tslib_1.__decorate([property({
+      type: Boolean
+    })], GdqChecklist.prototype, "recordingsCycled");
+
+    GdqChecklist = tslib_1.__decorate([customElement('gdq-checklist')], GdqChecklist);
+    return GdqChecklist;
+  }(Polymer.MutableData(Polymer.Element)); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
+
+
+  window.GdqChecklist = GdqChecklist;
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ2RxLWNoZWNrbGlzdC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbImdkcS1jaGVja2xpc3QudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBRUEsTUFBTSxDQUFDLGdCQUFnQixDQUFDLE1BQU0sRUFBRSxHQUFHLEVBQUU7SUFDcEMsTUFBTSxFQUFDLGFBQWEsRUFBRSxRQUFRLEVBQUMsR0FBRyxPQUFPLENBQUMsVUFBVSxDQUFDO0lBQ3JELE1BQU0sU0FBUyxHQUFHLE1BQU0sQ0FBQyxTQUFTLENBQVksV0FBVyxDQUFDLENBQUM7SUFHM0QsSUFBTSxZQUFZLEdBQWxCLE1BQU0sWUFBYSxTQUFRLE9BQU8sQ0FBQyxXQUFXLENBQUMsT0FBTyxDQUFDLE9BQU8sQ0FBQztRQWdCOUQsS0FBSztZQUNKLEtBQUssQ0FBQyxLQUFLLEVBQUUsQ0FBQztZQUNkLFNBQVMsQ0FBQyxFQUFFLENBQUMsUUFBUSxFQUFFLE1BQU0sQ0FBQyxFQUFFO2dCQUMvQixJQUFJLENBQUMsTUFBTSxFQUFFO29CQUNaLE9BQU87aUJBQ1A7Z0JBQ0QsSUFBSSxDQUFDLFlBQVksR0FBRyxNQUFNLENBQUMsWUFBWSxDQUFDO2dCQUN4QyxJQUFJLENBQUMsaUJBQWlCLEdBQUcsTUFBTSxDQUFDLGlCQUFpQixDQUFDO2dCQUNsRCxJQUFJLENBQUMsZUFBZSxHQUFHLE1BQU0sQ0FBQyxlQUFlLENBQUM7Z0JBQzlDLElBQUksQ0FBQyxVQUFVLEdBQUcsTUFBTSxDQUFDLG1CQUFtQixDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUMsRUFBRSxDQUFDLElBQUksQ0FBQyxRQUFRLENBQUMsQ0FBQztnQkFFMUUsTUFBTSxtQkFBbUIsR0FBRyxNQUFNLENBQUMsT0FBTyxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsRUFBRSxDQUFDLElBQUksQ0FBQyxJQUFJLEtBQUssa0JBQWtCLENBQUMsQ0FBQztnQkFDMUYsSUFBSSxtQkFBbUIsRUFBRTtvQkFDeEIsSUFBSSxDQUFDLGdCQUFnQixHQUFHLG1CQUFtQixDQUFDLFFBQVEsQ0FBQztpQkFDckQ7WUFDRixDQUFDLENBQUMsQ0FBQztZQUVILElBQUksQ0FBQyxnQkFBZ0IsR0FBRyxJQUFJLENBQUMsZ0JBQWdCLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxDQUFDO1lBQ3pELElBQUksQ0FBQyxnQkFBZ0IsQ0FBQyxRQUFRLEVBQUUsSUFBSSxDQUFDLGdCQUFnQixDQUFDLENBQUM7UUFDeEQsQ0FBQztRQUVELGdCQUFnQixDQUFDLENBQVE7WUFDeEIsTUFBTSxNQUFNLEdBQUcsQ0FBQyxDQUFDLFlBQVksRUFBRSxDQUFDLENBQUMsQ0FBeUIsQ0FBQztZQUMzRCxNQUFNLFFBQVEsR0FBRyxNQUFNLENBQUMsWUFBWSxDQUFDLFVBQVUsQ0FBQyxDQUFDO1lBQ2pELE1BQU0sSUFBSSxHQUFHLE1BQU0sQ0FBQyxZQUFZLENBQUMsTUFBTSxDQUFDLENBQUMsQ0FBQztnQkFDekMsTUFBTSxDQUFDLFlBQVksQ0FBQyxNQUFNLENBQUMsQ0FBQyxDQUFDO2dCQUM3QixNQUFNLENBQUMsU0FBUyxDQUFDLElBQUksRUFBRSxDQUFDO1lBRXpCLElBQUksQ0FBQyxRQUFRLEVBQUU7Z0JBQ2QsT0FBTzthQUNQO1lBRUMsU0FBUyxDQUFDLEtBQWEsQ0FBQyxRQUFRLENBQW9CLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxFQUFFO2dCQUNsRSxJQUFJLElBQUksQ0FBQyxJQUFJLEtBQUssSUFBSSxFQUFFO29CQUN2QixJQUFJLENBQUMsUUFBUSxHQUFHLE9BQU8sQ0FBQyxNQUFNLENBQUMsT0FBTyxDQUFDLENBQUM7b0JBQ3hDLE9BQU8sSUFBSSxDQUFDO2lCQUNaO2dCQUVELE9BQU8sS0FBSyxDQUFDO1lBQ2QsQ0FBQyxDQUFDLENBQUM7UUFDSixDQUFDO0tBQ0QsQ0FBQTtJQXZEQTtRQURDLFFBQVEsQ0FBQyxFQUFDLElBQUksRUFBRSxLQUFLLEVBQUMsQ0FBQzt5REFDUTtJQUdoQztRQURDLFFBQVEsQ0FBQyxFQUFDLElBQUksRUFBRSxLQUFLLEVBQUMsQ0FBQztzREFDSztJQUc3QjtRQURDLFFBQVEsQ0FBQyxFQUFDLElBQUksRUFBRSxLQUFLLEVBQUMsQ0FBQzsyREFDVTtJQUdsQztRQURDLFFBQVEsQ0FBQyxFQUFDLElBQUksRUFBRSxPQUFPLEVBQUMsQ0FBQztvREFDTjtJQUdwQjtRQURDLFFBQVEsQ0FBQyxFQUFDLElBQUksRUFBRSxPQUFPLEVBQUMsQ0FBQzswREFDQTtJQWRyQixZQUFZO1FBRGpCLGFBQWEsQ0FBQyxlQUFlLENBQUM7T0FDekIsWUFBWSxDQXlEakI7SUFFRCxtR0FBbUc7SUFDbEcsTUFBYyxDQUFDLFlBQVksR0FBRyxZQUFZLENBQUM7QUFDN0MsQ0FBQyxDQUFDLENBQUMifQ==

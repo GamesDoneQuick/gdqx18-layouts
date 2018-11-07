@@ -44,6 +44,8 @@
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.5",
+    "@babel/plugin-proposal-decorators": "^7.1.2",
+    "@babel/preset-typescript": "^7.1.0",
     "@types/body-parser": "^1.17.0",
     "@types/cheerio": "^0.22.7",
     "@types/deep-diff": "0.0.31",
@@ -391,14 +393,12 @@
     "prebuild": "npm run test && npm run schema-types",
     "build": "npm run build:extension && npm run build:shared && npm run build:graphics && npm run build:dashboard",
     "build:extension": "trash dist && tsc -b src/extension",
-    "build:dashboard": "tsc -b dashboard",
-    "build:graphics": "tsc -b graphics && babel graphics -d graphics",
-    "build:shared": "tsc -b shared",
+    "build:browser": "tsc -b tsconfig.browser.json --force",
+    "babel": "babel --config-file ./.babelrc ./ -d ./",
     "build:fast": "npm run build:extension && npm run build:shared && npm run build:graphics && npm run build:dashboard",
     "generate-fixture-screenshots": "generate-fixture-screenshots",
     "debug-fixture-screenshots": "generate-fixture-screenshots --debug",
     "mock-donations": "node ./scripts/test_donation_server",
-    "schema-types": "node scripts/schema-types.js",
-    "webpack": "webpack --config webpack.config.js"
+    "schema-types": "node scripts/schema-types.js"
   }
 }

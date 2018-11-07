@@ -1,5 +1,29 @@
 "use strict";
 
+var __extends = this && this.__extends || function () {
+  var extendStatics = function (d, b) {
+    extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    };
+
+    return extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
 var __decorate = this && this.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
       r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -8,39 +32,46 @@ var __decorate = this && this.__decorate || function (decorators, target, key, d
   return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-window.addEventListener('load', () => {
-  var AtomBinaryClock_1;
-  const NUM_BITS = 4;
-  const {
-    customElement,
-    property
-  } = Polymer.decorators;
+window.addEventListener('load', function () {
+  var NUM_BITS = 4;
+  var _a = Polymer.decorators,
+      customElement = _a.customElement,
+      property = _a.property;
   /**
    * @customElement
    * @polymer
    */
 
-  let AtomBinaryClock = AtomBinaryClock_1 = class AtomBinaryClock extends Polymer.Element {
-    /**
-     * @customElement
-     * @polymer
-     */
-    constructor() {
-      super(...arguments);
-      this.pulsating = false;
-      this.randomized = false;
+  var AtomBinaryClock =
+  /** @class */
+  function (_super) {
+    __extends(AtomBinaryClock, _super);
+
+    function AtomBinaryClock() {
+      var _this = _super !== null && _super.apply(this, arguments) || this;
+
+      _this.pulsating = false;
+      _this.randomized = false;
+      return _this;
     }
 
-    ready() {
-      super.ready();
-      const cells = Array.from(this.shadowRoot.querySelectorAll('.cell'));
-      ['hourOnes', 'minuteTens', 'minuteOnes', 'secondTens', 'secondOnes', 'millisecondHundredths'].forEach((columnName, index) => {
-        const offset = index * NUM_BITS;
-        this[`_$${columnName}Cells`] = cells.slice(offset, offset + NUM_BITS);
+    AtomBinaryClock_1 = AtomBinaryClock;
+
+    AtomBinaryClock.prototype.ready = function () {
+      var _this = this;
+
+      _super.prototype.ready.call(this);
+
+      var cells = Array.from(this.shadowRoot.querySelectorAll('.cell'));
+      ['hourOnes', 'minuteTens', 'minuteOnes', 'secondTens', 'secondOnes', 'millisecondHundredths'].forEach(function (columnName, index) {
+        var offset = index * NUM_BITS;
+        _this["_$" + columnName + "Cells"] = cells.slice(offset, offset + NUM_BITS);
       });
-    }
+    };
 
-    startRandomFlashing() {
+    AtomBinaryClock.prototype.startRandomFlashing = function () {
+      var _this = this;
+
       if (window.__SCREENSHOT_TESTING__) {
         return;
       }
@@ -49,102 +80,107 @@ window.addEventListener('load', () => {
         return this._randomFlashingInterval;
       }
 
-      this._randomFlashingInterval = window.setInterval(() => {
-        this.flashRandomCell();
+      this._randomFlashingInterval = window.setInterval(function () {
+        _this.flashRandomCell();
       }, 100);
       return this._randomFlashingInterval;
-    }
+    };
 
-    stopRandomFlashing() {
-      const cells = Array.from(this.shadowRoot.querySelectorAll('.cell--flash'));
-      cells.forEach(cell => cell.classList.remove('cell--flash'));
+    AtomBinaryClock.prototype.stopRandomFlashing = function () {
+      var cells = Array.from(this.shadowRoot.querySelectorAll('.cell--flash'));
+      cells.forEach(function (cell) {
+        return cell.classList.remove('cell--flash');
+      });
       clearInterval(this._randomFlashingInterval);
       this._randomFlashingInterval = undefined;
-    }
+    };
 
-    flashRandomCell() {
-      const availableCells = Array.from(this.shadowRoot.querySelectorAll('.cell:not(.cell--flash)'));
+    AtomBinaryClock.prototype.flashRandomCell = function () {
+      var availableCells = Array.from(this.shadowRoot.querySelectorAll('.cell:not(.cell--flash)'));
 
       if (availableCells.length === 0) {
         return;
       }
 
-      const cell = Random.pick(Random.engines.browserCrypto, availableCells);
+      var cell = Random.pick(Random.engines.browserCrypto, availableCells);
       cell.classList.add('cell--flash');
-      setTimeout(() => {
+      setTimeout(function () {
         cell.classList.remove('cell--flash', 'cell--on');
       }, 450);
-    }
+    };
 
-    _updateHours() {
+    AtomBinaryClock.prototype._updateHours = function () {
       this._setColumn(numberPlace(this.hours, 1), this._$hourOnesCells);
-    }
+    };
 
-    _updateMinutes() {
+    AtomBinaryClock.prototype._updateMinutes = function () {
       this._setColumn(numberPlace(this.minutes, 10), this._$minuteTensCells);
 
       this._setColumn(numberPlace(this.minutes, 1), this._$minuteOnesCells);
-    }
+    };
 
-    _updateSeconds() {
+    AtomBinaryClock.prototype._updateSeconds = function () {
       this._setColumn(numberPlace(this.seconds, 10), this._$secondTensCells);
 
       this._setColumn(numberPlace(this.seconds, 1), this._$secondOnesCells);
-    }
+    };
 
-    _updateMilliseconds() {
+    AtomBinaryClock.prototype._updateMilliseconds = function () {
       this._setColumn(numberPlace(this.milliseconds, 100), this._$millisecondHundredthsCells);
-    }
+    };
 
-    _randomizedChanged(newVal) {
+    AtomBinaryClock.prototype._randomizedChanged = function (newVal) {
       if (newVal) {
         this.startRandomFlashing();
       } else {
         this.stopRandomFlashing();
       }
-    }
+    };
 
-    _setColumn(num, cells) {
-      num.toString(2).padStart(NUM_BITS, '0').split('').forEach((oneOrZero, index) => {
-        const on = oneOrZero === '1';
+    AtomBinaryClock.prototype._setColumn = function (num, cells) {
+      num.toString(2).padStart(NUM_BITS, '0').split('').forEach(function (oneOrZero, index) {
+        var on = oneOrZero === '1';
         cells[index].classList.toggle('cell--on', on);
       });
-    }
+    };
 
-  };
+    var AtomBinaryClock_1;
 
-  __decorate([property({
-    type: Number,
-    observer: AtomBinaryClock_1.prototype._updateHours
-  })], AtomBinaryClock.prototype, "hours", void 0);
+    __decorate([property({
+      type: Number,
+      observer: AtomBinaryClock_1.prototype._updateHours
+    })], AtomBinaryClock.prototype, "hours");
 
-  __decorate([property({
-    type: Number,
-    observer: AtomBinaryClock_1.prototype._updateMinutes
-  })], AtomBinaryClock.prototype, "minutes", void 0);
+    __decorate([property({
+      type: Number,
+      observer: AtomBinaryClock_1.prototype._updateMinutes
+    })], AtomBinaryClock.prototype, "minutes");
 
-  __decorate([property({
-    type: Number,
-    observer: AtomBinaryClock_1.prototype._updateSeconds
-  })], AtomBinaryClock.prototype, "seconds", void 0);
+    __decorate([property({
+      type: Number,
+      observer: AtomBinaryClock_1.prototype._updateSeconds
+    })], AtomBinaryClock.prototype, "seconds");
 
-  __decorate([property({
-    type: Number,
-    observer: AtomBinaryClock_1.prototype._updateSeconds
-  })], AtomBinaryClock.prototype, "milliseconds", void 0);
+    __decorate([property({
+      type: Number,
+      observer: AtomBinaryClock_1.prototype._updateSeconds
+    })], AtomBinaryClock.prototype, "milliseconds");
 
-  __decorate([property({
-    type: Boolean,
-    reflectToAttribute: true
-  })], AtomBinaryClock.prototype, "pulsating", void 0);
+    __decorate([property({
+      type: Boolean,
+      reflectToAttribute: true
+    })], AtomBinaryClock.prototype, "pulsating");
 
-  __decorate([property({
-    type: Boolean,
-    reflectToAttribute: true,
-    observer: AtomBinaryClock_1.prototype._randomizedChanged
-  })], AtomBinaryClock.prototype, "randomized", void 0);
+    __decorate([property({
+      type: Boolean,
+      reflectToAttribute: true,
+      observer: AtomBinaryClock_1.prototype._randomizedChanged
+    })], AtomBinaryClock.prototype, "randomized");
 
-  AtomBinaryClock = AtomBinaryClock_1 = __decorate([customElement('atom-arrow-block')], AtomBinaryClock); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
+    AtomBinaryClock = AtomBinaryClock_1 = __decorate([customElement('atom-arrow-block')], AtomBinaryClock);
+    return AtomBinaryClock;
+  }(Polymer.Element); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
+
 
   window.AtomBinaryClock = AtomBinaryClock;
 

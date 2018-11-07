@@ -9,7 +9,7 @@ window.addEventListener('load', () => {
 	 * @customElement
 	 * @polymer
 	 */
-	@customElement('atom-gridmask-imag')
+	@customElement('atom-gridmask-image')
 	class AtomGridmaskImage extends Polymer.Element {
 		@property({type: Number})
 		strokeSize = 0;
@@ -204,5 +204,5 @@ window.addEventListener('load', () => {
 	}
 
 	// This assignment to window is unnecessary, but tsc complains that the class is unused without it.
-	(window as any).AtomArrowBlock = AtomGridmaskImage;
+	(window as any).AtomGridmaskImage = AtomGridmaskImage;
 });

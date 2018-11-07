@@ -1,38 +1,33 @@
-var __decorate = this && this.__decorate || function (decorators, target, key, desc) {
-  var c = arguments.length,
-      r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-      d;
-  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-  return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
+import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
 import CSSReflectionMixin from "../../../mixins/CSSReflectionMixin.js";
-const SVG = window.svgjs;
-window.addEventListener('load', () => {
-  var AtomChevron_1;
-  const {
-    customElement,
-    property
-  } = Polymer.decorators;
+var SVG = window.svgjs;
+window.addEventListener('load', function () {
+  var _a = Polymer.decorators,
+      customElement = _a.customElement,
+      property = _a.property;
   /**
    * @customElement
    * @polymer
    */
 
-  let AtomChevron = AtomChevron_1 = class AtomChevron extends CSSReflectionMixin(Polymer.Element) {
-    /**
-     * @customElement
-     * @polymer
-     */
-    constructor() {
-      super(...arguments);
+  var AtomChevron =
+  /** @class */
+  function (_super) {
+    tslib_1.__extends(AtomChevron, _super);
+
+    function AtomChevron() {
+      var _this = _super !== null && _super.apply(this, arguments) || this;
       /**
        * The direction the chevron should point.
        */
 
-      this.direction = 'right';
-      this.noAutoRender = false;
+
+      _this.direction = 'right';
+      _this.noAutoRender = false;
+      return _this;
     }
+
+    AtomChevron_1 = AtomChevron;
     /**
      * Creates a new chevron shape as an SVG.js Polygon.
      * The chevron always points right.
@@ -46,20 +41,18 @@ window.addEventListener('load', () => {
      * @returns The constructed SVG.js Polygon instance.
      */
 
-
-    static createChevron({
-      width,
-      height,
-      thickness,
-      fillColor,
-      strokeSize,
-      strokeColor
-    }) {
-      const chevron = new SVG.Polygon();
-      const pointArray = AtomChevron_1.createChevronPointArray({
-        width,
-        height,
-        thickness
+    AtomChevron.createChevron = function (_a) {
+      var width = _a.width,
+          height = _a.height,
+          thickness = _a.thickness,
+          fillColor = _a.fillColor,
+          strokeSize = _a.strokeSize,
+          strokeColor = _a.strokeColor;
+      var chevron = new SVG.Polygon();
+      var pointArray = AtomChevron_1.createChevronPointArray({
+        width: width,
+        height: height,
+        thickness: thickness
       });
       chevron.plot(pointArray);
       chevron.fill(fillColor);
@@ -72,36 +65,38 @@ window.addEventListener('load', () => {
       }
 
       return chevron;
-    }
+    };
 
-    static createChevronPointArray({
-      width,
-      height,
-      thickness
-    }) {
+    AtomChevron.createChevronPointArray = function (_a) {
+      var width = _a.width,
+          height = _a.height,
+          thickness = _a.thickness;
       return new SVG.PointArray([[0, 0], [thickness, 0], [width, height / 2], [thickness, height], [0, height], [width - thickness, height / 2]]);
-    }
+    };
 
-    ready() {
-      super.ready();
+    AtomChevron.prototype.ready = function () {
+      _super.prototype.ready.call(this);
+
       this.svgDoc = SVG(this.shadowRoot);
-    }
+    };
 
-    connectedCallback() {
-      super.connectedCallback();
+    AtomChevron.prototype.connectedCallback = function () {
+      var _this = this;
+
+      _super.prototype.connectedCallback.call(this);
 
       if (!this.noAutoRender) {
         if (document.readyState === 'complete') {
           Polymer.RenderStatus.afterNextRender(this, this.render);
         } else {
-          window.addEventListener('load', () => {
-            Polymer.RenderStatus.afterNextRender(this, this.render);
+          window.addEventListener('load', function () {
+            Polymer.RenderStatus.afterNextRender(_this, _this.render);
           });
         }
       }
-    }
+    };
 
-    render(width, height) {
+    AtomChevron.prototype.render = function (width, height) {
       this.svgDoc.clear();
       /* tslint:disable:no-parameter-reassignment */
 
@@ -109,15 +104,15 @@ window.addEventListener('load', () => {
       height = typeof height === 'number' ? height : this.clientHeight;
       /* tslint:enable:no-parameter-reassignment */
 
-      const strokeSize = parseInt(this.readCSSCustomProperty('--atom-chevron-stroke-size', AtomChevron_1.DEFAULT_STROKE_SIZE), 10);
-      const thickness = parseInt(this.readCSSCustomProperty('--atom-chevron-thickness', AtomChevron_1.DEFAULT_THICKNESS), 10);
+      var strokeSize = parseInt(this.readCSSCustomProperty('--atom-chevron-stroke-size', AtomChevron_1.DEFAULT_STROKE_SIZE), 10);
+      var thickness = parseInt(this.readCSSCustomProperty('--atom-chevron-thickness', AtomChevron_1.DEFAULT_THICKNESS), 10);
       this.svgDoc.size(width, height);
-      const chevron = AtomChevron_1.createChevron({
+      var chevron = AtomChevron_1.createChevron({
         width: width - strokeSize,
         height: height - strokeSize,
-        thickness,
+        thickness: thickness,
         fillColor: this.readCSSCustomProperty('--atom-chevron-fill-color'),
-        strokeSize,
+        strokeSize: strokeSize,
         strokeColor: this.readCSSCustomProperty('--atom-chevron-stroke-color')
       });
       chevron.move(strokeSize / 2, strokeSize / 2);
@@ -130,20 +125,23 @@ window.addEventListener('load', () => {
         });
         this._lastDirection = 'left';
       }
-    }
+    };
 
-  };
+    var AtomChevron_1;
 
-  __decorate([property({
-    type: String,
-    reflectToAttribute: true
-  })], AtomChevron.prototype, "direction", void 0);
+    tslib_1.__decorate([property({
+      type: String,
+      reflectToAttribute: true
+    })], AtomChevron.prototype, "direction");
 
-  __decorate([property({
-    type: Boolean
-  })], AtomChevron.prototype, "noAutoRender", void 0);
+    tslib_1.__decorate([property({
+      type: Boolean
+    })], AtomChevron.prototype, "noAutoRender");
 
-  AtomChevron = AtomChevron_1 = __decorate([customElement('atom-chevron')], AtomChevron); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
+    AtomChevron = AtomChevron_1 = tslib_1.__decorate([customElement('atom-chevron')], AtomChevron);
+    return AtomChevron;
+  }(CSSReflectionMixin(Polymer.Element)); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
+
 
   window.AtomChevron = AtomChevron;
 });

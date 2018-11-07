@@ -9,6 +9,7 @@ export interface Tweet {
         extended_entities: TweetEntities;
     };
     in_reply_to_user_id: string;
+    user: User;
     gdqRetweetId?: string;
     gdqMedia?: TweetMedia[];
 }
