@@ -18,3 +18,4 @@ coverage
 firebase-credentials.json
 
 npm-debug.log
+.awcache
