@@ -1,29 +1,5 @@
 "use strict";
 
-var __extends = this && this.__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    };
-
-    return extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
 var __decorate = this && this.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
       r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -32,46 +8,39 @@ var __decorate = this && this.__decorate || function (decorators, target, key, d
   return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-window.addEventListener('load', function () {
-  var NUM_BITS = 4;
-  var _a = Polymer.decorators,
-      customElement = _a.customElement,
-      property = _a.property;
+window.addEventListener('load', () => {
+  var AtomBinaryClock_1;
+  const NUM_BITS = 4;
+  const {
+    customElement,
+    property
+  } = Polymer.decorators;
   /**
    * @customElement
    * @polymer
    */
 
-  var AtomBinaryClock =
-  /** @class */
-  function (_super) {
-    __extends(AtomBinaryClock, _super);
-
-    function AtomBinaryClock() {
-      var _this = _super !== null && _super.apply(this, arguments) || this;
-
-      _this.pulsating = false;
-      _this.randomized = false;
-      return _this;
+  let AtomBinaryClock = AtomBinaryClock_1 = class AtomBinaryClock extends Polymer.Element {
+    /**
+     * @customElement
+     * @polymer
+     */
+    constructor() {
+      super(...arguments);
+      this.pulsating = false;
+      this.randomized = false;
     }
 
-    AtomBinaryClock_1 = AtomBinaryClock;
-
-    AtomBinaryClock.prototype.ready = function () {
-      var _this = this;
-
-      _super.prototype.ready.call(this);
-
-      var cells = Array.from(this.shadowRoot.querySelectorAll('.cell'));
-      ['hourOnes', 'minuteTens', 'minuteOnes', 'secondTens', 'secondOnes', 'millisecondHundredths'].forEach(function (columnName, index) {
-        var offset = index * NUM_BITS;
-        _this["_$" + columnName + "Cells"] = cells.slice(offset, offset + NUM_BITS);
+    ready() {
+      super.ready();
+      const cells = Array.from(this.shadowRoot.querySelectorAll('.cell'));
+      ['hourOnes', 'minuteTens', 'minuteOnes', 'secondTens', 'secondOnes', 'millisecondHundredths'].forEach((columnName, index) => {
+        const offset = index * NUM_BITS;
+        this[`_$${columnName}Cells`] = cells.slice(offset, offset + NUM_BITS);
       });
-    };
+    }
 
-    AtomBinaryClock.prototype.startRandomFlashing = function () {
-      var _this = this;
-
+    startRandomFlashing() {
       if (window.__SCREENSHOT_TESTING__) {
         return;
       }
@@ -80,107 +49,102 @@ window.addEventListener('load', function () {
         return this._randomFlashingInterval;
       }
 
-      this._randomFlashingInterval = window.setInterval(function () {
-        _this.flashRandomCell();
+      this._randomFlashingInterval = window.setInterval(() => {
+        this.flashRandomCell();
       }, 100);
       return this._randomFlashingInterval;
-    };
+    }
 
-    AtomBinaryClock.prototype.stopRandomFlashing = function () {
-      var cells = Array.from(this.shadowRoot.querySelectorAll('.cell--flash'));
-      cells.forEach(function (cell) {
-        return cell.classList.remove('cell--flash');
-      });
+    stopRandomFlashing() {
+      const cells = Array.from(this.shadowRoot.querySelectorAll('.cell--flash'));
+      cells.forEach(cell => cell.classList.remove('cell--flash'));
       clearInterval(this._randomFlashingInterval);
       this._randomFlashingInterval = undefined;
-    };
+    }
 
-    AtomBinaryClock.prototype.flashRandomCell = function () {
-      var availableCells = Array.from(this.shadowRoot.querySelectorAll('.cell:not(.cell--flash)'));
+    flashRandomCell() {
+      const availableCells = Array.from(this.shadowRoot.querySelectorAll('.cell:not(.cell--flash)'));
 
       if (availableCells.length === 0) {
         return;
       }
 
-      var cell = Random.pick(Random.engines.browserCrypto, availableCells);
+      const cell = Random.pick(Random.engines.browserCrypto, availableCells);
       cell.classList.add('cell--flash');
-      setTimeout(function () {
+      setTimeout(() => {
         cell.classList.remove('cell--flash', 'cell--on');
       }, 450);
-    };
+    }
 
-    AtomBinaryClock.prototype._updateHours = function () {
+    _updateHours() {
       this._setColumn(numberPlace(this.hours, 1), this._$hourOnesCells);
-    };
+    }
 
-    AtomBinaryClock.prototype._updateMinutes = function () {
+    _updateMinutes() {
       this._setColumn(numberPlace(this.minutes, 10), this._$minuteTensCells);
 
       this._setColumn(numberPlace(this.minutes, 1), this._$minuteOnesCells);
-    };
+    }
 
-    AtomBinaryClock.prototype._updateSeconds = function () {
+    _updateSeconds() {
       this._setColumn(numberPlace(this.seconds, 10), this._$secondTensCells);
 
       this._setColumn(numberPlace(this.seconds, 1), this._$secondOnesCells);
-    };
+    }
 
-    AtomBinaryClock.prototype._updateMilliseconds = function () {
+    _updateMilliseconds() {
       this._setColumn(numberPlace(this.milliseconds, 100), this._$millisecondHundredthsCells);
-    };
+    }
 
-    AtomBinaryClock.prototype._randomizedChanged = function (newVal) {
+    _randomizedChanged(newVal) {
       if (newVal) {
         this.startRandomFlashing();
       } else {
         this.stopRandomFlashing();
       }
-    };
+    }
 
-    AtomBinaryClock.prototype._setColumn = function (num, cells) {
-      num.toString(2).padStart(NUM_BITS, '0').split('').forEach(function (oneOrZero, index) {
-        var on = oneOrZero === '1';
+    _setColumn(num, cells) {
+      num.toString(2).padStart(NUM_BITS, '0').split('').forEach((oneOrZero, index) => {
+        const on = oneOrZero === '1';
         cells[index].classList.toggle('cell--on', on);
       });
-    };
+    }
 
-    var AtomBinaryClock_1;
+  };
 
-    __decorate([property({
-      type: Number,
-      observer: AtomBinaryClock_1.prototype._updateHours
-    })], AtomBinaryClock.prototype, "hours");
+  __decorate([property({
+    type: Number,
+    observer: AtomBinaryClock_1.prototype._updateHours
+  })], AtomBinaryClock.prototype, "hours", void 0);
 
-    __decorate([property({
-      type: Number,
-      observer: AtomBinaryClock_1.prototype._updateMinutes
-    })], AtomBinaryClock.prototype, "minutes");
+  __decorate([property({
+    type: Number,
+    observer: AtomBinaryClock_1.prototype._updateMinutes
+  })], AtomBinaryClock.prototype, "minutes", void 0);
 
-    __decorate([property({
-      type: Number,
-      observer: AtomBinaryClock_1.prototype._updateSeconds
-    })], AtomBinaryClock.prototype, "seconds");
+  __decorate([property({
+    type: Number,
+    observer: AtomBinaryClock_1.prototype._updateSeconds
+  })], AtomBinaryClock.prototype, "seconds", void 0);
 
-    __decorate([property({
-      type: Number,
-      observer: AtomBinaryClock_1.prototype._updateSeconds
-    })], AtomBinaryClock.prototype, "milliseconds");
+  __decorate([property({
+    type: Number,
+    observer: AtomBinaryClock_1.prototype._updateSeconds
+  })], AtomBinaryClock.prototype, "milliseconds", void 0);
 
-    __decorate([property({
-      type: Boolean,
-      reflectToAttribute: true
-    })], AtomBinaryClock.prototype, "pulsating");
+  __decorate([property({
+    type: Boolean,
+    reflectToAttribute: true
+  })], AtomBinaryClock.prototype, "pulsating", void 0);
 
-    __decorate([property({
-      type: Boolean,
-      reflectToAttribute: true,
-      observer: AtomBinaryClock_1.prototype._randomizedChanged
-    })], AtomBinaryClock.prototype, "randomized");
+  __decorate([property({
+    type: Boolean,
+    reflectToAttribute: true,
+    observer: AtomBinaryClock_1.prototype._randomizedChanged
+  })], AtomBinaryClock.prototype, "randomized", void 0);
 
-    AtomBinaryClock = AtomBinaryClock_1 = __decorate([customElement('atom-arrow-block')], AtomBinaryClock);
-    return AtomBinaryClock;
-  }(Polymer.Element); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
-
+  AtomBinaryClock = AtomBinaryClock_1 = __decorate([customElement('atom-arrow-block')], AtomBinaryClock); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
 
   window.AtomBinaryClock = AtomBinaryClock;
 
@@ -196,3 +160,4 @@ window.addEventListener('load', function () {
     return Math.floor(num / place);
   }
 });
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,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

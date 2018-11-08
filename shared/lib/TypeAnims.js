@@ -3,9 +3,9 @@ import { SplitText } from "./vendor/SplitText.js"; // Reference GSAP plugins to 
 
 window._gsapPlugins = [SplitText]; // A simple placeholder empty object used to create empty padding tweens.
 
-var EMPTY_OBJ = {}; // Used to remember what splits and split types have previously been used on elements.
+const EMPTY_OBJ = {}; // Used to remember what splits and split types have previously been used on elements.
 
-var memoryMap = new WeakMap();
+const memoryMap = new WeakMap();
 /**
  * Creates an animation for a "type-in" effect on an HTML element.
  * Uses GSAP's SplitText library.
@@ -19,21 +19,18 @@ var memoryMap = new WeakMap();
  * @returns A GSAP TimelineLite instance.
  */
 
-export function typeAnim(element, _a) {
-  var _b = _a === void 0 ? {} : _a,
-      _c = _b.splitType,
-      splitType = _c === void 0 ? 'chars,words' : _c,
-      _d = _b.typeInterval,
-      typeInterval = _d === void 0 ? 0.03 : _d;
-
-  var tl = new TimelineLite();
-  var split = new SplitText(element, {
+export function typeAnim(element, {
+  splitType = 'chars,words',
+  typeInterval = 0.03
+} = {}) {
+  const tl = new TimelineLite();
+  const split = new SplitText(element, {
     type: splitType,
     charsClass: 'character',
     linesClass: 'line'
   });
   memoryMap.set(element, {
-    split: split
+    split
   });
 
   switch (splitType) {
@@ -47,7 +44,7 @@ export function typeAnim(element, _a) {
 
     case 'chars,words':
     case 'chars,words,lines':
-      split.words.forEach(function (word) {
+      split.words.forEach(word => {
         tl.staggerFromTo(word.children, 0.001, {
           visibility: 'hidden'
         }, {
@@ -58,7 +55,7 @@ export function typeAnim(element, _a) {
       break;
 
     default:
-      throw new Error("Unexpected splitType \"" + splitType + "\"");
+      throw new Error(`Unexpected splitType "${splitType}"`);
   }
 
   return tl;
@@ -73,21 +70,17 @@ export function typeAnim(element, _a) {
  * @returns A GSAP TimelineLite instance.
  */
 
-export function untypeAnim(element, typeInterval) {
-  if (typeInterval === void 0) {
-    typeInterval = 0.03;
-  }
-
-  var tl = new TimelineLite();
+export function untypeAnim(element, typeInterval = 0.03) {
+  const tl = new TimelineLite();
 
   if (!memoryMap.has(element)) {
     return tl;
   }
 
-  var split = memoryMap.get(element).split;
+  const split = memoryMap.get(element).split;
 
   if (split.words) {
-    split.words.forEach(function (word) {
+    split.words.forEach(word => {
       tl.staggerTo(word.children, 0.001, {
         visibility: 'hidden'
       }, typeInterval);
@@ -101,3 +94,4 @@ export function untypeAnim(element, typeInterval) {
 
   return tl;
 }
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,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

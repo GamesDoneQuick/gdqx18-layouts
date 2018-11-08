@@ -1,6 +1,4 @@
-import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
 /* tslint:disable:jsdoc-format */
-
 import * as Random from "/bundles/gdqx18-layouts/node_modules/random-js/lib/random.js";
 import { TweenLite, Linear } from "/bundles/gdqx18-layouts/node_modules/gsap/index.js";
 /**
@@ -24,16 +22,14 @@ import { TweenLite, Linear } from "/bundles/gdqx18-layouts/node_modules/gsap/ind
  * });
  */
 
-export function getMaybeRandomNumber(_a) {
-  var probability = _a.probability,
-      normalValue = _a.normalValue,
-      _b = _a.minValue,
-      minValue = _b === void 0 ? 0 : _b,
-      _c = _a.maxValue,
-      maxValue = _c === void 0 ? 1 : _c;
-
+export function getMaybeRandomNumber({
+  probability,
+  normalValue,
+  minValue = 0,
+  maxValue = 1
+}) {
   if (probability > 0) {
-    var randomNumber = Random.real(0, 1, true)(Random.engines.browserCrypto);
+    const randomNumber = Random.real(0, 1, true)(Random.engines.browserCrypto);
 
     if (randomNumber <= probability) {
       return Random.real(minValue, maxValue, true)(Random.engines.browserCrypto);
@@ -67,29 +63,26 @@ export function getMaybeRandomNumber(_a) {
  * });
  */
 
-export function createMaybeRandomTween(_a) {
-  var target = _a.target,
-      propName = _a.propName,
-      duration = _a.duration,
-      _b = _a.ease,
-      ease = _b === void 0 ? Linear.easeNone : _b,
-      _c = _a.delay,
-      delay = _c === void 0 ? 0 : _c,
-      start = _a.start,
-      end = _a.end,
-      onUpdate = _a.onUpdate;
-
-  var proxy = tslib_1.__assign({}, start);
-
-  var tweenProps = tslib_1.__assign({
-    ease: ease,
-    delay: delay
+export function createMaybeRandomTween({
+  target,
+  propName,
+  duration,
+  ease = Linear.easeNone,
+  delay = 0,
+  start,
+  end,
+  onUpdate
+}) {
+  const proxy = Object.assign({}, start);
+  const tweenProps = Object.assign({
+    ease,
+    delay
   }, end);
 
   if (Array.isArray(target)) {
-    tweenProps.onUpdate = function () {
-      var randomValue = getMaybeRandomNumber(proxy);
-      target.forEach(function (childTarget) {
+    tweenProps.onUpdate = () => {
+      const randomValue = getMaybeRandomNumber(proxy);
+      target.forEach(childTarget => {
         childTarget[propName] = randomValue;
       });
 
@@ -98,8 +91,8 @@ export function createMaybeRandomTween(_a) {
       }
     };
   } else {
-    tweenProps.onUpdate = function () {
-      var randomValue = getMaybeRandomNumber(proxy);
+    tweenProps.onUpdate = () => {
+      const randomValue = getMaybeRandomNumber(proxy);
       target[propName] = randomValue;
 
       if (onUpdate) {
@@ -110,3 +103,4 @@ export function createMaybeRandomTween(_a) {
 
   return TweenLite.to(proxy, duration, tweenProps);
 }
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,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

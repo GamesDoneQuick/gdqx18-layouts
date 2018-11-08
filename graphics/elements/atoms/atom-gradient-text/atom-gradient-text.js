@@ -1,29 +1,5 @@
 "use strict";
 
-var __extends = this && this.__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    };
-
-    return extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
 var __decorate = this && this.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
       r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -32,50 +8,42 @@ var __decorate = this && this.__decorate || function (decorators, target, key, d
   return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-window.addEventListener('load', function () {
-  var _a = Polymer.decorators,
-      customElement = _a.customElement,
-      property = _a.property;
+window.addEventListener('load', () => {
+  const {
+    customElement,
+    property
+  } = Polymer.decorators;
   /**
    * @customElement
    * @polymer
    */
 
-  var AtromGradientText =
-  /** @class */
-  function (_super) {
-    __extends(AtromGradientText, _super);
+  let AtromGradientText = class AtromGradientText extends Polymer.Element {
+    ready() {
+      super.ready(); // Workaround for: https://bugs.chromium.org/p/chromium/issues/detail?id=844880
 
-    function AtromGradientText() {
-      return _super !== null && _super.apply(this, arguments) || this;
-    }
-
-    AtromGradientText.prototype.ready = function () {
-      _super.prototype.ready.call(this); // Workaround for: https://bugs.chromium.org/p/chromium/issues/detail?id=844880
-
-
-      this.shadowRoot.querySelectorAll('sc-fitted-text').forEach(function (node) {
+      this.shadowRoot.querySelectorAll('sc-fitted-text').forEach(node => {
         node.$.fittedContent.style.webkitBackgroundClip = 'text';
       });
-    };
+    }
 
-    __decorate([property({
-      type: String
-    })], AtromGradientText.prototype, "text");
+  };
 
-    __decorate([property({
-      type: String,
-      reflectToAttribute: true
-    })], AtromGradientText.prototype, "align");
+  __decorate([property({
+    type: String
+  })], AtromGradientText.prototype, "text", void 0);
 
-    __decorate([property({
-      type: Number
-    })], AtromGradientText.prototype, "maxWidth");
+  __decorate([property({
+    type: String,
+    reflectToAttribute: true
+  })], AtromGradientText.prototype, "align", void 0);
 
-    AtromGradientText = __decorate([customElement('atom-gradient-text')], AtromGradientText);
-    return AtromGradientText;
-  }(Polymer.Element); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
+  __decorate([property({
+    type: Number
+  })], AtromGradientText.prototype, "maxWidth", void 0);
 
+  AtromGradientText = __decorate([customElement('atom-gradient-text')], AtromGradientText); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
 
   window.AtromGradientText = AtromGradientText;
 });
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImF0b20tZ3JhZGllbnQtdGV4dC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0FBQUEsTUFBTSxDQUFDLGdCQUFQLENBQXdCLE1BQXhCLEVBQWdDLE1BQUs7QUFDcEMsUUFBTTtBQUFDLElBQUEsYUFBRDtBQUFnQixJQUFBO0FBQWhCLE1BQTRCLE9BQU8sQ0FBQyxVQUExQztBQUVBOzs7OztBQUtBLE1BQU0saUJBQWlCLEdBQXZCLE1BQU0saUJBQU4sU0FBZ0MsT0FBTyxDQUFDLE9BQXhDLENBQStDO0FBVTlDLElBQUEsS0FBSyxHQUFBO0FBQ0osWUFBTSxLQUFOLEdBREksQ0FHSjs7QUFDQSxXQUFLLFVBQUwsQ0FBaUIsZ0JBQWpCLENBQWtDLGdCQUFsQyxFQUFvRCxPQUFwRCxDQUE0RCxJQUFJLElBQUc7QUFDakUsUUFBQSxJQUFZLENBQUMsQ0FBYixDQUFlLGFBQWYsQ0FBNkIsS0FBN0IsQ0FBbUMsb0JBQW5DLEdBQTBELE1BQTFEO0FBQ0QsT0FGRDtBQUdBOztBQWpCNkMsR0FBL0M7O0FBRUMsRUFBQSxVQUFBLENBQUEsQ0FEQyxRQUFRLENBQUM7QUFBQyxJQUFBLElBQUksRUFBRTtBQUFQLEdBQUQsQ0FDVCxDQUFBLEUsMkJBQUEsRSxNQUFBLEUsS0FBYSxDQUFiLENBQUE7O0FBR0EsRUFBQSxVQUFBLENBQUEsQ0FEQyxRQUFRLENBQUM7QUFBQyxJQUFBLElBQUksRUFBRSxNQUFQO0FBQWUsSUFBQSxrQkFBa0IsRUFBRTtBQUFuQyxHQUFELENBQ1QsQ0FBQSxFLDJCQUFBLEUsT0FBQSxFLEtBQWMsQ0FBZCxDQUFBOztBQUdBLEVBQUEsVUFBQSxDQUFBLENBREMsUUFBUSxDQUFDO0FBQUMsSUFBQSxJQUFJLEVBQUU7QUFBUCxHQUFELENBQ1QsQ0FBQSxFLDJCQUFBLEUsVUFBQSxFLEtBQWlCLENBQWpCLENBQUE7O0FBUkssRUFBQSxpQkFBaUIsR0FBQSxVQUFBLENBQUEsQ0FEdEIsYUFBYSxDQUFDLG9CQUFELENBQ1MsQ0FBQSxFQUFqQixpQkFBaUIsQ0FBakIsQ0FSOEIsQ0E0QnBDOztBQUNDLEVBQUEsTUFBYyxDQUFDLGlCQUFmLEdBQW1DLGlCQUFuQztBQUNELENBOUJEIiwic291cmNlUm9vdCI6IiJ9

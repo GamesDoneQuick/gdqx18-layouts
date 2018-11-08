@@ -1,29 +1,5 @@
 "use strict";
 
-var __extends = this && this.__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    };
-
-    return extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
 var __decorate = this && this.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
       r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -32,46 +8,40 @@ var __decorate = this && this.__decorate || function (decorators, target, key, d
   return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-window.addEventListener('load', function () {
-  var _a = Polymer.decorators,
-      customElement = _a.customElement,
-      property = _a.property;
-
-  var GdqTotalsTotal =
-  /** @class */
-  function (_super) {
-    __extends(GdqTotalsTotal, _super);
-
-    function GdqTotalsTotal() {
-      var _this = _super !== null && _super.apply(this, arguments) || this;
-
-      _this.value = '?';
-      return _this;
+window.addEventListener('load', () => {
+  const {
+    customElement,
+    property
+  } = Polymer.decorators;
+  let GdqTotalsTotal = class GdqTotalsTotal extends Polymer.Element {
+    constructor() {
+      super(...arguments);
+      this.value = '?';
     }
 
-    GdqTotalsTotal.prototype.edit = function () {
+    edit() {
       this.dispatchEvent(new CustomEvent('edit', {
         bubbles: true,
         composed: true
       }));
-    };
+    }
 
-    GdqTotalsTotal.prototype.equal = function (a, b) {
+    equal(a, b) {
       return a === b;
-    };
+    }
 
-    __decorate([property({
-      type: String
-    })], GdqTotalsTotal.prototype, "value");
+  };
 
-    __decorate([property({
-      type: String
-    })], GdqTotalsTotal.prototype, "currency");
+  __decorate([property({
+    type: String
+  })], GdqTotalsTotal.prototype, "value", void 0);
 
-    GdqTotalsTotal = __decorate([customElement('gdq-totals-total')], GdqTotalsTotal);
-    return GdqTotalsTotal;
-  }(Polymer.Element); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
+  __decorate([property({
+    type: String
+  })], GdqTotalsTotal.prototype, "currency", void 0);
 
+  GdqTotalsTotal = __decorate([customElement('gdq-totals-total')], GdqTotalsTotal); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
 
   window.GdqTotalsTotal = GdqTotalsTotal;
 });
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImdkcS10b3RhbHMtdG90YWwudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7OztBQUFBLE1BQU0sQ0FBQyxnQkFBUCxDQUF3QixNQUF4QixFQUFnQyxNQUFLO0FBQ3BDLFFBQU07QUFBQyxJQUFBLGFBQUQ7QUFBZ0IsSUFBQTtBQUFoQixNQUE0QixPQUFPLENBQUMsVUFBMUM7QUFHQSxNQUFNLGNBQWMsR0FBcEIsTUFBTSxjQUFOLFNBQTZCLE9BQU8sQ0FBQyxPQUFyQyxDQUE0QztBQUQ1QyxJQUFBLFdBQUEsR0FBQTs7QUFHQyxXQUFBLEtBQUEsR0FBUSxHQUFSO0FBWUE7O0FBUEEsSUFBQSxJQUFJLEdBQUE7QUFDSCxXQUFLLGFBQUwsQ0FBbUIsSUFBSSxXQUFKLENBQWdCLE1BQWhCLEVBQXdCO0FBQUMsUUFBQSxPQUFPLEVBQUUsSUFBVjtBQUFnQixRQUFBLFFBQVEsRUFBRTtBQUExQixPQUF4QixDQUFuQjtBQUNBOztBQUVELElBQUEsS0FBSyxDQUFDLENBQUQsRUFBUyxDQUFULEVBQWU7QUFDbkIsYUFBTyxDQUFDLEtBQUssQ0FBYjtBQUNBOztBQWIwQyxHQUE1Qzs7QUFFQyxFQUFBLFVBQUEsQ0FBQSxDQURDLFFBQVEsQ0FBQztBQUFDLElBQUEsSUFBSSxFQUFFO0FBQVAsR0FBRCxDQUNULENBQUEsRSx3QkFBQSxFLE9BQUEsRSxLQUFZLENBQVosQ0FBQTs7QUFHQSxFQUFBLFVBQUEsQ0FBQSxDQURDLFFBQVEsQ0FBQztBQUFDLElBQUEsSUFBSSxFQUFFO0FBQVAsR0FBRCxDQUNULENBQUEsRSx3QkFBQSxFLFVBQUEsRSxLQUFpQixDQUFqQixDQUFBOztBQUxLLEVBQUEsY0FBYyxHQUFBLFVBQUEsQ0FBQSxDQURuQixhQUFhLENBQUMsa0JBQUQsQ0FDTSxDQUFBLEVBQWQsY0FBYyxDQUFkLENBSjhCLENBb0JwQzs7QUFDQyxFQUFBLE1BQWMsQ0FBQyxjQUFmLEdBQWdDLGNBQWhDO0FBQ0QsQ0F0QkQiLCJzb3VyY2VSb290IjoiIn0=

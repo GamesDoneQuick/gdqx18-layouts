@@ -5,6 +5,18 @@ export interface ICompanionElement extends HTMLElement {
 	hide(): TimelineLite;
 }
 
+export interface IInterruptMixin extends Polymer.Element {
+	companionElement: ICompanionElement | null;
+	timeline: TimelineLite;
+	bindToMessage: string;
+	itemDisplayDuration: number;
+	canExtend: boolean;
+	_createEntranceAnim(_item: any): TimelineLite;
+	_createChangeAnim(_item: any): TimelineLite;
+	_createExitAnim(): TimelineLite;
+	_addReset(): void;
+}
+
 const {property} = Polymer.decorators;
 const EMPTY_OBJ = {};
 
@@ -17,7 +29,7 @@ export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
 	 * @mixinClass
 	 * @polymer
 	 */
-	abstract class InterruptMixin extends base {
+	abstract class InterruptMixin extends base implements IInterruptMixin {
 		@property({type: Object})
 		companionElement: ICompanionElement | null;
 

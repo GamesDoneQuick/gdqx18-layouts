@@ -1,9 +1,20 @@
 import {TimelineLite, Linear, Sine, Power2} from 'gsap';
-import InterruptMixin, {ICompanionElement} from '../../../mixins/InterruptMixin';
+import InterruptMixin, {ICompanionElement, IInterruptMixin} from '../../../mixins/InterruptMixin';
 import {Tweet} from '../../../../src/types/Twitter';
 import {typeAnim, untypeAnim} from '../../../../shared/lib/TypeAnims';
 import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
-const SVG = (window as any).svgjs as svgjs.Library;
+import * as DrawSVGPlugin from '../../../../shared/lib/vendor/DrawSVGPlugin';
+const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
+(window as any)._gsapPlugins = [DrawSVGPlugin]; // prevent tree shaking
+
+export interface IGdqTweet extends IInterruptMixin {
+	label: string;
+	backgroundOpacity: number;
+	$svg: {
+		svgDoc: svgjs.Doc;
+		bgRect: svgjs.Rect;
+	};
+}
 
 window.addEventListener('load', () => {
 	const {customElement, property} = Polymer.decorators;
@@ -13,7 +24,7 @@ window.addEventListener('load', () => {
 	 * @polymer
 	 */
 	@customElement('gdq-tweet')
-	class GdqTweet extends InterruptMixin(Polymer.Element) {
+	class GdqTweet extends InterruptMixin(Polymer.Element) implements IGdqTweet {
 		@property({type: String})
 		label: string = '';
 

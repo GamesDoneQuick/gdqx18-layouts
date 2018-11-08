@@ -1,29 +1,5 @@
 "use strict";
 
-var __extends = this && this.__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    };
-
-    return extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
 var __decorate = this && this.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
       r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -32,36 +8,35 @@ var __decorate = this && this.__decorate || function (decorators, target, key, d
   return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-window.addEventListener('load', function () {
-  var _a = Polymer.decorators,
-      customElement = _a.customElement,
-      property = _a.property;
+window.addEventListener('load', () => {
+  const {
+    customElement,
+    property
+  } = Polymer.decorators;
   /**
    * @customElement
    * @polymer
    */
 
-  var AtomGreeble =
-  /** @class */
-  function (_super) {
-    __extends(AtomGreeble, _super);
-
-    function AtomGreeble() {
-      var _this = _super !== null && _super.apply(this, arguments) || this;
-
-      _this.align = 'left';
-      return _this;
+  let AtomGreeble = class AtomGreeble extends Polymer.Element {
+    /**
+     * @customElement
+     * @polymer
+     */
+    constructor() {
+      super(...arguments);
+      this.align = 'left';
     }
 
-    __decorate([property({
-      type: String,
-      reflectToAttribute: true
-    })], AtomGreeble.prototype, "align");
+  };
 
-    AtomGreeble = __decorate([customElement('atom-greeble')], AtomGreeble);
-    return AtomGreeble;
-  }(Polymer.Element); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
+  __decorate([property({
+    type: String,
+    reflectToAttribute: true
+  })], AtomGreeble.prototype, "align", void 0);
 
+  AtomGreeble = __decorate([customElement('atom-greeble')], AtomGreeble); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
 
   window.AtomGreeble = AtomGreeble;
 });
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImF0b20tZ3JlZWJsZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0FBQUEsTUFBTSxDQUFDLGdCQUFQLENBQXdCLE1BQXhCLEVBQWdDLE1BQUs7QUFDcEMsUUFBTTtBQUFDLElBQUEsYUFBRDtBQUFnQixJQUFBO0FBQWhCLE1BQTRCLE9BQU8sQ0FBQyxVQUExQztBQUVBOzs7OztBQUtBLE1BQU0sV0FBVyxHQUFqQixNQUFNLFdBQU4sU0FBMEIsT0FBTyxDQUFDLE9BQWxDLENBQXlDO0FBTHpDOzs7O0FBSUEsSUFBQSxXQUFBLEdBQUE7O0FBR0MsV0FBQSxLQUFBLEdBQTBCLE1BQTFCO0FBQ0E7O0FBSHdDLEdBQXpDOztBQUVDLEVBQUEsVUFBQSxDQUFBLENBREMsUUFBUSxDQUFDO0FBQUMsSUFBQSxJQUFJLEVBQUUsTUFBUDtBQUFlLElBQUEsa0JBQWtCLEVBQUU7QUFBbkMsR0FBRCxDQUNULENBQUEsRSxxQkFBQSxFLE9BQUEsRSxLQUFpQyxDQUFqQyxDQUFBOztBQUZLLEVBQUEsV0FBVyxHQUFBLFVBQUEsQ0FBQSxDQURoQixhQUFhLENBQUMsY0FBRCxDQUNHLENBQUEsRUFBWCxXQUFXLENBQVgsQ0FSOEIsQ0FhcEM7O0FBQ0MsRUFBQSxNQUFjLENBQUMsV0FBZixHQUE2QixXQUE3QjtBQUNELENBZkQiLCJzb3VyY2VSb290IjoiIn0=

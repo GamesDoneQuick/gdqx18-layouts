@@ -1,29 +1,5 @@
 "use strict";
 
-var __extends = this && this.__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    };
-
-    return extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
 var __decorate = this && this.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
       r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -32,26 +8,18 @@ var __decorate = this && this.__decorate || function (decorators, target, key, d
   return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-window.addEventListener('load', function () {
-  var customElement = Polymer.decorators.customElement;
+window.addEventListener('load', () => {
+  const {
+    customElement
+  } = Polymer.decorators;
   /**
    * @customElement
    * @polymer
    */
 
-  var AtomGridlines =
-  /** @class */
-  function (_super) {
-    __extends(AtomGridlines, _super);
-
-    function AtomGridlines() {
-      return _super !== null && _super.apply(this, arguments) || this;
-    }
-
-    AtomGridlines = __decorate([customElement('atom-gridlines')], AtomGridlines);
-    return AtomGridlines;
-  }(Polymer.Element); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
-
+  let AtomGridlines = class AtomGridlines extends Polymer.Element {};
+  AtomGridlines = __decorate([customElement('atom-gridlines')], AtomGridlines); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
 
   window.AtomGridlines = AtomGridlines;
 });
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImF0b20tZ3JpZGxpbmVzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7QUFBQSxNQUFNLENBQUMsZ0JBQVAsQ0FBd0IsTUFBeEIsRUFBZ0MsTUFBSztBQUNwQyxRQUFNO0FBQUMsSUFBQTtBQUFELE1BQWtCLE9BQU8sQ0FBQyxVQUFoQztBQUVBOzs7OztBQUtBLE1BQU0sYUFBYSxHQUFuQixNQUFNLGFBQU4sU0FBNEIsT0FBTyxDQUFDLE9BQXBDLENBQTJDLEVBQTNDO0FBQU0sRUFBQSxhQUFhLEdBQUEsVUFBQSxDQUFBLENBRGxCLGFBQWEsQ0FBQyxnQkFBRCxDQUNLLENBQUEsRUFBYixhQUFhLENBQWIsQ0FSOEIsQ0FVcEM7O0FBQ0MsRUFBQSxNQUFjLENBQUMsYUFBZixHQUErQixhQUEvQjtBQUNELENBWkQiLCJzb3VyY2VSb290IjoiIn0=

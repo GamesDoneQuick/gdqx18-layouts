@@ -1,6 +1,25 @@
 import {TimelineLite, TweenLite, Sine} from 'gsap';
 import * as Random from 'random-js';
-const SVG = (window as any).svgjs as svgjs.Library;
+const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
+
+export interface IAtomGridmaskImage extends Polymer.Element {
+	strokeSize: number;
+	withBackground: boolean;
+	cellSize: number;
+	cellStagger: number;
+	fallbackSrc: string;
+	preserveAspectRatio: string;
+	entering: boolean;
+	exiting: boolean;
+	$svg: {
+		svgDoc: svgjs.Doc;
+		image: svgjs.Image;
+		imageMaskCells: svgjs.Rect[];
+		bgRect: svgjs.Rect;
+	};
+	enter(): TimelineLite;
+	exit(options?: {onComplete?: Function}): TimelineLite;
+}
 
 window.addEventListener('load', () => {
 	const {customElement, property} = Polymer.decorators;
@@ -10,7 +29,7 @@ window.addEventListener('load', () => {
 	 * @polymer
 	 */
 	@customElement('atom-gridmask-image')
-	class AtomGridmaskImage extends Polymer.Element {
+	class AtomGridmaskImage extends Polymer.Element implements IAtomGridmaskImage {
 		@property({type: Number})
 		strokeSize = 0;
 
@@ -84,7 +103,7 @@ window.addEventListener('load', () => {
 			return tl;
 		}
 
-		exit({onComplete = () => {}} = {}) { // tslint:disable-line:no-empty
+		exit(options: {onComplete?: Function} = {}) { // tslint:disable-line:no-empty
 			const tl = new TimelineLite();
 			const shuffledMaskCells = Random.shuffle(
 				Random.engines.browserCrypto,
@@ -105,8 +124,8 @@ window.addEventListener('load', () => {
 					this.exiting = true;
 				}
 			}, this.cellStagger, 0, () => {
-				if (typeof onComplete === 'function') {
-					onComplete();
+				if (typeof options.onComplete === 'function') {
+					options.onComplete();
 				}
 				this.exiting = false;
 				this.dispatchEvent(new CustomEvent('exited'));
