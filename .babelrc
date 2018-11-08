@@ -13,5 +13,6 @@
 		"./graphics/app",
 		"./bower_components",
 		"./node_modules"
-	]
+	],
+	"sourceMaps": "inline"
 }
