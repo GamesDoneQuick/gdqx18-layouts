@@ -7,7 +7,6 @@
     "Chris Hanel <chrishanel@gmail.com>"
   ],
   "dependencies": {
-    "@types/random-js": "^1.0.31",
     "bluebird": "^3.4.0",
     "body-parser": "^1.18.3",
     "bower-npm-resolver": "^0.8.2",
@@ -60,6 +59,7 @@
     "@types/numeral": "0.0.22",
     "@types/object-path": "^0.9.29",
     "@types/parse-ms": "^1.0.0",
+    "@types/random-js": "^1.0.31",
     "@types/request-promise": "^4.1.41",
     "@types/socket.io": "^1.4.36",
     "@types/socket.io-client": "^1.4.32",
