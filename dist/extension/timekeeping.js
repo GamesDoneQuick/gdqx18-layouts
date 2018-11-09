@@ -1,67 +1,67 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
-const LS_TIMER_PHASE = {
+exports.__esModule = true;
+var LS_TIMER_PHASE = {
     NotRunning: 0,
     Running: 1,
     Ended: 2,
     Paused: 3
 };
 // Packages
-const clone = require("clone");
-const liveSplitCore = require("livesplit-core");
-const gamepad = require("gamepad");
-const usbDetect = require("usb-detection");
+var clone = require("clone");
+var liveSplitCore = require("livesplit-core");
+var gamepad = require("gamepad");
+var usbDetect = require("usb-detection");
 // Ours
-const nodecgApiContext = require("./util/nodecg-api-context");
-const TimeUtils = require("./lib/time");
-const GDQTypes = require("../types");
-const lsRun = liveSplitCore.Run.new();
-const segment = liveSplitCore.Segment.new('finish');
+var nodecgApiContext = require("./util/nodecg-api-context");
+var TimeUtils = require("./lib/time");
+var GDQTypes = require("../types");
+var lsRun = liveSplitCore.Run["new"]();
+var segment = liveSplitCore.Segment["new"]('finish');
 lsRun.pushSegment(segment);
-const timer = liveSplitCore.Timer.new(lsRun);
-const nodecg = nodecgApiContext.get();
-const checklistComplete = nodecg.Replicant('checklistComplete');
-const currentRun = nodecg.Replicant('currentRun');
-const stopwatch = nodecg.Replicant('stopwatch');
+var timer = liveSplitCore.Timer["new"](lsRun);
+var nodecg = nodecgApiContext.get();
+var checklistComplete = nodecg.Replicant('checklistComplete');
+var currentRun = nodecg.Replicant('currentRun');
+var stopwatch = nodecg.Replicant('stopwatch');
 // Load the existing time and start the stopwatch at that.
 timer.start();
 timer.pause();
 initGameTime();
 if (stopwatch.value.state === GDQTypes.StopwatchStateEnum.RUNNING) {
-    const missedTime = Date.now() - stopwatch.value.time.timestamp;
-    const previousTime = stopwatch.value.time.raw;
-    const timeOffset = previousTime + missedTime;
+    var missedTime = Date.now() - stopwatch.value.time.timestamp;
+    var previousTime = stopwatch.value.time.raw;
+    var timeOffset = previousTime + missedTime;
     nodecg.log.info('Recovered %s seconds of lost time.', (missedTime / 1000).toFixed(2));
     start(true);
-    liveSplitCore.TimeSpan.fromSeconds(timeOffset / 1000).with((t) => timer.setGameTime(t));
+    liveSplitCore.TimeSpan.fromSeconds(timeOffset / 1000)["with"](function (t) { return timer.setGameTime(t); });
 }
 nodecg.listenFor('startTimer', start);
 nodecg.listenFor('stopTimer', pause);
 nodecg.listenFor('resetTimer', reset);
-nodecg.listenFor('completeRunner', (data) => {
+nodecg.listenFor('completeRunner', function (data) {
     if (!currentRun.value) {
         return;
     }
     if (currentRun.value.coop) {
         // Finish all runners.
-        currentRun.value.runners.forEach((runner, index) => {
+        currentRun.value.runners.forEach(function (runner, index) {
             if (!runner) {
                 return;
             }
-            completeRunner({ index, forfeit: data.forfeit });
+            completeRunner({ index: index, forfeit: data.forfeit });
         });
     }
     else {
         completeRunner(data);
     }
 });
-nodecg.listenFor('resumeRunner', (index) => {
+nodecg.listenFor('resumeRunner', function (index) {
     if (!currentRun.value) {
         return;
     }
     if (currentRun.value.coop) {
         // Resume all runners.
-        currentRun.value.runners.forEach((runner, runnerIndex) => {
+        currentRun.value.runners.forEach(function (runner, runnerIndex) {
             if (!runner) {
                 return;
             }
@@ -79,12 +79,12 @@ if (nodecg.bundleConfig.footpedal.enabled) {
     // Poll for events
     setInterval(gamepad.processEvents, 16);
     // Update the list of gamepads when usb-detection sees a change.
-    usbDetect.on('change', () => {
+    usbDetect.on('change', function () {
         nodecg.log.info('USB devices changed, checking for new gamepads.');
         gamepad.detectDevices();
     });
     // Listen for buttonId down event from our target gamepad.
-    gamepad.on('down', (_id, num) => {
+    gamepad.on('down', function (_id, num) {
         if (num !== nodecg.bundleConfig.footpedal.buttonId) {
             return;
         }
@@ -99,11 +99,11 @@ if (nodecg.bundleConfig.footpedal.enabled) {
             }
             nodecg.log.info('Footpedal hit, finishing timer.');
             // Finish all runners.
-            currentRun.value.runners.forEach((runner, index) => {
+            currentRun.value.runners.forEach(function (runner, index) {
                 if (!runner) {
                     return;
                 }
-                completeRunner({ index, forfeit: false });
+                completeRunner({ index: index, forfeit: false });
             });
         }
         else if (stopwatch.value.state === GDQTypes.StopwatchStateEnum.NOT_STARTED) {
@@ -114,7 +114,7 @@ if (nodecg.bundleConfig.footpedal.enabled) {
             nodecg.log.info('Footpedal hit, starting timer.');
             start();
             // Resume all runners.
-            currentRun.value.runners.forEach((runner, index) => {
+            currentRun.value.runners.forEach(function (runner, index) {
                 if (!runner) {
                     return;
                 }
@@ -131,7 +131,8 @@ setInterval(tick, 100); // 10 times per second.
  * Starts the timer.
  * @param force - Forces the timer to start again, even if already running.
  */
-function start(force = false) {
+function start(force) {
+    if (force === void 0) { force = false; }
     if (!force && stopwatch.value.state === GDQTypes.StopwatchStateEnum.RUNNING) {
         return;
     }
@@ -146,10 +147,10 @@ function start(force = false) {
 }
 exports.start = start;
 function initGameTime() {
-    liveSplitCore.TimeSpan.fromSeconds(0).with((t) => timer.setLoadingTimes(t));
+    liveSplitCore.TimeSpan.fromSeconds(0)["with"](function (t) { return timer.setLoadingTimes(t); });
     timer.initializeGameTime();
-    const existingSeconds = stopwatch.value.time.raw / 1000;
-    liveSplitCore.TimeSpan.fromSeconds(existingSeconds).with((t) => timer.setGameTime(t));
+    var existingSeconds = stopwatch.value.time.raw / 1000;
+    liveSplitCore.TimeSpan.fromSeconds(existingSeconds)["with"](function (t) { return timer.setGameTime(t); });
 }
 /**
  * Updates the stopwatch replicant.
@@ -158,8 +159,8 @@ function tick() {
     if (stopwatch.value.state !== GDQTypes.StopwatchStateEnum.RUNNING) {
         return;
     }
-    const time = timer.currentTime();
-    const gameTime = time.gameTime();
+    var time = timer.currentTime();
+    var gameTime = time.gameTime();
     if (!gameTime) {
         return;
     }
@@ -189,7 +190,8 @@ exports.reset = reset;
  * @param index - The runner to modify (0-3).
  * @param forfeit - Whether or not the runner forfeit.
  */
-function completeRunner({ index, forfeit }) {
+function completeRunner(_a) {
+    var index = _a.index, forfeit = _a.forfeit;
     if (!stopwatch.value.results[index]) {
         stopwatch.value.results[index] = {
             time: clone(stopwatch.value.time),
@@ -208,10 +210,10 @@ function resumeRunner(index) {
     stopwatch.value.results[index] = null;
     recalcPlaces();
     if (stopwatch.value.state === GDQTypes.StopwatchStateEnum.FINISHED) {
-        const missedMilliseconds = Date.now() - stopwatch.value.time.timestamp;
-        const newMilliseconds = stopwatch.value.time.raw + missedMilliseconds;
+        var missedMilliseconds = Date.now() - stopwatch.value.time.timestamp;
+        var newMilliseconds = stopwatch.value.time.raw + missedMilliseconds;
         stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
-        liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000).with((t) => timer.setGameTime(t));
+        liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000)["with"](function (t) { return timer.setGameTime(t); });
         start();
     }
 }
@@ -220,14 +222,15 @@ function resumeRunner(index) {
  * @param index - The result index to edit.
  * @param newTime - A hh:mm:ss (or mm:ss) formatted new time.
  */
-function editTime({ index, newTime }) {
+function editTime(_a) {
+    var index = _a.index, newTime = _a.newTime;
     if (!newTime) {
         return;
     }
     if (!currentRun.value) {
         return;
     }
-    const newMilliseconds = TimeUtils.parseTimeString(newTime);
+    var newMilliseconds = TimeUtils.parseTimeString(newTime);
     if (isNaN(newMilliseconds)) {
         return;
     }
@@ -236,7 +239,7 @@ function editTime({ index, newTime }) {
             return reset();
         }
         stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
-        liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000).with((t) => timer.setGameTime(t));
+        liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000)["with"](function (t) { return timer.setGameTime(t); });
     }
     if (typeof index === 'number' && stopwatch.value.results[index]) {
         stopwatch.value.results[index].time = TimeUtils.createTimeStruct(newMilliseconds);
@@ -247,23 +250,23 @@ function editTime({ index, newTime }) {
  * Re-calculates the podium place for all runners.
  */
 function recalcPlaces() {
-    const finishedResults = stopwatch.value.results.filter((r) => {
+    var finishedResults = stopwatch.value.results.filter(function (r) {
         if (r) {
             r.place = 0;
             return !r.forfeit;
         }
         return false;
     });
-    finishedResults.sort((a, b) => {
+    finishedResults.sort(function (a, b) {
         return a.time.raw - b.time.raw;
     });
-    finishedResults.forEach((r, index) => {
+    finishedResults.forEach(function (r, index) {
         r.place = index + 1;
     });
     // If every runner is finished, stop ticking and set timer state to "finished".
-    let allRunnersFinished = true;
+    var allRunnersFinished = true;
     if (currentRun.value) {
-        currentRun.value.runners.forEach((runner, index) => {
+        currentRun.value.runners.forEach(function (runner, index) {
             if (!runner) {
                 return;
             }
@@ -277,4 +280,3 @@ function recalcPlaces() {
         stopwatch.value.state = GDQTypes.StopwatchStateEnum.FINISHED;
     }
 }
-//# sourceMappingURL=timekeeping.js.map

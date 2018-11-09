@@ -1,50 +1,50 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 // Packages
-const firebase = require("firebase-admin");
+var firebase = require("firebase-admin");
 // Ours
-const nodecgApiContext = require("./util/nodecg-api-context");
-const TimeUtils = require("./lib/time");
-const nodecg = nodecgApiContext.get();
+var nodecgApiContext = require("./util/nodecg-api-context");
+var TimeUtils = require("./lib/time");
+var nodecg = nodecgApiContext.get();
 firebase.initializeApp({
     credential: firebase.credential.cert(nodecg.bundleConfig.firebase),
-    databaseURL: `https://${nodecg.bundleConfig.firebase.project_id}.firebaseio.com`
+    databaseURL: "https://" + nodecg.bundleConfig.firebase.project_id + ".firebaseio.com"
 });
-const database = firebase.database();
-const lowerthirdPulseTimeRemaining = nodecg.Replicant('interview:lowerthirdTimeRemaining', { defaultValue: 0, persistent: false });
-const lowerthirdShowing = nodecg.Replicant('interview:lowerthirdShowing', { defaultValue: false, persistent: false });
-const throwIncoming = nodecg.Replicant('interview:throwIncoming');
-const questionPulseTimeRemaining = nodecg.Replicant('interview:questionTimeRemaining', { defaultValue: 0, persistent: false });
-const questionShowing = nodecg.Replicant('interview:questionShowing', { defaultValue: false, persistent: false });
-const questionSortMap = nodecg.Replicant('interview:questionSortMap');
-const questionTweetsRep = nodecg.Replicant('interview:questionTweets');
-const interviewStopwatch = nodecg.Replicant('interview:stopwatch');
-const currentLayout = nodecg.Replicant('gdq:currentLayout');
-const prizePlaylist = nodecg.Replicant('interview:prizePlaylist');
-const showPrizesOnMonitor = nodecg.Replicant('interview:showPrizesOnMonitor');
-const allPrizes = nodecg.Replicant('allPrizes');
-const pulseIntervalMap = new Map();
-const pulseTimeoutMap = new Map();
-let interviewTimer;
-let _repliesListener;
-let _repliesRef;
+var database = firebase.database();
+var lowerthirdPulseTimeRemaining = nodecg.Replicant('interview:lowerthirdTimeRemaining', { defaultValue: 0, persistent: false });
+var lowerthirdShowing = nodecg.Replicant('interview:lowerthirdShowing', { defaultValue: false, persistent: false });
+var throwIncoming = nodecg.Replicant('interview:throwIncoming');
+var questionPulseTimeRemaining = nodecg.Replicant('interview:questionTimeRemaining', { defaultValue: 0, persistent: false });
+var questionShowing = nodecg.Replicant('interview:questionShowing', { defaultValue: false, persistent: false });
+var questionSortMap = nodecg.Replicant('interview:questionSortMap');
+var questionTweetsRep = nodecg.Replicant('interview:questionTweets');
+var interviewStopwatch = nodecg.Replicant('interview:stopwatch');
+var currentLayout = nodecg.Replicant('gdq:currentLayout');
+var prizePlaylist = nodecg.Replicant('interview:prizePlaylist');
+var showPrizesOnMonitor = nodecg.Replicant('interview:showPrizesOnMonitor');
+var allPrizes = nodecg.Replicant('allPrizes');
+var pulseIntervalMap = new Map();
+var pulseTimeoutMap = new Map();
+var interviewTimer;
+var _repliesListener;
+var _repliesRef;
 // Restore lost time, if applicable.
 if (interviewStopwatch.value.running) {
-    const missedTime = Date.now() - interviewStopwatch.value.time.timestamp;
-    const previousTime = interviewStopwatch.value.time.raw;
-    const offset = previousTime + missedTime;
+    var missedTime = Date.now() - interviewStopwatch.value.time.timestamp;
+    var previousTime = interviewStopwatch.value.time.raw;
+    var offset = previousTime + missedTime;
     interviewStopwatch.value.running = false;
     startInterviewTimer(offset);
 }
 nodecg.Replicant('interview:names');
-lowerthirdShowing.on('change', (newVal) => {
+lowerthirdShowing.on('change', function (newVal) {
     if (!newVal) {
         clearTimerFromMap(lowerthirdShowing, pulseIntervalMap);
         clearTimerFromMap(lowerthirdShowing, pulseTimeoutMap);
         lowerthirdPulseTimeRemaining.value = 0;
     }
 });
-currentLayout.on('change', (newVal) => {
+currentLayout.on('change', function (newVal) {
     if (newVal === 'interview') {
         throwIncoming.value = false;
         startInterviewTimer();
@@ -53,19 +53,19 @@ currentLayout.on('change', (newVal) => {
         stopInterviewTimer();
     }
 });
-nodecg.listenFor('pulseInterviewLowerthird', (duration) => {
+nodecg.listenFor('pulseInterviewLowerthird', function (duration) {
     pulse(lowerthirdShowing, lowerthirdPulseTimeRemaining, duration);
 });
-nodecg.listenFor('pulseInterviewQuestion', (id, cb) => {
-    pulse(questionShowing, questionPulseTimeRemaining, 10).then(() => {
+nodecg.listenFor('pulseInterviewQuestion', function (id, cb) {
+    pulse(questionShowing, questionPulseTimeRemaining, 10).then(function () {
         markQuestionAsDone(id, cb);
-    }).catch(error => {
+    })["catch"](function (error) {
         if (cb && !cb.handled) {
             cb(error);
         }
     });
 });
-questionShowing.on('change', (newVal) => {
+questionShowing.on('change', function (newVal) {
     // Hide the interview lowerthird when a question starts showing.
     if (newVal) {
         lowerthirdShowing.value = false;
@@ -76,31 +76,31 @@ questionShowing.on('change', (newVal) => {
         questionPulseTimeRemaining.value = 0;
     }
 });
-questionSortMap.on('change', (newVal, oldVal) => {
+questionSortMap.on('change', function (newVal, oldVal) {
     if (!oldVal || newVal[0] !== oldVal[0]) {
         questionShowing.value = false;
     }
 });
-database.ref('/active_tweet_id').on('value', activeTweetIdSnapshot => {
+database.ref('/active_tweet_id').on('value', function (activeTweetIdSnapshot) {
     if (!activeTweetIdSnapshot) {
         return;
     }
     if (_repliesRef && _repliesListener) {
         _repliesRef.off('value', _repliesListener);
     }
-    const activeTweetID = activeTweetIdSnapshot.val();
-    _repliesRef = database.ref(`/tweets/${activeTweetID}/replies`);
-    _repliesListener = _repliesRef.on('value', repliesSnapshot => {
+    var activeTweetID = activeTweetIdSnapshot.val();
+    _repliesRef = database.ref("/tweets/" + activeTweetID + "/replies");
+    _repliesListener = _repliesRef.on('value', function (repliesSnapshot) {
         if (!repliesSnapshot) {
             return;
         }
-        const rawReplies = repliesSnapshot.val();
-        const convertedAndFilteredReplies = [];
-        for (const item in rawReplies) { //tslint:disable-line:no-for-in
+        var rawReplies = repliesSnapshot.val();
+        var convertedAndFilteredReplies = [];
+        for (var item in rawReplies) { //tslint:disable-line:no-for-in
             if (!{}.hasOwnProperty.call(rawReplies, item)) {
                 continue;
             }
-            const reply = rawReplies[item];
+            var reply = rawReplies[item];
             // Exclude tweets that somehow have no approval status yet.
             if (!reply.approval_status) {
                 continue;
@@ -120,16 +120,16 @@ database.ref('/active_tweet_id').on('value', activeTweetIdSnapshot => {
     });
 });
 // Ensure that the prize playlist only contains prizes currently in the tracker.
-allPrizes.on('change', (newVal) => {
-    prizePlaylist.value = prizePlaylist.value.filter((playlistEntry) => {
-        return newVal.find((prize) => {
+allPrizes.on('change', function (newVal) {
+    prizePlaylist.value = prizePlaylist.value.filter(function (playlistEntry) {
+        return newVal.find(function (prize) {
             return prize.id === playlistEntry.id;
         });
     });
 });
 nodecg.listenFor('interview:updateQuestionSortMap', updateQuestionSortMap);
 nodecg.listenFor('interview:markQuestionAsDone', markQuestionAsDone);
-nodecg.listenFor('interview:promoteQuestionToTop', (id, cb) => {
+nodecg.listenFor('interview:promoteQuestionToTop', function (id, cb) {
     if (!_repliesRef) {
         if (cb && !cb.handled) {
             cb(new Error('_repliesRef not ready!'));
@@ -142,28 +142,31 @@ nodecg.listenFor('interview:promoteQuestionToTop', (id, cb) => {
         }
         return;
     }
-    const itemIndex = questionSortMap.value.findIndex((sortId) => sortId === id);
+    var itemIndex = questionSortMap.value.findIndex(function (sortId) { return sortId === id; });
     if (itemIndex < 0) {
         if (cb && !cb.handled) {
             cb(new Error('Tweet ID not found in sort map!'));
         }
         return;
     }
-    const newArray = questionSortMap.value.slice(0);
+    var newArray = questionSortMap.value.slice(0);
     newArray.splice(0, 0, newArray.splice(itemIndex, 1)[0]);
     questionSortMap.value = newArray;
     if (cb && !cb.handled) {
         cb();
     }
 });
-nodecg.listenFor('interview:end', () => {
+nodecg.listenFor('interview:end', function () {
     database.ref('/active_tweet_id').set(0);
 });
-nodecg.listenFor('interview:addPrizeToPlaylist', (prizeId) => {
+nodecg.listenFor('interview:addPrizeToPlaylist', function (prizeId) {
     if (typeof prizeId !== 'number' || prizeId < 0) {
         return;
     }
-    const existingIndex = prizePlaylist.value.findIndex(({ id }) => id === prizeId);
+    var existingIndex = prizePlaylist.value.findIndex(function (_a) {
+        var id = _a.id;
+        return id === prizeId;
+    });
     if (existingIndex >= 0) {
         return;
     }
@@ -172,41 +175,50 @@ nodecg.listenFor('interview:addPrizeToPlaylist', (prizeId) => {
         complete: false
     });
 });
-nodecg.listenFor('interview:removePrizeFromPlaylist', (prizeId) => {
+nodecg.listenFor('interview:removePrizeFromPlaylist', function (prizeId) {
     if (typeof prizeId !== 'number' || prizeId < 0) {
         return;
     }
-    const existingIndex = prizePlaylist.value.findIndex(({ id }) => id === prizeId);
+    var existingIndex = prizePlaylist.value.findIndex(function (_a) {
+        var id = _a.id;
+        return id === prizeId;
+    });
     if (existingIndex < 0) {
         return;
     }
     prizePlaylist.value.splice(existingIndex, 1);
 });
-nodecg.listenFor('interview:markPrizeAsDone', (prizeId) => {
+nodecg.listenFor('interview:markPrizeAsDone', function (prizeId) {
     if (typeof prizeId !== 'number' || prizeId < 0) {
         return;
     }
-    const entry = prizePlaylist.value.find(({ id }) => id === prizeId);
+    var entry = prizePlaylist.value.find(function (_a) {
+        var id = _a.id;
+        return id === prizeId;
+    });
     if (entry) {
         entry.complete = true;
     }
 });
-nodecg.listenFor('interview:markPrizeAsNotDone', (prizeId) => {
+nodecg.listenFor('interview:markPrizeAsNotDone', function (prizeId) {
     if (typeof prizeId !== 'number' || prizeId < 0) {
         return;
     }
-    const entry = prizePlaylist.value.find(({ id }) => id === prizeId);
+    var entry = prizePlaylist.value.find(function (_a) {
+        var id = _a.id;
+        return id === prizeId;
+    });
     if (entry) {
         entry.complete = false;
     }
 });
-nodecg.listenFor('interview:clearPrizePlaylist', () => {
+nodecg.listenFor('interview:clearPrizePlaylist', function () {
     prizePlaylist.value = [];
 });
-nodecg.listenFor('interview:showPrizePlaylistOnMonitor', () => {
+nodecg.listenFor('interview:showPrizePlaylistOnMonitor', function () {
     showPrizesOnMonitor.value = true;
 });
-nodecg.listenFor('interview:hidePrizePlaylistOnMonitor', () => {
+nodecg.listenFor('interview:hidePrizePlaylistOnMonitor', function () {
     showPrizesOnMonitor.value = false;
 });
 function markQuestionAsDone(id, cb) {
@@ -222,7 +234,7 @@ function markQuestionAsDone(id, cb) {
         }
         return;
     }
-    _repliesRef.child(id).transaction(tweet => {
+    _repliesRef.child(id).transaction(function (tweet) {
         if (tweet) {
             if (!tweet.approval_status) {
                 tweet.approval_status = {}; // eslint-disable-line camelcase
@@ -230,12 +242,12 @@ function markQuestionAsDone(id, cb) {
             tweet.approval_status.tier2 = 'done';
         }
         return tweet;
-    }).then(() => {
+    }).then(function () {
         updateQuestionSortMap();
         if (cb && !cb.handled) {
             cb();
         }
-    }).catch(error => {
+    })["catch"](function (error) {
         nodecg.log.error('[interview]', error);
         if (cb && !cb.handled) {
             cb(error);
@@ -247,19 +259,22 @@ function markQuestionAsDone(id, cb) {
  */
 function updateQuestionSortMap() {
     // To the sort map, add the IDs of any new question tweets.
-    questionTweetsRep.value.forEach((tweet) => {
+    questionTweetsRep.value.forEach(function (tweet) {
         if (questionSortMap.value.indexOf(tweet.id_str) < 0) {
             questionSortMap.value.push(tweet.id_str);
         }
     });
-    // From the sort map, remove the IDs of any question tweets that were deleted or have been filtered out.
-    for (let i = questionSortMap.value.length - 1; i >= 0; i--) {
-        const result = questionTweetsRep.value.findIndex((tweet) => {
+    var _loop_1 = function (i) {
+        var result = questionTweetsRep.value.findIndex(function (tweet) {
             return tweet.id_str === questionSortMap.value[i];
         });
         if (result < 0) {
             questionSortMap.value.splice(i, 1);
         }
+    };
+    // From the sort map, remove the IDs of any question tweets that were deleted or have been filtered out.
+    for (var i = questionSortMap.value.length - 1; i >= 0; i--) {
+        _loop_1(i);
     }
 }
 /**
@@ -270,7 +285,7 @@ function updateQuestionSortMap() {
  * @returns A promise which resolves when the pulse has completed.
  */
 function pulse(showingRep, pulseTimeRemainingRep, duration) {
-    return new Promise(resolve => {
+    return new Promise(function (resolve) {
         // Don't stack pulses
         if (showingRep.value) {
             return resolve();
@@ -280,7 +295,7 @@ function pulse(showingRep, pulseTimeRemainingRep, duration) {
         clearTimerFromMap(showingRep, pulseIntervalMap);
         clearTimerFromMap(showingRep, pulseTimeoutMap);
         // Count down lowerthirdPulseTimeRemaining
-        pulseIntervalMap.set(showingRep, setInterval(() => {
+        pulseIntervalMap.set(showingRep, setInterval(function () {
             if (pulseTimeRemainingRep.value > 0) {
                 pulseTimeRemainingRep.value--;
             }
@@ -290,7 +305,7 @@ function pulse(showingRep, pulseTimeRemainingRep, duration) {
             }
         }, 1000));
         // End pulse after "duration" seconds
-        pulseTimeoutMap.set(showingRep, setTimeout(() => {
+        pulseTimeoutMap.set(showingRep, setTimeout(function () {
             clearTimerFromMap(showingRep, pulseIntervalMap);
             pulseTimeRemainingRep.value = 0;
             showingRep.value = false;
@@ -301,9 +316,10 @@ function pulse(showingRep, pulseTimeRemainingRep, duration) {
 function clearTimerFromMap(key, map) {
     clearInterval(map.get(key));
     clearTimeout(map.get(key));
-    map.delete(key);
+    map["delete"](key);
 }
-function startInterviewTimer(offset = 0) {
+function startInterviewTimer(offset) {
+    if (offset === void 0) { offset = 0; }
     if (interviewStopwatch.value.running) {
         return;
     }
@@ -313,8 +329,8 @@ function startInterviewTimer(offset = 0) {
         interviewTimer.stop();
         interviewTimer.removeAllListeners();
     }
-    interviewTimer = new TimeUtils.CountupTimer({ offset });
-    interviewTimer.on('tick', elapsedTimeStruct => {
+    interviewTimer = new TimeUtils.CountupTimer({ offset: offset });
+    interviewTimer.on('tick', function (elapsedTimeStruct) {
         interviewStopwatch.value.time = elapsedTimeStruct;
     });
 }
@@ -327,4 +343,3 @@ function stopInterviewTimer() {
         interviewTimer.stop();
     }
 }
-//# sourceMappingURL=interview.js.map

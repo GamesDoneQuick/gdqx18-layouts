@@ -1,20 +1,20 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 // Packages
-const equal = require("deep-equal");
-const numeral = require("numeral");
-const request = require("request-promise");
+var equal = require("deep-equal");
+var numeral = require("numeral");
+var request = require("request-promise");
 // Ours
-const nodecgApiContext = require("./util/nodecg-api-context");
-const urls_1 = require("./urls");
-const nodecg = nodecgApiContext.get();
-const POLL_INTERVAL = 60 * 1000;
-const currentPrizesRep = nodecg.Replicant('currentPrizes', { defaultValue: [] });
-const allPrizesRep = nodecg.Replicant('allPrizes', { defaultValue: [] });
+var nodecgApiContext = require("./util/nodecg-api-context");
+var urls_1 = require("./urls");
+var nodecg = nodecgApiContext.get();
+var POLL_INTERVAL = 60 * 1000;
+var currentPrizesRep = nodecg.Replicant('currentPrizes', { defaultValue: [] });
+var allPrizesRep = nodecg.Replicant('allPrizes', { defaultValue: [] });
 // Get initial data
 update();
 // Get latest prize data every POLL_INTERVAL milliseconds
-setInterval(() => {
+setInterval(function () {
     update();
 }, POLL_INTERVAL);
 /**
@@ -22,20 +22,20 @@ setInterval(() => {
  */
 function update() {
     nodecg.sendMessage('prizes:updating');
-    const currentPromise = request({
+    var currentPromise = request({
         uri: urls_1.GDQUrls.currentPrizes,
         json: true
-    }).then(prizes => {
-        const formattedPrizes = prizes.map(formatPrize);
+    }).then(function (prizes) {
+        var formattedPrizes = prizes.map(formatPrize);
         if (!equal(formattedPrizes, currentPrizesRep.value)) {
             currentPrizesRep.value = formattedPrizes;
         }
     });
-    const allPromise = request({
+    var allPromise = request({
         uri: urls_1.GDQUrls.allPrizes,
         json: true
-    }).then(prizes => {
-        const formattedPrizes = prizes.map(formatPrize);
+    }).then(function (prizes) {
+        var formattedPrizes = prizes.map(formatPrize);
         if (!equal(formattedPrizes, allPrizesRep.value)) {
             allPrizesRep.value = formattedPrizes;
         }
@@ -43,9 +43,9 @@ function update() {
     return Promise.all([
         currentPromise,
         allPromise
-    ]).then(() => {
+    ]).then(function () {
         nodecg.sendMessage('prizes:updated');
-    }).catch(() => {
+    })["catch"](function () {
         nodecg.sendMessage('prizes:updated');
     });
 }
@@ -79,4 +79,3 @@ function formatPrize(rawPrize) {
         type: 'prize'
     };
 }
-//# sourceMappingURL=prizes.js.map

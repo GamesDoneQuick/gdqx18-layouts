@@ -6,13 +6,14 @@ export interface ICompanionElement extends HTMLElement {
 }
 
 export interface IInterruptMixin extends Polymer.Element {
-	companionElement: ICompanionElement | null;
+	companionElement: ICompanionElement | ICompanionElement[] | null;
 	timeline: TimelineLite;
 	bindToMessage: string;
 	itemDisplayDuration: number;
 	canExtend: boolean;
-	_createEntranceAnim(_item: any): TimelineLite;
-	_createChangeAnim(_item: any): TimelineLite;
+	playItem(item: any): TimelineLite;
+	_createEntranceAnim(item: any): TimelineLite;
+	_createChangeAnim(item: any): TimelineLite;
 	_createExitAnim(): TimelineLite;
 	_addReset(): void;
 }
@@ -31,7 +32,7 @@ export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
 	 */
 	abstract class InterruptMixin extends base implements IInterruptMixin {
 		@property({type: Object})
-		companionElement: ICompanionElement | null;
+		companionElement: ICompanionElement | ICompanionElement[] | null;
 
 		@property({type: Object})
 		timeline: TimelineLite = new TimelineLite({autoRemoveChildren: true});
@@ -56,9 +57,8 @@ export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
 		@property({type: Boolean, notify: true, observer: InterruptMixin.prototype._canExtendChanged, readOnly: true})
 		canExtend: boolean = false;
 
-		// TODO: check if abstract shit works
-		abstract _createEntranceAnim(_item: any): TimelineLite;
-		abstract _createChangeAnim(_item: any): TimelineLite;
+		abstract _createEntranceAnim(item: any): TimelineLite;
+		abstract _createChangeAnim(item: any): TimelineLite;
 		abstract _createExitAnim(): TimelineLite;
 		abstract _addReset(): void;
 

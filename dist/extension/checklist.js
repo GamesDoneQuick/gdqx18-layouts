@@ -1,28 +1,29 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 // Packages
-const equals = require("deep-equal");
-const clone = require("clone");
+var equals = require("deep-equal");
+var clone = require("clone");
 // Ours
-const nodecgApiContext = require("./util/nodecg-api-context");
-const obs = require("./obs");
-const nodecg = nodecgApiContext.get();
+var nodecgApiContext = require("./util/nodecg-api-context");
+var obs = require("./obs");
+var nodecg = nodecgApiContext.get();
 // To edit the list of checklist items, edit the "default" value of schemas/checklist.json.
 // Any changes you make will be fully picked up and integrated next time NodeCG starts.
-const checklist = nodecg.Replicant('checklist');
-const checklistDefault = checklist.schema.default;
+var checklist = nodecg.Replicant('checklist');
+var checklistDefault = checklist.schema["default"];
 // Reconcile differences between persisted value and what we expect the checklistDefault to be.
-const persistedValue = checklist.value;
+var persistedValue = checklist.value;
 if (!equals(persistedValue, checklistDefault)) {
-    const mergedChecklist = clone(checklistDefault);
-    for (const category in checklistDefault) { // tslint:disable-line:no-for-in
+    var mergedChecklist = clone(checklistDefault);
+    var _loop_1 = function (category) {
         if (!{}.hasOwnProperty.call(checklistDefault, category)) {
-            continue;
+            return "continue";
         }
-        const results = checklistDefault[category].map(task => {
-            const persistedGroup = persistedValue[category];
+        var results = checklistDefault[category].map(function (task) {
+            var persistedGroup = persistedValue[category];
             if (persistedGroup) {
-                const persistedTask = persistedGroup.find(({ name }) => {
+                var persistedTask = persistedGroup.find(function (_a) {
+                    var name = _a.name;
                     return name === task.name;
                 });
                 if (persistedTask) {
@@ -32,16 +33,19 @@ if (!equals(persistedValue, checklistDefault)) {
             return task;
         });
         mergedChecklist[category] = results;
+    };
+    for (var category in checklistDefault) {
+        _loop_1(category);
     }
     checklist.value = mergedChecklist;
 }
-let initializedRecordingTask = false;
-const checklistComplete = nodecg.Replicant('checklistComplete');
-checklist.on('change', (newVal, oldVal) => {
-    let foundIncompleteTask = false;
-    Object.keys(newVal).forEach(category => {
+var initializedRecordingTask = false;
+var checklistComplete = nodecg.Replicant('checklistComplete');
+checklist.on('change', function (newVal, oldVal) {
+    var foundIncompleteTask = false;
+    Object.keys(newVal).forEach(function (category) {
         if (!foundIncompleteTask) {
-            foundIncompleteTask = newVal[category].some(task => !task.complete);
+            foundIncompleteTask = newVal[category].some(function (task) { return !task.complete; });
         }
     });
     checklistComplete.value = !foundIncompleteTask;
@@ -53,7 +57,10 @@ checklist.on('change', (newVal, oldVal) => {
     if (!newVal.special) {
         return;
     }
-    const newCycleRecordingsTask = newVal.special.find(({ name }) => name === 'Cycle Recordings');
+    var newCycleRecordingsTask = newVal.special.find(function (_a) {
+        var name = _a.name;
+        return name === 'Cycle Recordings';
+    });
     if (!newCycleRecordingsTask) {
         return;
     }
@@ -63,24 +70,27 @@ checklist.on('change', (newVal, oldVal) => {
     if (!oldVal || !oldVal.special) {
         return cycleRecordings();
     }
-    const oldCycleRecordingsTask = oldVal.special.find(({ name }) => name === 'Cycle Recordings');
+    var oldCycleRecordingsTask = oldVal.special.find(function (_a) {
+        var name = _a.name;
+        return name === 'Cycle Recordings';
+    });
     if (!oldCycleRecordingsTask || !oldCycleRecordingsTask.complete) {
         return cycleRecordings();
     }
 });
 function cycleRecordings() {
     if (obs.compositingOBSConnected()) {
-        obs.cycleRecordings().catch((error) => {
+        obs.cycleRecordings()["catch"](function (error) {
             nodecg.log.error('Failed to cycle recordings:', error);
         });
     }
 }
 function reset() {
-    for (const category in checklist.value) { // tslint:disable-line:no-for-in
+    for (var category in checklist.value) { // tslint:disable-line:no-for-in
         if (!{}.hasOwnProperty.call(checklist.value, category)) {
             continue;
         }
-        checklist.value[category].forEach(task => {
+        checklist.value[category].forEach(function (task) {
             task.complete = false;
         });
     }
@@ -89,4 +99,3 @@ function reset() {
     }
 }
 exports.reset = reset;
-//# sourceMappingURL=checklist.js.map

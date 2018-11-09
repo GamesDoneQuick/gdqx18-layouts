@@ -1,9 +1,9 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 // Ours
-const nodecgApiContext = require("./util/nodecg-api-context");
-const nodecg = nodecgApiContext.get();
-const TRACKER_CREDENTIALS_CONFIGURED = nodecg.bundleConfig.tracker.username &&
+var nodecgApiContext = require("./util/nodecg-api-context");
+var nodecg = nodecgApiContext.get();
+var TRACKER_CREDENTIALS_CONFIGURED = nodecg.bundleConfig.tracker.username &&
     nodecg.bundleConfig.tracker.password &&
     !nodecg.bundleConfig.useMockData;
 if (TRACKER_CREDENTIALS_CONFIGURED) {
@@ -12,8 +12,8 @@ if (TRACKER_CREDENTIALS_CONFIGURED) {
 else {
     nodecg.log.warn('Using public, unprivileged tracker data.');
 }
-const EVENT_ID = nodecg.bundleConfig.tracker.eventId;
-const MOCK_URLS = {
+var EVENT_ID = nodecg.bundleConfig.tracker.eventId;
+var MOCK_URLS = {
     ads: 'https://www.dropbox.com/s/p04aoahtx6hv10i/ads.json?dl=1',
     allBids: 'https://www.dropbox.com/s/1gysv511t97sab5/allBids.json?dl=1',
     allPrizes: 'https://www.dropbox.com/s/rpiisscgszwhguc/allPrizes.json?dl=1',
@@ -24,23 +24,22 @@ const MOCK_URLS = {
     runs: 'https://www.dropbox.com/s/7njvyl80m34b46s/schedule.json?dl=1',
     total: 'https://www.dropbox.com/s/h7qivvpn4izmbi5/total.json?dl=1'
 };
-const PRODUCTION_URLS = {
-    ads: trackerUrlFactory(`/gdq/ads/${EVENT_ID}/`),
-    allBids: trackerUrlFactory(`/search/?type=allbids&event=${EVENT_ID}`),
-    allPrizes: trackerUrlFactory(`/search/?type=prize&event=${EVENT_ID}`),
-    currentBids: trackerUrlFactory(`/search/?type=allbids&feed=current&event=${EVENT_ID}`),
-    currentPrizes: trackerUrlFactory(`/search/?type=prize&feed=current&event=${EVENT_ID}`),
-    interviews: trackerUrlFactory(`/gdq/interviews/${EVENT_ID}/`),
-    runners: trackerUrlFactory(`/search?type=runner&event=${EVENT_ID}`),
-    runs: trackerUrlFactory(`/search?type=run&event=${EVENT_ID}`),
-    total: trackerUrlFactory(`/${EVENT_ID}?json`)
+var PRODUCTION_URLS = {
+    ads: trackerUrlFactory("/gdq/ads/" + EVENT_ID + "/"),
+    allBids: trackerUrlFactory("/search/?type=allbids&event=" + EVENT_ID),
+    allPrizes: trackerUrlFactory("/search/?type=prize&event=" + EVENT_ID),
+    currentBids: trackerUrlFactory("/search/?type=allbids&feed=current&event=" + EVENT_ID),
+    currentPrizes: trackerUrlFactory("/search/?type=prize&feed=current&event=" + EVENT_ID),
+    interviews: trackerUrlFactory("/gdq/interviews/" + EVENT_ID + "/"),
+    runners: trackerUrlFactory("/search?type=runner&event=" + EVENT_ID),
+    runs: trackerUrlFactory("/search?type=run&event=" + EVENT_ID),
+    total: trackerUrlFactory("/" + EVENT_ID + "?json")
 };
 function trackerUrlFactory(route) {
-    return `https://${TRACKER_CREDENTIALS_CONFIGURED ? 'private.' : ''}gamesdonequick.com/tracker${route}`;
+    return "https://" + (TRACKER_CREDENTIALS_CONFIGURED ? 'private.' : '') + "gamesdonequick.com/tracker" + route;
 }
-let urlsDict = PRODUCTION_URLS;
+var urlsDict = PRODUCTION_URLS;
 if (nodecg.bundleConfig.useMockData) {
     urlsDict = MOCK_URLS;
 }
 exports.GDQUrls = urlsDict; // tslint:disable-line:variable-name
-//# sourceMappingURL=urls.js.map

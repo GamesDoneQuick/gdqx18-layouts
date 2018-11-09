@@ -13,12 +13,12 @@
 		}
 	},
 	"include": [
-		"dashboard/**/*.ts",
-		"graphics/**/*.ts",
-		"shared/**/*.ts",
+		"../../types/browser.d.ts",
 		"bower_components/**/*.d.ts",
 		"bower_components/svg.js/svg.js.d.ts",
-		"../../types/browser.d.ts"
+		"dashboard/**/*.ts",
+		"graphics/**/*.ts",
+		"shared/**/*.ts"
 	],
 	"references": [{"path": "src/types"}]
 }

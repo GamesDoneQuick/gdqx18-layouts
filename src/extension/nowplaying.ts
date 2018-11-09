@@ -7,12 +7,12 @@ import debounce = require('lodash.debounce');
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
-import {Replicant} from '../types/nodecg';
+import {NowPlaying} from '../types/schemas/nowPlaying';
 
 const app = express();
 const nodecg = nodecgApiContext.get();
-const pulsing: Replicant<boolean> = nodecg.Replicant('nowPlayingPulsing', {defaultValue: false, persistent: false});
-const nowPlaying = nodecg.Replicant('nowPlaying', {defaultValue: {}, persistent: false});
+const pulsing = nodecg.Replicant<boolean>('nowPlayingPulsing', {defaultValue: false, persistent: false});
+const nowPlaying = nodecg.Replicant<NowPlaying>('nowPlaying', {persistent: false});
 let pulseTimeout: NodeJS.Timer;
 
 nodecg.listenFor('pulseNowPlaying', pulse);

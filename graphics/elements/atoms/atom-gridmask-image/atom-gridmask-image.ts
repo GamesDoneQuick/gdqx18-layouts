@@ -1,6 +1,5 @@
 import {TimelineLite, TweenLite, Sine} from 'gsap';
-import * as Random from 'random-js';
-const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
+import Random from '../../../../shared/lib/vendor/random';
 
 export interface IAtomGridmaskImage extends Polymer.Element {
 	strokeSize: number;
@@ -23,6 +22,7 @@ export interface IAtomGridmaskImage extends Polymer.Element {
 
 window.addEventListener('load', () => {
 	const {customElement, property} = Polymer.decorators;
+	const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
 
 	/**
 	 * @customElement

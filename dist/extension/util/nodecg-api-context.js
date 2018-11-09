@@ -1,6 +1,6 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
-let context;
+exports.__esModule = true;
+var context;
 function get() {
     return context;
 }
@@ -9,4 +9,3 @@ function set(ctx) {
     context = ctx;
 }
 exports.set = set;
-//# sourceMappingURL=nodecg-api-context.js.map

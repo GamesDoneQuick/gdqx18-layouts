@@ -1,3 +1,5 @@
+import Random from '../../../../shared/lib/vendor/random';
+
 window.addEventListener('load', () => {
 	const NUM_BITS = 4;
 	const {customElement, property} = Polymer.decorators;

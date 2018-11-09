@@ -1,84 +1,75 @@
-(function () {
-	'use strict';
+import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
+import { TweenLite, Power1, TimelineMax } from "/bundles/gdqx18-layouts/node_modules/gsap/index.js";
+window.addEventListener('load', () => {
+  const {
+    customElement
+  } = Polymer.decorators;
+  const FADE_DURATION = 0.334;
+  const FADE_OUT_EASE = Power1.easeIn;
+  const FADE_IN_EASE = Power1.easeOut;
+  const currentHost = nodecg.Replicant('currentHost');
+  const nowPlaying = nodecg.Replicant('nowPlaying');
+  const LOGO_FADE_INTERVAL = 20;
+  const LOGO_FADE_DURATION = 1;
+  const LOGO_FADE_OUT_EASE = Power1.easeIn;
+  const LOGO_FADE_IN_EASE = Power1.easeOut;
+  /**
+   * @customElement
+   * @polymer
+   */
 
-	const FADE_DURATION = 0.334;
-	const FADE_OUT_EASE = Power1.easeIn;
-	const FADE_IN_EASE = Power1.easeOut;
+  let GdqBreakBottomFrame = class GdqBreakBottomFrame extends Polymer.Element {
+    ready() {
+      super.ready();
+      currentHost.on('change', newVal => {
+        this._changeText(this.$['host-text'], newVal);
+      });
+      nowPlaying.on('change', newVal => {
+        this._changeText(this.$['music-text'], `${newVal.game || '?'} - ${newVal.title || '?'}`);
+      }); // Logo anim
 
-	const currentHost = nodecg.Replicant('currentHost');
-	const nowPlaying = nodecg.Replicant('nowPlaying');
+      const logoTL = new TimelineMax({
+        repeat: -1
+      });
+      logoTL.to(this.$.gdqLogo, LOGO_FADE_DURATION, {
+        opacity: 1,
+        ease: LOGO_FADE_IN_EASE
+      });
+      logoTL.to(this.$.gdqLogo, LOGO_FADE_DURATION, {
+        opacity: 0,
+        ease: LOGO_FADE_OUT_EASE
+      }, `+=${LOGO_FADE_INTERVAL}`);
+      logoTL.to(this.$.charityLogo, LOGO_FADE_DURATION, {
+        opacity: 1,
+        ease: LOGO_FADE_IN_EASE
+      });
+      logoTL.to(this.$.charityLogo, LOGO_FADE_DURATION, {
+        opacity: 0,
+        ease: LOGO_FADE_OUT_EASE
+      }, `+=${LOGO_FADE_INTERVAL}`);
+    }
 
-	const LOGO_FADE_INTERVAL = 20;
-	const LOGO_FADE_DURATION = 1;
-	const LOGO_FADE_OUT_EASE = Power1.easeIn;
-	const LOGO_FADE_IN_EASE = Power1.easeOut;
+    _changeText(element, newText) {
+      TweenLite.to(element, FADE_DURATION, {
+        opacity: 0,
+        ease: FADE_OUT_EASE,
+        callbackScope: this,
 
-	/**
-	 * @customElement
-	 * @polymer
-	 */
-	class GdqBreakBottomFrame extends Polymer.Element {
-		static get is() {
-			return 'gdq-break-bottom-frame';
-		}
+        onComplete() {
+          element.text = newText;
+          TweenLite.to(element, FADE_DURATION, {
+            opacity: 1,
+            ease: FADE_IN_EASE,
+            delay: 0.05
+          });
+        }
 
-		static get properties() {
-			return {
-				importPath: String // https://github.com/Polymer/polymer-linter/issues/71
-			};
-		}
+      });
+    }
 
-		ready() {
-			super.ready();
+  };
+  GdqBreakBottomFrame = tslib_1.__decorate([customElement('gdq-break-bottom-frame')], GdqBreakBottomFrame); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
 
-			currentHost.on('change', newVal => {
-				this._changeText(this.$['host-text'], newVal);
-			});
-
-			nowPlaying.on('change', newVal => {
-				this._changeText(this.$['music-text'], `${newVal.game || '?'} - ${newVal.title || '?'}`);
-			});
-
-			// Logo anim
-			const logoTL = new TimelineMax({repeat: -1});
-
-			logoTL.to(this.$.gdqLogo, LOGO_FADE_DURATION, {
-				opacity: 1,
-				ease: LOGO_FADE_IN_EASE
-			});
-
-			logoTL.to(this.$.gdqLogo, LOGO_FADE_DURATION, {
-				opacity: 0,
-				ease: LOGO_FADE_OUT_EASE
-			}, `+=${LOGO_FADE_INTERVAL}`);
-
-			logoTL.to(this.$.charityLogo, LOGO_FADE_DURATION, {
-				opacity: 1,
-				ease: LOGO_FADE_IN_EASE
-			});
-
-			logoTL.to(this.$.charityLogo, LOGO_FADE_DURATION, {
-				opacity: 0,
-				ease: LOGO_FADE_OUT_EASE
-			}, `+=${LOGO_FADE_INTERVAL}`);
-		}
-
-		_changeText(element, newText) {
-			TweenLite.to(element, FADE_DURATION, {
-				opacity: 0,
-				ease: FADE_OUT_EASE,
-				callbackScope: this,
-				onComplete() {
-					element.text = newText;
-					TweenLite.to(element, FADE_DURATION, {
-						opacity: 1,
-						ease: FADE_IN_EASE,
-						delay: 0.05
-					});
-				}
-			});
-		}
-	}
-
-	customElements.define(GdqBreakBottomFrame.is, GdqBreakBottomFrame);
-})();
+  window.GdqBreakBottomFrame = GdqBreakBottomFrame;
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,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

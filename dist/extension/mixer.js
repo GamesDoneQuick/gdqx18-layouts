@@ -1,19 +1,19 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 /*
  * NOTE: It is absolutely critical that the `args` param of any udpPort.send command not be null or undefined.
  * Doing so causes the osc lib to actually encode it as a null argument (,N). Instead, use an empty array ([]).
  */
 // Packages
-const osc = require("osc");
+var osc = require("osc");
 // Ours
-const nodecgApiContext = require("./util/nodecg-api-context");
-const nodecg = nodecgApiContext.get();
-const X32_UDP_PORT = 10023;
-const FADE_THRESHOLD = 0.1;
-const gameAudioChannels = nodecg.Replicant('gameAudioChannels', { persistent: false });
-const channelToReplicantMap = {};
-nodecg.bundleConfig.osc.gameAudioChannels.forEach((item, index) => {
+var nodecgApiContext = require("./util/nodecg-api-context");
+var nodecg = nodecgApiContext.get();
+var X32_UDP_PORT = 10023;
+var FADE_THRESHOLD = 0.1;
+var gameAudioChannels = nodecg.Replicant('gameAudioChannels', { persistent: false });
+var channelToReplicantMap = {};
+nodecg.bundleConfig.osc.gameAudioChannels.forEach(function (item, index) {
     if (!gameAudioChannels.value[index]) {
         return;
     }
@@ -24,24 +24,24 @@ nodecg.bundleConfig.osc.gameAudioChannels.forEach((item, index) => {
         channelToReplicantMap[item.hd] = gameAudioChannels.value[index].hd;
     }
 });
-const udpPort = new osc.UDPPort({
+var udpPort = new osc.UDPPort({
     localAddress: '0.0.0.0',
     localPort: 52361,
     remoteAddress: nodecg.bundleConfig.osc.address,
     remotePort: X32_UDP_PORT,
     metadata: true
 });
-udpPort.on('raw', (buf) => {
-    const str = buf.toString('ascii');
-    const valueArray = [];
-    let channelNumber = 0;
-    let valueBytes;
-    let replicantObject;
+udpPort.on('raw', function (buf) {
+    var str = buf.toString('ascii');
+    var valueArray = [];
+    var channelNumber = 0;
+    var valueBytes;
+    var replicantObject;
     if (str.indexOf('/chMutes') === 0) {
         // For this particular message, we know that the values start at byte 22 and stop 2 bytes from the end.
         valueBytes = buf.slice(22, -2);
-        for (let i = 0; i < valueBytes.length; i += 4) {
-            const muted = !valueBytes.readFloatBE(i);
+        for (var i = 0; i < valueBytes.length; i += 4) {
+            var muted = !valueBytes.readFloatBE(i);
             valueArray.push(muted);
             replicantObject = channelToReplicantMap[String(channelNumber + 1)];
             if (replicantObject) {
@@ -53,8 +53,8 @@ udpPort.on('raw', (buf) => {
     else if (str.indexOf('/chFaders') === 0) {
         // For this particular message, we know that the values start at byte 24
         valueBytes = buf.slice(24);
-        for (let i = 0; i < valueBytes.length; i += 4) {
-            const fadedBelowThreshold = valueBytes.readFloatLE(i) < FADE_THRESHOLD;
+        for (var i = 0; i < valueBytes.length; i += 4) {
+            var fadedBelowThreshold = valueBytes.readFloatLE(i) < FADE_THRESHOLD;
             valueArray.push(fadedBelowThreshold);
             replicantObject = channelToReplicantMap[String(channelNumber + 1)];
             if (replicantObject) {
@@ -64,13 +64,13 @@ udpPort.on('raw', (buf) => {
         }
     }
 });
-udpPort.on('error', (error) => {
+udpPort.on('error', function (error) {
     nodecg.log.warn('[osc] Error:', error.stack);
 });
-udpPort.on('open', () => {
+udpPort.on('open', function () {
     nodecg.log.info('[osc] Port open, can now communicate with a Behringer X32.');
 });
-udpPort.on('close', () => {
+udpPort.on('close', function () {
     nodecg.log.warn('[osc] Port closed.');
 });
 // Open the socket.
@@ -104,4 +104,3 @@ function renewSubscriptions() {
         ]
     });
 }
-//# sourceMappingURL=mixer.js.map

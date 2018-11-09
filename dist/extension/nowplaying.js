@@ -1,18 +1,18 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 // Packages
-const express = require("express");
-const bodyParser = require("body-parser");
-const debounce = require("lodash.debounce");
+var express = require("express");
+var bodyParser = require("body-parser");
+var debounce = require("lodash.debounce");
 // Ours
-const nodecgApiContext = require("./util/nodecg-api-context");
-const app = express();
-const nodecg = nodecgApiContext.get();
-const pulsing = nodecg.Replicant('nowPlayingPulsing', { defaultValue: false, persistent: false });
-const nowPlaying = nodecg.Replicant('nowPlaying', { defaultValue: {}, persistent: false });
-let pulseTimeout;
+var nodecgApiContext = require("./util/nodecg-api-context");
+var app = express();
+var nodecg = nodecgApiContext.get();
+var pulsing = nodecg.Replicant('nowPlayingPulsing', { defaultValue: false, persistent: false });
+var nowPlaying = nodecg.Replicant('nowPlaying', { persistent: false });
+var pulseTimeout;
 nodecg.listenFor('pulseNowPlaying', pulse);
-const changeSong = debounce(newSong => {
+var changeSong = debounce(function (newSong) {
     nowPlaying.value = {
         game: newSong.game,
         title: newSong.title
@@ -26,7 +26,7 @@ const changeSong = debounce(newSong => {
     pulse();
 }, 2000);
 app.use(bodyParser.json());
-app.post(`/${nodecg.bundleName}/song`, (req, res, next) => {
+app.post("/" + nodecg.bundleName + "/song", function (req, res, next) {
     if (typeof req.body !== 'object') {
         res.sendStatus(400);
         return next();
@@ -48,8 +48,7 @@ function pulse() {
     }
     pulsing.value = true;
     // Hard-coded 12 second duration
-    pulseTimeout = setTimeout(() => {
+    pulseTimeout = setTimeout(function () {
         pulsing.value = false;
     }, 12 * 1000);
 }
-//# sourceMappingURL=nowplaying.js.map

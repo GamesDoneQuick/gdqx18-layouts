@@ -1,18 +1,18 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 // Ours
-const nodecgApiContext = require("./util/nodecg-api-context");
-const TimeUtils = require("./lib/time");
-const nodecg = nodecgApiContext.get();
-const time = nodecg.Replicant('countdown', {
+var nodecgApiContext = require("./util/nodecg-api-context");
+var TimeUtils = require("./lib/time");
+var nodecg = nodecgApiContext.get();
+var time = nodecg.Replicant('countdown', {
     defaultValue: TimeUtils.createTimeStruct(600 * 1000),
     persistent: false
 });
-const running = nodecg.Replicant('countdownRunning', {
+var running = nodecg.Replicant('countdownRunning', {
     defaultValue: false,
     persistent: false
 });
-let countdownTimer;
+var countdownTimer;
 nodecg.listenFor('startCountdown', start);
 nodecg.listenFor('stopCountdown', stop);
 /**
@@ -23,7 +23,7 @@ function start(startTime) {
     if (running.value) {
         return;
     }
-    const durationMs = TimeUtils.parseTimeString(startTime);
+    var durationMs = TimeUtils.parseTimeString(startTime);
     if (durationMs <= 0) {
         return;
     }
@@ -34,7 +34,7 @@ function start(startTime) {
         countdownTimer.removeAllListeners();
     }
     countdownTimer = new TimeUtils.CountdownTimer(Date.now() + durationMs);
-    countdownTimer.on('tick', remainingTimeStruct => {
+    countdownTimer.on('tick', function (remainingTimeStruct) {
         time.value = remainingTimeStruct;
     });
 }
@@ -50,4 +50,3 @@ function stop() {
         countdownTimer.stop();
     }
 }
-//# sourceMappingURL=countdown.js.map

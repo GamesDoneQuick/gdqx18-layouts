@@ -4,7 +4,6 @@ import {Tweet} from '../../../../src/types/Twitter';
 import {typeAnim, untypeAnim} from '../../../../shared/lib/TypeAnims';
 import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
 import * as DrawSVGPlugin from '../../../../shared/lib/vendor/DrawSVGPlugin';
-const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
 (window as any)._gsapPlugins = [DrawSVGPlugin]; // prevent tree shaking
 
 export interface IGdqTweet extends IInterruptMixin {
@@ -18,6 +17,7 @@ export interface IGdqTweet extends IInterruptMixin {
 
 window.addEventListener('load', () => {
 	const {customElement, property} = Polymer.decorators;
+	const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
 
 	/**
 	 * @customElement

@@ -1,5 +1,5 @@
 /* tslint:disable:jsdoc-format */
-import * as Random from 'random-js';
+import Random from './vendor/random';
 import {TweenLite, Linear, Ease, TweenConfig} from 'gsap';
 
 /**

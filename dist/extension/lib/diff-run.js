@@ -1,11 +1,11 @@
 // tslint:disable:no-dynamic-delete
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 // Packages
-const clone = require("clone");
-const deep_diff_1 = require("deep-diff");
-const merge = require("lodash.merge");
-const objectPath = require("object-path");
+var clone = require("clone");
+var deep_diff_1 = require("deep-diff");
+var merge = require("lodash.merge");
+var objectPath = require("object-path");
 /**
  * Calculates the original values for a modified run.
  * @param run - The modified run (currentRun or nextRun).
@@ -15,12 +15,12 @@ const objectPath = require("object-path");
 function calcOriginalValues(run, original) {
     run = clone(run); // tslint:disable-line:no-parameter-reassignment
     delete run.originalValues;
-    const differences = deep_diff_1.diff(original, run);
+    var differences = deep_diff_1.diff(original, run);
     if (!differences) {
         return;
     }
-    const originalValues = {};
-    differences.forEach(difference => {
+    var originalValues = {};
+    differences.forEach(function (difference) {
         switch (difference.kind) {
             case 'N':
                 // The only place that 'N' differences can happen is in the "runners" array.
@@ -32,7 +32,7 @@ function calcOriginalValues(run, original) {
                     objectPath.set(originalValues, difference.path, '');
                 }
                 else {
-                    throw new Error(`Unexpected difference:\n${JSON.stringify(difference)}`);
+                    throw new Error("Unexpected difference:\n" + JSON.stringify(difference));
                 }
                 break;
             case 'D':
@@ -45,7 +45,7 @@ function calcOriginalValues(run, original) {
                     objectPath.set(originalValues, difference.path, difference.lhs);
                 }
                 else {
-                    throw new Error(`Unexpected difference:\n${JSON.stringify(difference)}`);
+                    throw new Error("Unexpected difference:\n" + JSON.stringify(difference));
                 }
                 break;
             case 'A':
@@ -56,7 +56,7 @@ function calcOriginalValues(run, original) {
                         originalValues.runners = [];
                     }
                     if (!difference.item || typeof difference.index !== 'number') {
-                        throw new Error(`Unexpected difference:\n${JSON.stringify(difference)}`);
+                        throw new Error("Unexpected difference:\n" + JSON.stringify(difference));
                     }
                     switch (difference.item.kind) {
                         case 'N':
@@ -67,11 +67,11 @@ function calcOriginalValues(run, original) {
                             break;
                         /* istanbul ignore next: shouldn't be possible to enter default path */
                         default:
-                            throw new Error(`Unexpected difference:\n${JSON.stringify(difference)}`);
+                            throw new Error("Unexpected difference:\n" + JSON.stringify(difference));
                     }
                 }
                 else {
-                    throw new Error(`Unexpected difference:\n${JSON.stringify(difference)}`);
+                    throw new Error("Unexpected difference:\n" + JSON.stringify(difference));
                 }
                 break;
             case 'E':
@@ -79,7 +79,7 @@ function calcOriginalValues(run, original) {
                 break;
             /* istanbul ignore next: shouldn't be possible */
             default:
-                throw new Error(`Unexpected difference:\n${JSON.stringify(difference)}`);
+                throw new Error("Unexpected difference:\n" + JSON.stringify(difference));
         }
     });
     return originalValues;
@@ -100,18 +100,18 @@ function mergeChangesFromTracker(run, unmodifiedRun) {
     if (!run.originalValues) {
         return unmodifiedRun;
     }
-    const oldOriginalValues = run.originalValues;
-    const newOriginalValues = calcOriginalValues(run, unmodifiedRun);
+    var oldOriginalValues = run.originalValues;
+    var newOriginalValues = calcOriginalValues(run, unmodifiedRun);
     if (!newOriginalValues) {
         return unmodifiedRun;
     }
-    const differences = deep_diff_1.diff(oldOriginalValues, newOriginalValues);
+    var differences = deep_diff_1.diff(oldOriginalValues, newOriginalValues);
     if (!differences) {
         return run;
     }
-    differences.forEach(difference => {
-        let pathBase = [];
-        let pathTip = '';
+    differences.forEach(function (difference) {
+        var pathBase = [];
+        var pathTip = '';
         if (difference.path) {
             pathBase = difference.path.length > 1 ? difference.path.slice(0, -1) : [];
             pathTip = difference.path[difference.path.length - 1];
@@ -147,7 +147,7 @@ function mergeChangesFromTracker(run, unmodifiedRun) {
                     delete objectPath.get(run.originalValues, pathBase)[pathTip];
                 }
                 else {
-                    for (const key in difference.lhs) { // tslint:disable-line:no-for-in
+                    for (var key in difference.lhs) { // tslint:disable-line:no-for-in
                         /* istanbul ignore if */
                         if (!{}.hasOwnProperty.call(difference.lhs, key)) {
                             continue;
@@ -158,12 +158,12 @@ function mergeChangesFromTracker(run, unmodifiedRun) {
                 break;
             /* istanbul ignore next: shouldn't be possible */
             default:
-                throw new Error(`Unexpected difference:\n${JSON.stringify(difference)}`);
+                throw new Error("Unexpected difference:\n" + JSON.stringify(difference));
         }
     });
     if (run.originalValues) {
         if (run.originalValues.runners) {
-            for (let i = 0; i < run.originalValues.runners.length; i++) {
+            for (var i = 0; i < run.originalValues.runners.length; i++) {
                 if (typeof run.originalValues.runners[i] === 'object' &&
                     Object.keys(run.originalValues.runners[i]).length === 0) {
                     delete run.originalValues.runners[i];
@@ -178,11 +178,10 @@ function mergeChangesFromTracker(run, unmodifiedRun) {
         }
     }
     if (run.runners) {
-        run.runners = run.runners.filter((runner) => {
+        run.runners = run.runners.filter(function (runner) {
             return runner.name || runner.stream;
         });
     }
     return run;
 }
 exports.mergeChangesFromTracker = mergeChangesFromTracker;
-//# sourceMappingURL=diff-run.js.map

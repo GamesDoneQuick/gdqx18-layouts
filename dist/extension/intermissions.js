@@ -1,48 +1,84 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var _this = this;
+exports.__esModule = true;
 // Native
-const fs = require("fs");
-const path = require("path");
+var fs = require("fs");
+var path = require("path");
 // Packages
-const clone = require("clone");
-const debounce = require("lodash.debounce");
-const schemaDefaults = require("json-schema-defaults");
+var clone = require("clone");
+var debounce = require("lodash.debounce");
+var schemaDefaults = require("json-schema-defaults");
 // Ours
-const caspar = require("./caspar");
-const nodecgApiContext = require("./util/nodecg-api-context");
-const obs = require("./obs");
-const TimeUtils = require("./lib/time");
-const GDQTypes = require("../types");
-const AD_LOG_PATH = 'logs/ad_log.csv';
-let currentAdBreak = null;
-let currentlyPlayingAd = null;
-let nextAd = null;
-let cancelledAdBreak = false;
-const nodecg = nodecgApiContext.get();
-const log = new nodecg.Logger(`${nodecg.bundleName}:intermission`);
-const currentIntermission = nodecg.Replicant('currentIntermission');
-const canSeekSchedule = nodecg.Replicant('canSeekSchedule');
-const currentRun = nodecg.Replicant('currentRun');
-const schedule = nodecg.Replicant('schedule');
-const stopwatch = nodecg.Replicant('stopwatch');
-const schemasPath = path.resolve(__dirname, '../../schemas/');
-const adBreakSchema = JSON.parse(fs.readFileSync(path.join(schemasPath, 'types/adBreak.json'), 'utf8'));
-const adSchema = JSON.parse(fs.readFileSync(path.join(schemasPath, 'types/ad.json'), 'utf8'));
-const debouncedUpdateCurrentIntermissionContent = debounce(_updateCurrentIntermissionContent, 33);
-const debouncedUpdateCurrentIntermissionState = debounce(_updateCurrentIntermissionState, 33);
-const debounceWarnForMissingFiles = debounce(_warnForMissingFiles, 33);
-const clearableTimeouts = new Set();
-const clearableIntervals = new Set();
-currentRun.on('change', (newVal, oldVal) => {
+var caspar = require("./caspar");
+var nodecgApiContext = require("./util/nodecg-api-context");
+var obs = require("./obs");
+var TimeUtils = require("./lib/time");
+var GDQTypes = require("../types");
+var AD_LOG_PATH = 'logs/ad_log.csv';
+var currentAdBreak = null;
+var currentlyPlayingAd = null;
+var nextAd = null;
+var cancelledAdBreak = false;
+var nodecg = nodecgApiContext.get();
+var log = new nodecg.Logger(nodecg.bundleName + ":intermission");
+var currentIntermission = nodecg.Replicant('currentIntermission');
+var canSeekSchedule = nodecg.Replicant('canSeekSchedule');
+var currentRun = nodecg.Replicant('currentRun');
+var schedule = nodecg.Replicant('schedule');
+var stopwatch = nodecg.Replicant('stopwatch');
+var schemasPath = path.resolve(__dirname, '../../schemas/');
+var adBreakSchema = JSON.parse(fs.readFileSync(path.join(schemasPath, 'types/adBreak.json'), 'utf8'));
+var adSchema = JSON.parse(fs.readFileSync(path.join(schemasPath, 'types/ad.json'), 'utf8'));
+var debouncedUpdateCurrentIntermissionContent = debounce(_updateCurrentIntermissionContent, 33);
+var debouncedUpdateCurrentIntermissionState = debounce(_updateCurrentIntermissionState, 33);
+var debounceWarnForMissingFiles = debounce(_warnForMissingFiles, 33);
+var clearableTimeouts = new Set();
+var clearableIntervals = new Set();
+currentRun.on('change', function (newVal, oldVal) {
     if (!oldVal || newVal.order !== oldVal.order) {
         debouncedUpdateCurrentIntermissionContent();
     }
 });
-schedule.on('change', () => {
+schedule.on('change', function () {
     debouncedUpdateCurrentIntermissionContent();
     debounceWarnForMissingFiles();
 });
-stopwatch.on('change', (newVal, oldVal) => {
+stopwatch.on('change', function (newVal, oldVal) {
     checkCanSeek();
     if (!oldVal || (hasRunStarted() ? 'post' : 'pre') !== currentIntermission.value.preOrPost) {
         return debouncedUpdateCurrentIntermissionContent();
@@ -51,69 +87,87 @@ stopwatch.on('change', (newVal, oldVal) => {
         debouncedUpdateCurrentIntermissionState();
     }
 });
-caspar.replicants.files.on('change', () => {
+caspar.replicants.files.on('change', function () {
     debouncedUpdateCurrentIntermissionState();
     debounceWarnForMissingFiles();
 });
-nodecg.listenFor('intermissions:startAdBreak', async (adBreakId) => {
-    const adBreak = currentIntermission.value.content.find((item) => {
+nodecg.listenFor('intermissions:startAdBreak', function (adBreakId) { return __awaiter(_this, void 0, void 0, function () {
+    var adBreak, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                adBreak = currentIntermission.value.content.find(function (item) {
+                    return item.type === 'adBreak' && item.id === adBreakId;
+                });
+                if (!adBreak) {
+                    log.error("Failed to start ad break: Could not find adBreak ID #" + adBreakId + " in currentIntermission.");
+                    return [2 /*return*/];
+                }
+                if (adBreak.type !== 'adBreak') {
+                    log.error('Impossible');
+                    return [2 /*return*/];
+                }
+                cancelledAdBreak = false;
+                currentAdBreak = adBreak;
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 6, , 7]);
+                checkCanSeek();
+                return [4 /*yield*/, caspar.clear(false)];
+            case 2:
+                _a.sent();
+                return [4 /*yield*/, obs.setCurrentScene('Advertisements')];
+            case 3:
+                _a.sent();
+                return [4 /*yield*/, sleep(2000)];
+            case 4:
+                _a.sent();
+                return [4 /*yield*/, playAd(adBreak.ads[0])];
+            case 5:
+                _a.sent();
+                adBreak.state.canStart = false;
+                adBreak.state.cantStartReason = GDQTypes.CantStartReasonsEnum.ALREADY_STARTED;
+                adBreak.state.started = true;
+                return [3 /*break*/, 7];
+            case 6:
+                error_1 = _a.sent();
+                log.error('Failed to start ad break:', error_1);
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
+        }
+    });
+}); });
+nodecg.listenFor('intermissions:cancelAdBreak', function (adBreakId) {
+    var adBreak = currentIntermission.value.content.find(function (item) {
         return item.type === 'adBreak' && item.id === adBreakId;
     });
     if (!adBreak) {
-        log.error(`Failed to start ad break: Could not find adBreak ID #${adBreakId} in currentIntermission.`);
+        log.error("Failed to cancel ad break: Could not find adBreak ID #" + adBreakId + " in currentIntermission.");
         return;
     }
-    if (adBreak.type !== 'adBreak') {
-        log.error('Impossible');
-        return;
-    }
-    cancelledAdBreak = false;
-    currentAdBreak = adBreak;
-    try {
-        checkCanSeek();
-        await caspar.clear(false);
-        await obs.setCurrentScene('Advertisements');
-        await sleep(2000);
-        await playAd(adBreak.ads[0]);
-        adBreak.state.canStart = false;
-        adBreak.state.cantStartReason = GDQTypes.CantStartReasonsEnum.ALREADY_STARTED;
-        adBreak.state.started = true;
-    }
-    catch (error) {
-        log.error('Failed to start ad break:', error);
-    }
-});
-nodecg.listenFor('intermissions:cancelAdBreak', (adBreakId) => {
-    const adBreak = currentIntermission.value.content.find((item) => {
-        return item.type === 'adBreak' && item.id === adBreakId;
-    });
-    if (!adBreak) {
-        log.error(`Failed to cancel ad break: Could not find adBreak ID #${adBreakId} in currentIntermission.`);
-        return;
-    }
-    log.warn(`Cancelling adBreak ID #${adBreakId}!`);
+    log.warn("Cancelling adBreak ID #" + adBreakId + "!");
     cancelledAdBreak = true;
     currentAdBreak = null;
     currentlyPlayingAd = null;
-    clearableTimeouts.forEach(timeout => clearTimeout(timeout));
+    clearableTimeouts.forEach(function (timeout) { return clearTimeout(timeout); });
     clearableTimeouts.clear();
-    clearableIntervals.forEach(interval => clearInterval(interval));
+    clearableIntervals.forEach(function (interval) { return clearInterval(interval); });
     clearableIntervals.clear();
-    caspar.clear().then(() => {
+    caspar.clear().then(function () {
         _updateCurrentIntermissionContent();
-    }).catch(err => {
+    })["catch"](function (err) {
         log.error('Failed to clear Caspar:', err);
     });
-    obs.setCurrentScene('Break').catch((e) => {
+    obs.setCurrentScene('Break')["catch"](function (e) {
         log.error('Failed to set scene back to "Break" after cancelling ad break:', e);
     });
 });
-nodecg.listenFor('intermissions:completeAdBreak', (adBreakId) => {
-    const adBreak = currentIntermission.value.content.find((item) => {
+nodecg.listenFor('intermissions:completeAdBreak', function (adBreakId) {
+    var adBreak = currentIntermission.value.content.find(function (item) {
         return item.type === 'adBreak' && item.id === adBreakId;
     });
     if (!adBreak) {
-        log.error(`Failed to complete ad break: Could not find adBreak ID #${adBreakId} in currentIntermission.`);
+        log.error("Failed to complete ad break: Could not find adBreak ID #" + adBreakId + " in currentIntermission.");
         return;
     }
     if (adBreak.type !== 'adBreak') {
@@ -127,26 +181,26 @@ nodecg.listenFor('intermissions:completeAdBreak', (adBreakId) => {
         finishAdBreak(adBreak);
     }
 });
-nodecg.listenFor('intermissions:completeImageAd', (adId) => {
+nodecg.listenFor('intermissions:completeImageAd', function (adId) {
     if (!currentlyPlayingAd) {
-        log.error(`Tried to mark image ad ID #${adId} as complete, but no ad is currently playing.`);
+        log.error("Tried to mark image ad ID #" + adId + " as complete, but no ad is currently playing.");
         return;
     }
     if (adId !== currentlyPlayingAd.id) {
-        log.error(`Tried to mark image ad ID #${adId} as complete, but it wasn't the currentlyPlayingAd.`);
+        log.error("Tried to mark image ad ID #" + adId + " as complete, but it wasn't the currentlyPlayingAd.");
         return;
     }
     finishAd(currentlyPlayingAd);
     if (nextAd) {
-        playAd(nextAd).catch((e) => {
+        playAd(nextAd)["catch"](function (e) {
             log.error('Failed to play ad:', e);
         });
     }
     else {
-        log.error(`Marked image ad ID #${adId} as complete, but there was no nextAd!`);
+        log.error("Marked image ad ID #" + adId + " as complete, but there was no nextAd!");
     }
 });
-caspar.oscEvents.on('foregroundChanged', filename => {
+caspar.oscEvents.on('foregroundChanged', function (filename) {
     if (cancelledAdBreak) {
         return;
     }
@@ -155,15 +209,15 @@ caspar.oscEvents.on('foregroundChanged', filename => {
         // if we play another outro video like the one Bestban made for GDQx2017.
         // However, this is rare enough that I'm comfortable leaving this as an error log,
         // which will ping me in Slack. - Lange 2017/06/20
-        log.error(`"${filename}" started playing in CasparCG, but no adBreak is active.`, 'Letting it play, no action will be taken.');
+        log.error("\"" + filename + "\" started playing in CasparCG, but no adBreak is active.", 'Letting it play, no action will be taken.');
         return;
     }
     // Images include the media folder name in the path, but videos don't... dumb.
     if (filename.startsWith('media/')) {
         filename = filename.replace('media/', ''); // tslint:disable-line:no-parameter-reassignment
     }
-    let indexOfAdThatJustStarted = -1;
-    const adThatJustStarted = currentAdBreak.ads.find((ad, index) => {
+    var indexOfAdThatJustStarted = -1;
+    var adThatJustStarted = currentAdBreak.ads.find(function (ad, index) {
         if (ad.filename.toLowerCase() === filename.toLowerCase() && ad.state.completed === false) {
             indexOfAdThatJustStarted = index;
             return true;
@@ -173,10 +227,10 @@ caspar.oscEvents.on('foregroundChanged', filename => {
     if (!adThatJustStarted) {
         currentlyPlayingAd = null;
         currentAdBreak = null;
-        log.error(`"${filename}" started playing in CasparCG, but it did not correspond to any ad in the current adBreak.`, 'Caspar will now be cleared to get us back into a predictable state.');
-        caspar.clear().then(() => {
+        log.error("\"" + filename + "\" started playing in CasparCG, but it did not correspond to any ad in the current adBreak.", 'Caspar will now be cleared to get us back into a predictable state.');
+        caspar.clear().then(function () {
             checkCanSeek();
-        }).catch(err => {
+        })["catch"](function (err) {
             log.error('Failed to clear Caspar:', err);
         });
         return;
@@ -187,26 +241,26 @@ caspar.oscEvents.on('foregroundChanged', filename => {
     currentlyPlayingAd = adThatJustStarted;
     adThatJustStarted.state.started = true;
     adThatJustStarted.state.canStart = false;
-    const adThatJustCompleted = indexOfAdThatJustStarted > 0 ?
+    var adThatJustCompleted = indexOfAdThatJustStarted > 0 ?
         currentAdBreak.ads[indexOfAdThatJustStarted - 1] :
         null;
     if (adThatJustCompleted && !adThatJustCompleted.state.completed) {
         finishAd(adThatJustCompleted);
     }
     nextAd = currentAdBreak.ads[indexOfAdThatJustStarted + 1];
-    let nextAdFilenameNoExt;
+    var nextAdFilenameNoExt;
     if (nextAd) {
         nextAdFilenameNoExt = path.parse(nextAd.filename).name;
-        caspar.loadbgAuto(nextAdFilenameNoExt).catch(e => {
+        caspar.loadbgAuto(nextAdFilenameNoExt)["catch"](function (e) {
             log.error('Failed to play ad:', e);
         });
     }
     else if (currentlyPlayingAd.adType.toLowerCase() === 'video') {
-        const frameTime = 1000 / adThatJustStarted.state.fps;
-        const timeout = setTimeout(() => {
+        var frameTime = 1000 / adThatJustStarted.state.fps;
+        var timeout = setTimeout(function () {
             if (!currentlyPlayingAd) {
                 log.warn('Had no currentlyPlayingAd after the timeout, that\'s weird.');
-                caspar.clear().catch(err => {
+                caspar.clear()["catch"](function (err) {
                     log.error('Failed to clear Caspar:', err);
                 });
                 return;
@@ -218,21 +272,21 @@ caspar.oscEvents.on('foregroundChanged', filename => {
         clearableTimeouts.add(timeout);
     }
     if (adThatJustStarted.adType.toLowerCase() === 'image') {
-        const MS_PER_FRAME = 1000 / 60;
-        const startTime = Date.now();
-        const interval = setInterval(() => {
-            adThatJustStarted.state.frameNumber = Math.min((Date.now() - startTime) / MS_PER_FRAME, adThatJustStarted.state.durationFrames);
+        var MS_PER_FRAME_1 = 1000 / 60;
+        var startTime_1 = Date.now();
+        var interval_1 = setInterval(function () {
+            adThatJustStarted.state.frameNumber = Math.min((Date.now() - startTime_1) / MS_PER_FRAME_1, adThatJustStarted.state.durationFrames);
             adThatJustStarted.state.framesLeft =
                 adThatJustStarted.state.durationFrames - adThatJustStarted.state.frameNumber;
             if (adThatJustStarted.state.framesLeft <= 0) {
-                clearInterval(interval);
+                clearInterval(interval_1);
                 adThatJustStarted.state.canComplete = true;
                 if (!nextAd && currentAdBreak) {
                     currentAdBreak.state.canComplete = true;
                 }
             }
-        }, MS_PER_FRAME);
-        clearableIntervals.add(interval);
+        }, MS_PER_FRAME_1);
+        clearableIntervals.add(interval_1);
     }
 });
 function finishAd(ad) {
@@ -257,7 +311,7 @@ function finishAdBreak(adBreak) {
     adBreak.state.canComplete = false;
 }
 function finishCurrentAdBreak() {
-    caspar.clear().catch(err => {
+    caspar.clear()["catch"](function (err) {
         log.error('Failed to clear Caspar:', err);
     });
     if (currentlyPlayingAd) {
@@ -268,19 +322,19 @@ function finishCurrentAdBreak() {
     }
     currentAdBreak = null;
     currentlyPlayingAd = null;
-    obs.setCurrentScene('Break').catch((e) => {
+    obs.setCurrentScene('Break')["catch"](function (e) {
         log.error('Failed to set scene back to "Break" after completing ad break:', e);
     });
     checkCanSeek();
 }
-caspar.oscEvents.on('frameChanged', (currentFrame, durationFrames) => {
+caspar.oscEvents.on('frameChanged', function (currentFrame, durationFrames) {
     if (currentlyPlayingAd && currentlyPlayingAd.adType.toLowerCase() === 'video') {
         currentlyPlayingAd.state.frameNumber = currentFrame;
         currentlyPlayingAd.state.framesLeft = durationFrames - currentFrame;
     }
 });
 function playAd(ad) {
-    const adFilenameNoExt = path.parse(ad.filename).name;
+    var adFilenameNoExt = path.parse(ad.filename).name;
     caspar.resetState();
     return caspar.play(adFilenameNoExt);
 }
@@ -311,8 +365,8 @@ function _updateCurrentIntermissionState() {
     if (!currentIntermission.value || !caspar.replicants.files.value) {
         return;
     }
-    let allPriorAdBreaksAreComplete = true;
-    currentIntermission.value.content.forEach((item) => {
+    var allPriorAdBreaksAreComplete = true;
+    currentIntermission.value.content.forEach(function (item) {
         if (item.type !== 'adBreak') {
             return;
         }
@@ -341,9 +395,9 @@ function _updateCurrentIntermissionState() {
         if (!item.state.completed) {
             allPriorAdBreaksAreComplete = false;
         }
-        let oneOrMoreAdsMissingFile = false;
-        item.ads.forEach(ad => {
-            const casparFile = caspar.replicants.files.value.find((file) => {
+        var oneOrMoreAdsMissingFile = false;
+        item.ads.forEach(function (ad) {
+            var casparFile = caspar.replicants.files.value.find(function (file) {
                 return file.nameWithExt.toLowerCase() === ad.filename.toLowerCase();
             });
             if (!casparFile) {
@@ -376,13 +430,13 @@ function _updateCurrentIntermissionState() {
  * @returns - The intermission content.
  */
 function calcIntermissionContent() {
-    const preOrPost = hasRunStarted() ? 'post' : 'pre';
-    const intermissionContent = [];
-    const scheduleContent = preOrPost === 'pre' ?
+    var preOrPost = hasRunStarted() ? 'post' : 'pre';
+    var intermissionContent = [];
+    var scheduleContent = preOrPost === 'pre' ?
         schedule.value.slice(0).reverse() :
         schedule.value;
-    let foundCurrentRun = false;
-    scheduleContent.some((item) => {
+    var foundCurrentRun = false;
+    scheduleContent.some(function (item) {
         if (currentRun.value && item.id === currentRun.value.id) {
             foundCurrentRun = true;
             return false;
@@ -391,10 +445,10 @@ function calcIntermissionContent() {
             if (item.type === 'run') {
                 return true;
             }
-            const clonedItem = clone(item);
+            var clonedItem = clone(item);
             if (clonedItem.type === 'adBreak') {
                 clonedItem.state = schemaDefaults(adBreakSchema.properties.state);
-                clonedItem.ads.forEach((ad) => {
+                clonedItem.ads.forEach(function (ad) {
                     ad.state = schemaDefaults(adSchema.properties.state);
                 });
             }
@@ -437,7 +491,7 @@ function checkCanSeek() {
  * @param ad - The ad to log.
  */
 function writeAdToLog(ad) {
-    const data = [
+    var data = [
         ad.id,
         new Date().toISOString(),
         ad.adType,
@@ -446,15 +500,15 @@ function writeAdToLog(ad) {
         ad.filename,
         currentRun.value ? currentRun.value.name : 'Unknown Run'
     ];
-    const logStr = data.join(', ');
+    var logStr = data.join(', ');
     log.info('Ad successfully completed:', logStr);
     // If the ad log does not exist yet, create it and add the header row.
     if (!fs.existsSync(AD_LOG_PATH)) {
-        const headerRow = 'id, timestamp, type, sponsor_name, ad_name, file_name, current_run\n';
+        var headerRow = 'id, timestamp, type, sponsor_name, ad_name, file_name, current_run\n';
         fs.writeFileSync(AD_LOG_PATH, headerRow);
     }
     // Append this ad play to the ad log.
-    fs.appendFile(AD_LOG_PATH, logStr + '\n', err => {
+    fs.appendFile(AD_LOG_PATH, logStr + '\n', function (err) {
         if (err) {
             log.error('Error appending to log:', err.stack);
         }
@@ -464,28 +518,27 @@ function _warnForMissingFiles() {
     if (!schedule.value || !caspar.replicants.files.value) {
         return;
     }
-    const warnedFiles = new Set();
+    var warnedFiles = new Set();
     // Log an error for every ad which is missing its corresponding file in CasparCG.
-    schedule.value.forEach((item) => {
+    schedule.value.forEach(function (item) {
         if (item.type !== 'adBreak') {
             return;
         }
-        item.ads.forEach((ad) => {
-            const casparFile = caspar.replicants.files.value.find((file) => {
+        item.ads.forEach(function (ad) {
+            var casparFile = caspar.replicants.files.value.find(function (file) {
                 return file.nameWithExt.toLowerCase() === ad.filename.toLowerCase();
             });
             if (!casparFile && !warnedFiles.has(ad.filename)) {
-                log.error(`Ad points to file that does not exist in CasparCG: ${ad.filename}`);
+                log.error("Ad points to file that does not exist in CasparCG: " + ad.filename);
                 warnedFiles.add(ad.filename);
             }
         });
     });
 }
 function sleep(milliseconds) {
-    return new Promise(resolve => {
-        setTimeout(() => {
+    return new Promise(function (resolve) {
+        setTimeout(function () {
             resolve();
         }, milliseconds);
     });
 }
-//# sourceMappingURL=intermissions.js.map

@@ -1,8 +1,8 @@
 import CSSReflectionMixin from '../../../mixins/CSSReflectionMixin';
-const SVG = (window as any).svgjs as svgjs.Library;
 
 window.addEventListener('load', () => {
 	const {customElement, property} = Polymer.decorators;
+	const SVG = (window as any).svgjs as svgjs.Library;
 
 	/**
 	 * @customElement

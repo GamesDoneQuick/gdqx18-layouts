@@ -5,11 +5,11 @@ import {IAtomGridmaskImage} from '../../atoms/atom-gridmask-image/atom-gridmask-
 import {typeAnim} from '../../../../shared/lib/TypeAnims';
 import {IGdqTweet} from '../gdq-tweet/gdq-tweet';
 import * as DrawSVGPlugin from '../../../../shared/lib/vendor/DrawSVGPlugin';
-const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
 (window as any)._gsapPlugins = [DrawSVGPlugin]; // prevent tree shaking
 
 window.addEventListener('load', () => {
 	const {customElement, property} = Polymer.decorators;
+	const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
 
 	/**
 	 * @customElement

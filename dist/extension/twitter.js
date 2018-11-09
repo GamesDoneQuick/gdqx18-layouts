@@ -1,49 +1,49 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 // Packages
-const twemoji = require("twemoji");
-const io = require("socket.io-client");
+var twemoji = require("twemoji");
+var io = require("socket.io-client");
 // Ours
-const nodecgApiContext = require("./util/nodecg-api-context");
-const nodecg = nodecgApiContext.get();
-const log = new nodecg.Logger(`${nodecg.bundleName}:twitter`);
-const tweets = nodecg.Replicant('tweets');
-const fanartTweets = nodecg.Replicant('fanartTweets');
+var nodecgApiContext = require("./util/nodecg-api-context");
+var nodecg = nodecgApiContext.get();
+var log = new nodecg.Logger(nodecg.bundleName + ":twitter");
+var tweets = nodecg.Replicant('tweets');
+var fanartTweets = nodecg.Replicant('fanartTweets');
 // Clear queue of tweets when currentRun changes
-nodecg.Replicant('currentRun').on('change', (newVal, oldVal) => {
+nodecg.Replicant('currentRun').on('change', function (newVal, oldVal) {
     if (oldVal && newVal.pk !== oldVal.pk) {
         tweets.value = [];
     }
 });
-nodecg.listenFor('acceptTweet', (tweet) => {
+nodecg.listenFor('acceptTweet', function (tweet) {
     if (!nodecg.bundleConfig.twitter.debug) {
         removeTweetById(tweet.id_str);
     }
     nodecg.sendMessage('showTweet', tweet);
 });
-nodecg.listenFor('acceptFanart', (tweet) => {
+nodecg.listenFor('acceptFanart', function (tweet) {
     if (!nodecg.bundleConfig.twitter.debug) {
         removeTweetById(tweet.id_str);
     }
     nodecg.sendMessage('showFanart', tweet);
 });
 nodecg.listenFor('rejectTweet', removeTweetById);
-const socket = io.connect(nodecg.bundleConfig.twitter.websocketUrl);
-socket.on('connect', () => {
-    socket.on('authenticated', () => {
+var socket = io.connect(nodecg.bundleConfig.twitter.websocketUrl);
+socket.on('connect', function () {
+    socket.on('authenticated', function () {
         log.info('Twitter socket authenticated.');
     });
-    socket.on('unauthorized', (err) => {
+    socket.on('unauthorized', function (err) {
         log.error('There was an error with the authentication:', (err && err.message) ? err.message : err);
     });
-    socket.on('twitter-webhook-payload', (payload) => {
+    socket.on('twitter-webhook-payload', function (payload) {
         // `payload` will be an object in the format described here:
         // https://developer.twitter.com/en/docs/accounts-and-users/subscribe-account-activity/guides/account-activity-data-objects
         if (!payload) {
             return;
         }
         if (payload.favorite_events) {
-            payload.favorite_events.forEach(favoriteEvent => {
+            payload.favorite_events.forEach(function (favoriteEvent) {
                 // Discard favorites not made by us.
                 if (favoriteEvent.user.screen_name.toLowerCase() !== 'gamesdonequick') {
                     return;
@@ -54,7 +54,7 @@ socket.on('connect', () => {
             });
         }
         if (payload.tweet_create_events) {
-            payload.tweet_create_events.forEach(tweetCreateEvent => {
+            payload.tweet_create_events.forEach(function (tweetCreateEvent) {
                 // Discard tweets not made by us.
                 if (tweetCreateEvent.user.screen_name.toLowerCase() !== 'gamesdonequick') {
                     return;
@@ -64,7 +64,7 @@ socket.on('connect', () => {
                     return;
                 }
                 if (tweetCreateEvent.retweeted_status) {
-                    const retweetedStatus = tweetCreateEvent.retweeted_status;
+                    var retweetedStatus = tweetCreateEvent.retweeted_status;
                     retweetedStatus.gdqRetweetId = tweetCreateEvent.id_str;
                     addTweet(retweetedStatus);
                     return;
@@ -85,8 +85,8 @@ socket.on('connect', () => {
  */
 function addTweet(tweet) {
     // Don't add the tweet if we already have it
-    const isDupe = tweets.value.find((t) => t.id_str === tweet.id_str) ||
-        fanartTweets.value.find((t) => t.id_str === tweet.id_str);
+    var isDupe = tweets.value.find(function (t) { return t.id_str === tweet.id_str; }) ||
+        fanartTweets.value.find(function (t) { return t.id_str === tweet.id_str; });
     if (isDupe) {
         return;
     }
@@ -130,11 +130,11 @@ function addTweet(tweet) {
  */
 function removeTweetById(idToRemove) {
     if (typeof idToRemove !== 'string') {
-        throw new Error(`[twitter] Must provide a string ID when removing a tweet. ID provided was: ${idToRemove}`);
+        throw new Error("[twitter] Must provide a string ID when removing a tweet. ID provided was: " + idToRemove);
     }
-    let didRemoveTweet = false;
-    [tweets, fanartTweets].forEach(tweetReplicant => {
-        tweetReplicant.value.some((tweet, index) => {
+    var didRemoveTweet = false;
+    [tweets, fanartTweets].forEach(function (tweetReplicant) {
+        tweetReplicant.value.some(function (tweet, index) {
             if (tweet.id_str === idToRemove || tweet.gdqRetweetId === idToRemove) {
                 tweetReplicant.value.splice(index, 1);
                 didRemoveTweet = true;
@@ -145,4 +145,3 @@ function removeTweetById(idToRemove) {
     });
     return didRemoveTweet;
 }
-//# sourceMappingURL=twitter.js.map

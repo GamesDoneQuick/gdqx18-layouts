@@ -1,145 +1,165 @@
-(function () {
-	const ROTATION_FACTOR = 0.65;
+import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
+import { TweenLite, TimelineLite, Sine, Power3, Power4 } from "/bundles/gdqx18-layouts/node_modules/gsap/index.js";
+import { typeAnim } from "../../../../shared/lib/TypeAnims.js";
+import { createMaybeRandomTween } from "../../../../shared/lib/MaybeRandom.js";
+window.addEventListener('load', () => {
+  const {
+    customElement,
+    property
+  } = Polymer.decorators;
+  const SVG = window.svgjs || window.SVG;
+  const ROTATION_FACTOR = 0.65;
+  /**
+   * @customElement
+   * @polymer
+   */
 
-	/**
-	 * @customElement
-	 * @polymer
-	 */
-	class GdqBreakBidBinary extends Polymer.Element {
-		static get is() {
-			return 'gdq-break-bid-binary';
-		}
+  let GdqBreakBidBinary = class GdqBreakBidBinary extends Polymer.Element {
+    ready() {
+      super.ready();
 
-		static get properties() {
-			return {};
-		}
+      this._initPieChartSVG();
 
-		ready() {
-			super.ready();
-			this._initPieChartSVG();
-			TweenLite.set(this.$.winningOptionAmount, {opacity: 0, x: -36, color: 'transparent'});
-			TweenLite.set(this.$.losingOptionAmount, {opacity: 0, x: 36, color: 'transparent'});
-			TweenLite.set(this._svgDoc.node, {opacity: 0});
-		}
+      TweenLite.set(this.$.winningOptionAmount, {
+        opacity: 0,
+        x: -36,
+        color: 'transparent'
+      });
+      TweenLite.set(this.$.losingOptionAmount, {
+        opacity: 0,
+        x: 36,
+        color: 'transparent'
+      });
+      TweenLite.set(this._svgDoc.node, {
+        opacity: 0
+      });
+    }
 
-		enter() {
-			const tl = new TimelineLite();
-			const winningPercent = this.bid.options[0].rawTotal / this.bid.rawTotal;
-			const proxy = {percent: 0};
+    enter() {
+      const tl = new TimelineLite();
+      const winningPercent = this.bid.options[0].rawTotal / this.bid.rawTotal;
+      const proxy = {
+        percent: 0
+      };
+      const winningOptionAmountEl = this.$.winningOptionAmount;
+      const losingOptionAmountEl = this.$.losingOptionAmount;
+      tl.call(() => {
+        winningOptionAmountEl.innerText = '$' + this.bid.options[0].rawTotal.toLocaleString('en-US', {
+          maximumFractionDigits: 0,
+          useGrouping: false
+        });
+        losingOptionAmountEl.innerText = '$' + this.bid.options[1].rawTotal.toLocaleString('en-US', {
+          maximumFractionDigits: 0,
+          useGrouping: false
+        });
+      }, undefined, null, '+=0.03');
+      tl.to([this.$.winningOptionAmount, this.$.losingOptionAmount], 0.384, {
+        opacity: 1,
+        x: 0,
+        ease: Sine.easeOut
+      });
+      tl.call(() => {
+        winningOptionAmountEl.style.color = '';
+        losingOptionAmountEl.style.color = '';
+        typeAnim(winningOptionAmountEl);
+        typeAnim(losingOptionAmountEl);
+      });
+      tl.add(createMaybeRandomTween({
+        target: this._svgDoc.node.style,
+        propName: 'opacity',
+        duration: 0.465,
+        ease: Power4.easeIn,
+        start: {
+          probability: 1,
+          normalValue: 0
+        },
+        end: {
+          probability: 0,
+          normalValue: 1
+        }
+      }), '+=0.1');
+      tl.to(proxy, 1, {
+        percent: winningPercent,
+        ease: Power3.easeInOut,
+        onStart: () => {
+          this._svgDoc.style({
+            transform: `rotate(${ROTATION_FACTOR}turn)`
+          });
 
-			tl.call(() => {
-				this.$.winningOptionAmount.innerText = '$' + this.bid.options[0].rawTotal.toLocaleString('en-US', {
-					maximumFractionDigits: 0,
-					useGrouping: false
-				});
-				this.$.losingOptionAmount.innerText = '$' + this.bid.options[1].rawTotal.toLocaleString('en-US', {
-					maximumFractionDigits: 0,
-					useGrouping: false
-				});
-			}, null, null, '+=0.03');
+          winningOptionAmountEl.innerText = this.bid.options[0].description || this.bid.options[0].name;
+          losingOptionAmountEl.innerText = this.bid.options[1].description || this.bid.options[1].name;
+          typeAnim(winningOptionAmountEl);
+          typeAnim(losingOptionAmountEl);
+        },
+        onUpdate: () => {
+          this.drawWinningSlice(proxy.percent);
+        }
+      });
+      return tl;
+    }
 
-			tl.to([this.$.winningOptionAmount, this.$.losingOptionAmount], 0.384, {
-				opacity: 1,
-				x: 0,
-				ease: Sine.easeOut
-			});
+    exit() {
+      const tl = new TimelineLite();
+      tl.add(createMaybeRandomTween({
+        target: this.style,
+        propName: 'opacity',
+        duration: 0.2,
+        ease: Power4.easeIn,
+        start: {
+          probability: 1,
+          normalValue: 1
+        },
+        end: {
+          probability: 0,
+          normalValue: 0
+        }
+      }));
+      return tl;
+    }
 
-			tl.call(() => {
-				this.$.winningOptionAmount.style.color = '';
-				this.$.losingOptionAmount.style.color = '';
-				TypeAnims.type(this.$.winningOptionAmount);
-				TypeAnims.type(this.$.losingOptionAmount);
-			});
+    _initPieChartSVG() {
+      const svgDoc = SVG(this.$.chart);
+      svgDoc.viewbox(-1, -1, 2, 2);
+      this._svgDoc = svgDoc;
+      svgDoc.circle(2).fill({
+        color: '#ffee54',
+        opacity: 0.25
+      }).move(-1, -1);
+      const anglePI = ROTATION_FACTOR * 360 * (Math.PI / 180);
+      const gradientCoords = {
+        x1: Math.round(Math.sin(anglePI) * 50 + 50) + '%',
+        y1: Math.round(Math.cos(anglePI) * 50 + 50) + '%',
+        x2: Math.round(Math.sin(anglePI + Math.PI) * 50 + 50) + '%',
+        y2: Math.round(Math.cos(anglePI + Math.PI) * 50 + 50) + '%'
+      };
+      const gradient = svgDoc.gradient('linear', stop => {
+        stop.at(0, '#57c7ef');
+        stop.at(1, '#63f1fd');
+      }).from(gradientCoords.x1, gradientCoords.y1).to(gradientCoords.x2, gradientCoords.y2);
+      this._winningSlice = svgDoc.path().fill(gradient);
+    }
 
-			tl.add(MaybeRandom.createTween({
-				target: this._svgDoc.node.style,
-				propName: 'opacity',
-				duration: 0.465,
-				ease: Power4.easeIn,
-				start: {probability: 1, normalValue: 0},
-				end: {probability: 0, normalValue: 1}
-			}), '+=0.1');
+    drawWinningSlice(percent) {
+      // Note the svg viewBox is offset so the center of the SVG is 0,0.
+      const arcLength = Math.PI * 2 * percent;
+      const startX = Math.cos(arcLength / -2);
+      const startY = Math.sin(arcLength / -2);
+      const endX = Math.cos(arcLength / 2);
+      const endY = Math.sin(arcLength / 2);
+      const largeArcFlag = percent > 0.5 ? 1 : 0;
+      const d = [`M ${startX} ${startY}`, `A 1 1 0 ${largeArcFlag} 1 ${endX} ${endY}`, 'L 0 0'].join(' ');
 
-			tl.to(proxy, 1, {
-				percent: winningPercent,
-				ease: Power3.easeInOut,
-				callbackScope: this,
-				onStart() {
-					this._svgDoc.style({transform: `rotate(${ROTATION_FACTOR}turn)`});
+      this._winningSlice.plot(d);
+    }
 
-					this.$.winningOptionName.innerText = this.bid.options[0].description || this.bid.options[0].name;
-					this.$.losingOptionName.innerText = this.bid.options[1].description || this.bid.options[1].name;
-					TypeAnims.type(this.$.winningOptionName);
-					TypeAnims.type(this.$.losingOptionName);
-				},
-				onUpdate() {
-					this.drawWinningSlice(proxy.percent);
-				}
-			});
+  };
 
-			return tl;
-		}
+  tslib_1.__decorate([property({
+    type: Object
+  })], GdqBreakBidBinary.prototype, "bid", void 0);
 
-		exit() {
-			const tl = new TimelineLite();
+  GdqBreakBidBinary = tslib_1.__decorate([customElement('gdq-break-bid-binary')], GdqBreakBidBinary); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
 
-			tl.add(MaybeRandom.createTween({
-				target: this.style,
-				propName: 'opacity',
-				duration: 0.2,
-				ease: Power4.easeIn,
-				start: {probability: 1, normalValue: 1},
-				end: {probability: 0, normalValue: 0}
-			}));
-
-			return tl;
-		}
-
-		_initPieChartSVG() {
-			const svgDoc = SVG(this.$.chart);
-			svgDoc.viewbox(-1, -1, 2, 2);
-			this._svgDoc = svgDoc;
-
-			svgDoc.circle(2).fill({color: '#ffee54', opacity: '0.25'}).move(-1, -1);
-
-			const anglePI = (360 * ROTATION_FACTOR) * (Math.PI / 180);
-			const gradientCoords = {
-				x1: Math.round(50 + (Math.sin(anglePI) * 50)) + '%',
-				y1: Math.round(50 + (Math.cos(anglePI) * 50)) + '%',
-				x2: Math.round(50 + (Math.sin(anglePI + Math.PI) * 50)) + '%',
-				y2: Math.round(50 + (Math.cos(anglePI + Math.PI) * 50)) + '%'
-			};
-
-			const gradient = svgDoc
-				.gradient('linear', stop => {
-					stop.at(0, '#57c7ef');
-					stop.at(1, '#63f1fd');
-				})
-				.from(gradientCoords.x1, gradientCoords.y1)
-				.to(gradientCoords.x2, gradientCoords.y2);
-
-			this._winningSlice = svgDoc.path().fill(gradient);
-		}
-
-		drawWinningSlice(percent) {
-			// Note the svg viewBox is offset so the center of the SVG is 0,0.
-			const arcLength = 2 * Math.PI * percent;
-
-			const startX = Math.cos(arcLength / -2);
-			const startY = Math.sin(arcLength / -2);
-			const endX = Math.cos(arcLength / 2);
-			const endY = Math.sin(arcLength / 2);
-			const largeArcFlag = percent > 0.5 ? 1 : 0;
-
-			const d = [
-				`M ${startX} ${startY}`,
-				`A 1 1 0 ${largeArcFlag} 1 ${endX} ${endY}`,
-				'L 0 0'
-			].join(` `);
-
-			this._winningSlice.plot(d);
-		}
-	}
-
-	customElements.define(GdqBreakBidBinary.is, GdqBreakBidBinary);
-})();
+  window.GdqBreakBidBinary = GdqBreakBidBinary;
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImdkcS1icmVhay1iaWQtYmluYXJ5LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFDQSxTQUFRLFNBQVIsRUFBbUIsWUFBbkIsRUFBaUMsSUFBakMsRUFBdUMsTUFBdkMsRUFBK0MsTUFBL0MsUUFBNEQsb0RBQTVEO0FBQ0EsU0FBUSxRQUFSLFFBQXVCLHFDQUF2QjtBQUNBLFNBQVEsc0JBQVIsUUFBcUMsdUNBQXJDO0FBR0EsTUFBTSxDQUFDLGdCQUFQLENBQXdCLE1BQXhCLEVBQWdDLE1BQUs7QUFDcEMsUUFBTTtBQUFDLElBQUEsYUFBRDtBQUFnQixJQUFBO0FBQWhCLE1BQTRCLE9BQU8sQ0FBQyxVQUExQztBQUNBLFFBQU0sR0FBRyxHQUFLLE1BQWMsQ0FBQyxLQUFmLElBQXlCLE1BQWMsQ0FBQyxHQUF0RDtBQUNBLFFBQU0sZUFBZSxHQUFHLElBQXhCO0FBRUE7Ozs7O0FBS0EsTUFBTSxpQkFBaUIsR0FBdkIsTUFBTSxpQkFBTixTQUFnQyxPQUFPLENBQUMsT0FBeEMsQ0FBK0M7QUFPOUMsSUFBQSxLQUFLLEdBQUE7QUFDSixZQUFNLEtBQU47O0FBQ0EsV0FBSyxnQkFBTDs7QUFDQSxNQUFBLFNBQVMsQ0FBQyxHQUFWLENBQWMsS0FBSyxDQUFMLENBQU8sbUJBQXJCLEVBQTBDO0FBQUMsUUFBQSxPQUFPLEVBQUUsQ0FBVjtBQUFhLFFBQUEsQ0FBQyxFQUFFLENBQUMsRUFBakI7QUFBcUIsUUFBQSxLQUFLLEVBQUU7QUFBNUIsT0FBMUM7QUFDQSxNQUFBLFNBQVMsQ0FBQyxHQUFWLENBQWMsS0FBSyxDQUFMLENBQU8sa0JBQXJCLEVBQXlDO0FBQUMsUUFBQSxPQUFPLEVBQUUsQ0FBVjtBQUFhLFFBQUEsQ0FBQyxFQUFFLEVBQWhCO0FBQW9CLFFBQUEsS0FBSyxFQUFFO0FBQTNCLE9BQXpDO0FBQ0EsTUFBQSxTQUFTLENBQUMsR0FBVixDQUFjLEtBQUssT0FBTCxDQUFhLElBQTNCLEVBQWlDO0FBQUMsUUFBQSxPQUFPLEVBQUU7QUFBVixPQUFq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QVg7QUFDQSxPQUplLEVBS2YsSUFMZSxDQUtWLGNBQWMsQ0FBQyxFQUxMLEVBS2dCLGNBQWMsQ0FBQyxFQUwvQixFQU1mLEVBTmUsQ0FNWixjQUFjLENBQUMsRUFOSCxFQU1jLGNBQWMsQ0FBQyxFQU43QixDQUFqQjtBQVFBLFdBQUssYUFBTCxHQUFxQixNQUFNLENBQUMsSUFBUCxHQUFjLElBQWQsQ0FBbUIsUUFBbkIsQ0FBckI7QUFDQTs7QUFFRCxJQUFBLGdCQUFnQixDQUFDLE9BQUQsRUFBZ0I7QUFDL0I7QUFDQSxZQUFNLFNBQVMsR0FBRyxJQUFJLENBQUMsRUFBTCxHQUFVLENBQVYsR0FBYyxPQUFoQztBQUVBLFlBQU0sTUFBTSxHQUFHLElBQUksQ0FBQyxHQUFMLENBQVMsU0FBUyxHQUFHLENBQUMsQ0FBdEIsQ0FBZjtBQUNBLFlBQU0sTUFBTSxHQUFHLElBQUksQ0FBQyxHQUFMLENBQVMsU0FBUyxHQUFHLENBQUMsQ0FBdEIsQ0FBZjtBQUNBLFlBQU0sSUFBSSxHQUFHLElBQUksQ0FBQyxHQUFMLENBQVMsU0FBUyxHQUFHLENBQXJCLENBQWI7QUFDQSxZQUFNLElBQUksR0FBRyxJQUFJLENBQUMsR0FBTCxDQUFTLFNBQVMsR0FBRyxDQUFyQixDQUFiO0FBQ0EsWUFBTSxZQUFZLEdBQUcsT0FBTyxHQUFHLEdBQVYsR0FBZ0IsQ0FBaEIsR0FBb0IsQ0FBekM7QUFFQSxZQUFNLENBQUMsR0FBRyxDQUNULEtBQUssTUFBTSxJQUFJLE1BQU0sRUFEWixFQUVULFdBQVcsWUFBWSxNQUFNLElBQUksSUFBSSxJQUFJLEVBRmhDLEVBR1QsT0FIUyxFQUlSLElBSlEsQ0FJSCxHQUpHLENBQVY7O0FBTUEsV0FBSyxhQUFMLENBQW1CLElBQW5CLENBQXdCLENBQXhCO0FBQ0E7O0FBcEk2QyxHQUEvQzs7QUFFQyxFQUFBLE9BQUEsQ0FBQSxVQUFBLENBQUEsQ0FEQyxRQUFRLENBQUM7QUFBQyxJQUFBLElBQUksRUFBRTtBQUFQLEdBQUQsQ0FDVCxDQUFBLEUsMkJBQUEsRSxLQUFBLEUsS0FBZSxDQUFmOztBQUZLLEVBQUEsaUJBQWlCLEdBQUEsT0FBQSxDQUFBLFVBQUEsQ0FBQSxDQUR0QixhQUFhLENBQUMsc0JBQUQsQ0FDUyxDQUFBLEVBQWpCLGlCQUFpQixDQUFqQixDQVY4QixDQWlKcEM7O0FBQ0MsRUFBQSxNQUFjLENBQUMsaUJBQWYsR0FBbUMsaUJBQW5DO0FBQ0QsQ0FuSkQiLCJzb3VyY2VSb290IjoiIn0=

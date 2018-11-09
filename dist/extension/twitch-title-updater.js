@@ -1,14 +1,14 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 // Packages
-const request = require("request-promise");
+var request = require("request-promise");
 // Ours
-const nodecgApiContext = require("./util/nodecg-api-context");
-const nodecg = nodecgApiContext.get();
-const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);
-const currentRun = nodecg.Replicant('currentRun');
-let lastLongName;
-currentRun.on('change', (newVal) => {
+var nodecgApiContext = require("./util/nodecg-api-context");
+var nodecg = nodecgApiContext.get();
+var log = new nodecg.Logger(nodecg.bundleName + ":twitch");
+var currentRun = nodecg.Replicant('currentRun');
+var lastLongName;
+currentRun.on('change', function (newVal) {
     if (newVal.longName === lastLongName) {
         return;
     }
@@ -16,10 +16,10 @@ currentRun.on('change', (newVal) => {
     lastLongName = newVal.longName;
     request({
         method: 'put',
-        uri: `https://api.twitch.tv/kraken/channels/${nodecg.bundleConfig.twitch.channelId}`,
+        uri: "https://api.twitch.tv/kraken/channels/" + nodecg.bundleConfig.twitch.channelId,
         headers: {
             Accept: 'application/vnd.twitchtv.v5+json',
-            Authorization: `OAuth ${nodecg.bundleConfig.twitch.oauthToken}`,
+            Authorization: "OAuth " + nodecg.bundleConfig.twitch.oauthToken,
             'Client-ID': nodecg.bundleConfig.twitch.clientId,
             'Content-Type': 'application/json'
         },
@@ -31,10 +31,9 @@ currentRun.on('change', (newVal) => {
             }
         },
         json: true
-    }).then(() => {
+    }).then(function () {
         log.info('Successfully updated Twitch title and game to', newVal.longName);
-    }).catch(err => {
+    })["catch"](function (err) {
         log.error('Failed updating Twitch title and game:\n\t', err);
     });
 });
-//# sourceMappingURL=twitch-title-updater.js.map
