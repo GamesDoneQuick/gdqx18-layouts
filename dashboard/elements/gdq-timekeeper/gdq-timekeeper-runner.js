@@ -1,111 +1,108 @@
 import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
-window.addEventListener('load', () => {
-  const {
-    customElement,
-    property
-  } = Polymer.decorators;
-  let GdqTimekeeperRunner = class GdqTimekeeperRunner extends Polymer.Element {
-    calcRunnerStatus(results, index) {
-      if (!results) {
-        return;
-      }
-
-      if (results[index] && results[index].time) {
-        return results[index].time.formatted;
-      }
-
-      return 'Running';
+const {
+  customElement,
+  property
+} = Polymer.decorators;
+let GdqTimekeeperRunner = class GdqTimekeeperRunner extends Polymer.Element {
+  calcRunnerStatus(results, index) {
+    if (!results) {
+      return;
     }
 
-    calcRunnerStatusClass(results, index) {
-      if (!results) {
-        return;
-      }
-
-      if (results[index] && !results[index].forfeit) {
-        return 'finished';
-      }
-
-      return '';
+    if (results[index] && results[index].time) {
+      return results[index].time.formatted;
     }
 
-    calcFinishHidden(results, index) {
-      if (!results) {
-        return;
-      }
+    return 'Running';
+  }
 
-      return results[index] && !results[index].forfeit;
+  calcRunnerStatusClass(results, index) {
+    if (!results) {
+      return;
     }
 
-    calcResumeHidden(results, index) {
-      if (!results) {
-        return;
-      }
-
-      return !results[index];
+    if (results[index] && !results[index].forfeit) {
+      return 'finished';
     }
 
-    calcForfeitHidden(results, index) {
-      if (!results) {
-        return;
-      }
+    return '';
+  }
 
-      return results[index] && results[index].forfeit;
+  calcFinishHidden(results, index) {
+    if (!results) {
+      return;
     }
 
-    calcEditDisabled(results, runnerIndex) {
-      if (!results) {
-        return;
-      }
+    return results[index] && !results[index].forfeit;
+  }
 
-      return !results[runnerIndex];
+  calcResumeHidden(results, index) {
+    if (!results) {
+      return;
     }
 
-    finish() {
-      nodecg.sendMessage('completeRunner', {
-        index: this.index,
-        forfeit: false
-      });
+    return !results[index];
+  }
+
+  calcForfeitHidden(results, index) {
+    if (!results) {
+      return;
     }
 
-    forfeit() {
-      nodecg.sendMessage('completeRunner', {
-        index: this.index,
-        forfeit: true
-      });
+    return results[index] && results[index].forfeit;
+  }
+
+  calcEditDisabled(results, runnerIndex) {
+    if (!results) {
+      return;
     }
 
-    resume() {
-      nodecg.sendMessage('resumeRunner', this.index);
-    }
+    return !results[runnerIndex];
+  }
 
-    editTime() {
-      this.dispatchEvent(new CustomEvent('edit-time', {
-        bubbles: true,
-        composed: true
-      }));
-    }
+  finish() {
+    nodecg.sendMessage('completeRunner', {
+      index: this.index,
+      forfeit: false
+    });
+  }
 
-  };
+  forfeit() {
+    nodecg.sendMessage('completeRunner', {
+      index: this.index,
+      forfeit: true
+    });
+  }
 
-  tslib_1.__decorate([property({
-    type: String
-  })], GdqTimekeeperRunner.prototype, "importPath", void 0);
+  resume() {
+    nodecg.sendMessage('resumeRunner', this.index);
+  }
 
-  tslib_1.__decorate([property({
-    type: Number
-  })], GdqTimekeeperRunner.prototype, "index", void 0);
+  editTime() {
+    this.dispatchEvent(new CustomEvent('edit-time', {
+      bubbles: true,
+      composed: true
+    }));
+  }
 
-  tslib_1.__decorate([property({
-    type: Object
-  })], GdqTimekeeperRunner.prototype, "runner", void 0);
+};
 
-  tslib_1.__decorate([property({
-    type: Array
-  })], GdqTimekeeperRunner.prototype, "results", void 0);
+tslib_1.__decorate([property({
+  type: String
+})], GdqTimekeeperRunner.prototype, "importPath", void 0);
 
-  GdqTimekeeperRunner = tslib_1.__decorate([customElement('gdq-timekeeper-runner')], GdqTimekeeperRunner); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
+tslib_1.__decorate([property({
+  type: Number
+})], GdqTimekeeperRunner.prototype, "index", void 0);
 
-  window.GdqTimekeeperRunner = GdqTimekeeperRunner;
-});
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImdkcS10aW1la2VlcGVyLXJ1bm5lci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBY0EsTUFBTSxDQUFDLGdCQUFQLENBQXdCLE1BQXhCLEVBQWdDLE1BQUs7QUFDcEMsUUFBTTtBQUFDLElBQUEsYUFBRDtBQUFnQixJQUFBO0FBQWhCLE1BQTRCLE9BQU8sQ0FBQyxVQUExQztBQUdBLE1BQU0sbUJBQW1CLEdBQXpCLE1BQU0sbUJBQU4sU0FBa0MsT0FBTyxDQUFDLE9BQTFDLENBQWlEO0FBYWhELElBQUEsZ0JBQWdCLENBQUMsT0FBRCxFQUE2QixLQUE3QixFQUEwQztBQUN6RCxVQUFJLENBQUMsT0FBTCxFQUFjO0FBQ2I7QUFDQTs7QUFFRCxVQUFJLE9BQU8sQ0FBQyxLQUFELENBQVAsSUFBa0IsT0FBTyxDQUFDLEtBQUQsQ0FBUCxDQUFlLElBQXJDLEVBQTJDO0FBQzFDLGVBQU8sT0FBTyxDQUFDLEtBQUQsQ0FBUCxDQUFlLElBQWYsQ0FBb0IsU0FBM0I7QUFDQTs7QUFFRCxhQUFPLFNBQVA7QUFDQTs7QUFFRCxJQUFBLHFCQUFxQixDQUFDLE9BQUQsRUFBNkIsS0FBN0IsRUFBMEM7QUFDOUQsVUFBSSxDQUFDLE9BQUwsRUFBYztBQUNiO0FBQ0E7O0FBRUQsVUFBSSxPQUFPLENBQUMsS0FBRCxDQUFQLElBQWtCLENBQUMsT0FBTyxDQUFDLEtBQUQsQ0FBUCxDQUFlLE9BQXRDLEVBQStDO0FBQzlDLGVBQU8sVUFBUDtBQUNBOztBQUVELGFBQU8sRUFBUDtBQUNBOztBQUVELElBQUEsZ0JBQWdCLENBQUMsT0FBRCxFQUE2QixLQUE3QixFQUEwQztBQUN6RCxVQUFJLENBQUMsT0FBTCxFQUFjO0FBQ2I7QUFDQTs7QUFFRCxhQUFPLE9BQU8sQ0FBQyxLQUFELENBQVAsSUFBa0IsQ0FBQyxPQUFPLENBQUMsS0FBRCxDQUFQLENBQWUsT0FBekM7QUFDQTs7QUFFRCxJQUFBLGdCQUFnQixDQUFDLE9BQUQsRUFBNkIsS0FBN0IsRUFBMEM7QUFDekQsVUFBSSxDQUFDLE9BQUwsRUFBYztBQUNiO0FBQ0E7O0FBRUQsYUFBTyxDQUFDLE9BQU8sQ0FBQyxLQUFELENBQWY7QUFDQTs7QUFFRCxJQUFBLGlCQUFpQixDQUFDLE9BQUQsRUFBNkIsS0FBN0IsRUFBMEM7QUFDMUQsVUFBSSxDQUFDLE9BQUwsRUFBYztBQUNiO0FBQ0E7O0FBRUQsYUFBTyxPQUFPLENBQUMsS0FBRCxDQUFQLElBQWtCLE9BQU8sQ0FBQyxLQUFELENBQVAsQ0FBZSxPQUF4QztBQUNBOztBQUVELElBQUEsZ0JBQWdCLENBQUMsT0FBRCxFQUE2QixXQUE3QixFQUFnRDtBQUMvRCxVQUFJLENBQUMsT0FBTCxFQUFjO0FBQ2I7QUFDQTs7QUFFRCxhQUFPLENBQUMsT0FBTyxDQUFDLFdBQUQsQ0FBZjtBQUNBOztBQUVELElBQUEsTUFBTSxHQUFBO0FBQ0wsTUFBQSxNQUFNLENBQUMsV0FBUCxDQUFtQixnQkFBbkIsRUFBcUM7QUFBQyxRQUFBLEtBQUssRUFBRSxLQUFLLEtBQWI7QUFBb0IsUUFBQSxPQUFPLEVBQUU7QUFBN0IsT0FBckM7QUFDQTs7QUFFRCxJQUFBLE9BQU8sR0FBQTtBQUNOLE1BQUEsTUFBTSxDQUFDLFdBQVAsQ0FBbUIsZ0JBQW5CLEVBQXFDO0FBQUMsUUFBQSxLQUFLLEVBQUUsS0FBSyxLQUFiO0FBQW9CLFFBQUEsT0FBTyxFQUFFO0FBQTdCLE9BQXJDO0FBQ0E7O0FBRUQsSUFBQSxNQUFNLEdBQUE7QUFDTCxNQUFBLE1BQU0sQ0FBQyxXQUFQLENBQW1CLGNBQW5CLEVBQW1DLEtBQUssS0FBeEM7QUFDQTs7QUFFRCxJQUFBLFFBQVEsR0FBQTtBQUNQLFdBQUssYUFBTCxDQUFtQixJQUFJLFdBQUosQ0FBZ0IsV0FBaEIsRUFBNkI7QUFBQyxRQUFBLE9BQU8sRUFBRSxJQUFWO0FBQWdCLFFBQUEsUUFBUSxFQUFFO0FBQTFCLE9BQTdCLENBQW5CO0FBQ0E7O0FBbkYrQyxHQUFqRDs7QUFFQyxFQUFBLE9BQUEsQ0FBQSxVQUFBLENBQUEsQ0FEQyxRQUFRLENBQUM7QUFBQyxJQUFBLElBQUksRUFBRTtBQUFQLEdBQUQsQ0FDVCxDQUFBLEUsNkJBQUEsRSxZQUFBLEUsS0FBbUIsQ0FBbkI7O0FBR0EsRUFBQSxPQUFBLENBQUEsVUFBQSxDQUFBLENBREMsUUFBUSxDQUFDO0FBQUMsSUFBQSxJQUFJLEVBQUU7QUFBUCxHQUFELENBQ1QsQ0FBQSxFLDZCQUFBLEUsT0FBQSxFLEtBQWMsQ0FBZDs7QUFHQSxFQUFBLE9BQUEsQ0FBQSxVQUFBLENBQUEsQ0FEQyxRQUFRLENBQUM7QUFBQyxJQUFBLElBQUksRUFBRTtBQUFQLEdBQUQsQ0FDVCxDQUFBLEUsNkJBQUEsRSxRQUFBLEUsS0FBZSxDQUFmOztBQUdBLEVBQUEsT0FBQSxDQUFBLFVBQUEsQ0FBQSxDQURDLFFBQVEsQ0FBQztBQUFDLElBQUEsSUFBSSxFQUFFO0FBQVAsR0FBRCxDQUNULENBQUEsRSw2QkFBQSxFLFNBQUEsRSxLQUFvQyxDQUFwQzs7QUFYSyxFQUFBLG1CQUFtQixHQUFBLE9BQUEsQ0FBQSxVQUFBLENBQUEsQ0FEeEIsYUFBYSxDQUFDLHVCQUFELENBQ1csQ0FBQSxFQUFuQixtQkFBbUIsQ0FBbkIsQ0FKOEIsQ0EwRnBDOztBQUNDLEVBQUEsTUFBYyxDQUFDLG1CQUFmLEdBQXFDLG1CQUFyQztBQUNELENBNUZEIiwic291cmNlUm9vdCI6IiJ9
+tslib_1.__decorate([property({
+  type: Object
+})], GdqTimekeeperRunner.prototype, "runner", void 0);
+
+tslib_1.__decorate([property({
+  type: Array
+})], GdqTimekeeperRunner.prototype, "results", void 0);
+
+GdqTimekeeperRunner = tslib_1.__decorate([customElement('gdq-timekeeper-runner')], GdqTimekeeperRunner);
+export default GdqTimekeeperRunner;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,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

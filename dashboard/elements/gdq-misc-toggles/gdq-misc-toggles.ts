@@ -1,54 +1,50 @@
-window.addEventListener('load', () => {
-	const {customElement} = Polymer.decorators;
-	const autoUploadRecordings = nodecg.Replicant<boolean>('autoUploadRecordings');
-	const recordTrackerEnabled = nodecg.Replicant<boolean>('recordTrackerEnabled');
+const {customElement} = Polymer.decorators;
+const autoUploadRecordings = nodecg.Replicant<boolean>('autoUploadRecordings');
+const recordTrackerEnabled = nodecg.Replicant<boolean>('recordTrackerEnabled');
 
-	/**
-	 * @customElement
-	 * @polymer
-	 */
-	@customElement('gdq-misc-toggles')
-	class GdqMiscToggles extends Polymer.Element {
-		ready() {
-			super.ready();
-			Polymer.RenderStatus.beforeNextRender(this, () => {
-				recordTrackerEnabled.on('change', newVal => {
-					if (newVal) {
-						(this.$.milestoneToggle as PaperToggleButtonElement).checked = newVal;
-					}
-				});
-
-				autoUploadRecordings.on('change', newVal => {
-					(this.$.uploadToggle as PaperToggleButtonElement).checked = newVal;
-				});
-
-				this._checkUploadToggleDisable();
+/**
+ * @customElement
+ * @polymer
+ */
+@customElement('gdq-misc-toggles')
+export default class GdqMiscToggles extends Polymer.Element {
+	ready() {
+		super.ready();
+		Polymer.RenderStatus.beforeNextRender(this, () => {
+			recordTrackerEnabled.on('change', newVal => {
+				if (newVal) {
+					(this.$.milestoneToggle as PaperToggleButtonElement).checked = newVal;
+				}
 			});
-		}
 
-		_checkUploadToggleDisable() {
-			if (nodecg.bundleConfig.youtubeUploadScriptPath) {
-				this.$.uploadToggle.removeAttribute('disabled');
-			} else {
-				this.$.uploadToggle.setAttribute('disabled', 'true');
-			}
-		}
+			autoUploadRecordings.on('change', newVal => {
+				(this.$.uploadToggle as PaperToggleButtonElement).checked = newVal;
+			});
 
-		_handleMiletoneTrackerToggleChange(e: Event) {
-			if (!e.target) {
-				return;
-			}
-			recordTrackerEnabled.value = Boolean((e.target as PaperToggleButtonElement).checked);
-		}
+			this._checkUploadToggleDisable();
+		});
+	}
 
-		_handleUploadToggleChange(e: Event) {
-			if (!e.target) {
-				return;
-			}
-			autoUploadRecordings.value = Boolean((e.target as PaperToggleButtonElement).checked);
+	_checkUploadToggleDisable() {
+		if (nodecg.bundleConfig.youtubeUploadScriptPath) {
+			this.$.uploadToggle.removeAttribute('disabled');
+		} else {
+			this.$.uploadToggle.setAttribute('disabled', 'true');
 		}
 	}
 
-	// This assignment to window is unnecessary, but tsc complains that the class is unused without it.
-	(window as any).GdqMiscToggles = GdqMiscToggles;
-});
+	_handleMiletoneTrackerToggleChange(e: Event) {
+		if (!e.target) {
+			return;
+		}
+		recordTrackerEnabled.value = Boolean((e.target as PaperToggleButtonElement).checked);
+	}
+
+	_handleUploadToggleChange(e: Event) {
+		if (!e.target) {
+			return;
+		}
+		autoUploadRecordings.value = Boolean((e.target as PaperToggleButtonElement).checked);
+	}
+}
+

@@ -1,69 +1,64 @@
 import {Checklist, ChecklistGroup} from '../../../src/types/schemas/checklist';
 
-window.addEventListener('load', () => {
-	const {customElement, property} = Polymer.decorators;
-	const checklist = nodecg.Replicant<Checklist>('checklist');
+const {customElement, property} = Polymer.decorators;
+const checklist = nodecg.Replicant<Checklist>('checklist');
 
-	@customElement('gdq-checklist')
-	class GdqChecklist extends Polymer.MutableData(Polymer.Element) {
-		@property({type: Array})
-		stageTechDuties: ChecklistGroup;
+@customElement('gdq-checklist')
+export default class GdqChecklist extends Polymer.MutableData(Polymer.Element) {
+	@property({type: Array})
+	stageTechDuties: ChecklistGroup;
 
-		@property({type: Array})
-		extraContent: ChecklistGroup;
+	@property({type: Array})
+	extraContent: ChecklistGroup;
 
-		@property({type: Array})
-		techStationDuties: ChecklistGroup;
+	@property({type: Array})
+	techStationDuties: ChecklistGroup;
 
-		@property({type: Boolean})
-		audioReady: boolean;
+	@property({type: Boolean})
+	audioReady: boolean;
 
-		@property({type: Boolean})
-		recordingsCycled: boolean;
+	@property({type: Boolean})
+	recordingsCycled: boolean;
 
-		ready() {
-			super.ready();
-			checklist.on('change', newVal => {
-				if (!newVal) {
-					return;
-				}
-				this.extraContent = newVal.extraContent;
-				this.techStationDuties = newVal.techStationDuties;
-				this.stageTechDuties = newVal.stageTechDuties;
-				this.audioReady = newVal.audioEngineerDuties.every(task => task.complete);
-
-				const cycleRecordingsTask = newVal.special.find(task => task.name === 'Cycle Recordings');
-				if (cycleRecordingsTask) {
-					this.recordingsCycled = cycleRecordingsTask.complete;
-				}
-			});
-
-			this._checkboxChanged = this._checkboxChanged.bind(this);
-			this.addEventListener('change', this._checkboxChanged);
-		}
-
-		_checkboxChanged(e: Event) {
-			const target = e.composedPath()[0] as PaperCheckboxElement;
-			const category = target.getAttribute('category');
-			const name = target.hasAttribute('name') ?
-				target.getAttribute('name') :
-				target.innerText.trim();
-
-			if (!category) {
+	ready() {
+		super.ready();
+		checklist.on('change', newVal => {
+			if (!newVal) {
 				return;
 			}
+			this.extraContent = newVal.extraContent;
+			this.techStationDuties = newVal.techStationDuties;
+			this.stageTechDuties = newVal.stageTechDuties;
+			this.audioReady = newVal.audioEngineerDuties.every(task => task.complete);
 
-			((checklist.value as any)[category] as ChecklistGroup).find(task => {
-				if (task.name === name) {
-					task.complete = Boolean(target.checked);
-					return true;
-				}
+			const cycleRecordingsTask = newVal.special.find(task => task.name === 'Cycle Recordings');
+			if (cycleRecordingsTask) {
+				this.recordingsCycled = cycleRecordingsTask.complete;
+			}
+		});
 
-				return false;
-			});
-		}
+		this._checkboxChanged = this._checkboxChanged.bind(this);
+		this.addEventListener('change', this._checkboxChanged);
 	}
 
-	// This assignment to window is unnecessary, but tsc complains that the class is unused without it.
-	(window as any).GdqChecklist = GdqChecklist;
-});
+	_checkboxChanged(e: Event) {
+		const target = e.composedPath()[0] as PaperCheckboxElement;
+		const category = target.getAttribute('category');
+		const name = target.hasAttribute('name') ?
+			target.getAttribute('name') :
+			target.innerText.trim();
+
+		if (!category) {
+			return;
+		}
+
+		((checklist.value as any)[category] as ChecklistGroup).find(task => {
+			if (task.name === name) {
+				task.complete = Boolean(target.checked);
+				return true;
+			}
+
+			return false;
+		});
+	}
+}

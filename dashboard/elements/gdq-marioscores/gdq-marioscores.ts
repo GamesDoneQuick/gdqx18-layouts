@@ -1,37 +1,33 @@
 import {Scores} from '../../../src/types/schemas/scores';
 
-window.addEventListener('load', () => {
-	const {customElement, property} = Polymer.decorators;
-	const scoresRep = nodecg.Replicant<Scores>('scores');
+const {customElement, property} = Polymer.decorators;
+const scoresRep = nodecg.Replicant<Scores>('scores');
 
-	@customElement('gdq-marioscores')
-	class GdqMarioScores extends Polymer.Element {
-		@property({type: Object})
-		scores: Scores;
+@customElement('gdq-marioscores')
+export default class GdqMarioScores extends Polymer.Element {
+	@property({type: Object})
+	scores: Scores;
 
-		ready() {
-			super.ready();
-			scoresRep.on('change', newVal => {
-				if (newVal) {
-					this.scores = newVal;
-				}
-			});
-		}
-
-		_scoreInputChanged(e: Event) {
-			if (!scoresRep.value || !e.target) {
-				return;
+	ready() {
+		super.ready();
+		scoresRep.on('change', newVal => {
+			if (newVal) {
+				this.scores = newVal;
 			}
-
-			const target = e.target as PaperInputElement;
-			const teamIndex = parseInt(String(target.getAttribute('data-team-index')), 10);
-			const val = parseInt(String(target.value), 10);
-			if (typeof val === 'number' && !isNaN(val)) {
-				scoresRep.value[teamIndex] = val;
-			}
-		}
+		});
 	}
 
-	// This assignment to window is unnecessary, but tsc complains that the class is unused without it.
-	(window as any).GdqMarioScores = GdqMarioScores;
-});
+	_scoreInputChanged(e: Event) {
+		if (!scoresRep.value || !e.target) {
+			return;
+		}
+
+		const target = e.target as PaperInputElement;
+		const teamIndex = parseInt(String(target.getAttribute('data-team-index')), 10);
+		const val = parseInt(String(target.value), 10);
+		if (typeof val === 'number' && !isNaN(val)) {
+			scoresRep.value[teamIndex] = val;
+		}
+	}
+}
+

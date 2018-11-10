@@ -4,16 +4,38 @@
 	<meta charset="UTF-8">
 	<title>Stream Tech Dashboard</title>
 	<script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-	<link rel="import" href="../shared/elements/interfaces/ui-rundown/ui-rundown.html">
-	<link rel="import" href="elements/gdq-checklist/gdq-checklist.html">
-	<link rel="import" href="elements/gdq-countdown/gdq-countdown.html">
-	<link rel="import" href="elements/gdq-fanart/gdq-fanart.html">
-	<link rel="import" href="elements/gdq-misc-toggles/gdq-misc-toggles.html">
-	<link rel="import" href="elements/gdq-schedule/gdq-schedule.html">
-	<link rel="import" href="elements/gdq-timekeeper/gdq-timekeeper.html">
-	<link rel="import" href="elements/gdq-totals/gdq-totals.html">
-	<link rel="import" href="elements/gdq-marioscores/gdq-marioscores.html">
-	<link rel="import" href="elements/gdq-twitter-controls/gdq-twitter-controls.html">
+	<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="../bower_components/iron-input/iron-input.html">
+	<link rel="import" href="../bower_components/iron-validatable-behavior/iron-validatable-behavior.html">
+	<link rel="import" href="../bower_components/iron-validator-behavior/iron-validator-behavior.html">
+	<link rel="import" href="../bower_components/polymer-decorators/polymer-decorators.html">
+	<link rel="import" href="../bower_components/polymer/lib/mixins/mutable-data.html">
+	<link rel="import" href="../bower_components/polymer/lib/utils/debounce.html">
+	<link rel="import" href="../bower_components/polymer/polymer-element.html">
+	<link rel="import" href="../bower_components/polymer/polymer.html">
+
+	<script>
+		{
+			const links = [
+				'../shared/elements/interfaces/ui-rundown/ui-rundown.html',
+				'elements/gdq-checklist/gdq-checklist.html',
+				'elements/gdq-countdown/gdq-countdown.html',
+				'elements/gdq-fanart/gdq-fanart.html',
+				'elements/gdq-misc-toggles/gdq-misc-toggles.html',
+				'elements/gdq-schedule/gdq-schedule.html',
+				'elements/gdq-timekeeper/gdq-timekeeper.html',
+				'elements/gdq-totals/gdq-totals.html',
+				'elements/gdq-marioscores/gdq-marioscores.html',
+				'elements/gdq-twitter-controls/gdq-twitter-controls.html'
+			];
+			for (const link of links) {
+				const linkElem = document.createElement('link');
+				linkElem.rel = 'import';
+				linkElem.href = link;
+				document.head.appendChild(linkElem);
+			}
+		}
+	</script>
 
 	<custom-style>
 		<style include="iron-flex iron-flex-alignment">

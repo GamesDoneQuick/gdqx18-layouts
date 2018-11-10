@@ -1,121 +1,116 @@
 import {Stopwatch} from '../../../src/types/schemas/stopwatch';
 import {Checklist, ChecklistGroup} from '../../../src/types/schemas/checklist';
-import {IUiToast} from '../../../shared/elements/interfaces/ui-toast/ui-toast'
+import {IUiToast} from '../../../shared/elements/interfaces/ui-toast/ui-toast';
 
-window.addEventListener('load', () => {
-	const {customElement, property, observe} = Polymer.decorators;
-	const checklistRep = nodecg.Replicant<Checklist>('checklist');
-	const stopwatchRep = nodecg.Replicant<Stopwatch>('stopwatch');
-	const cyclingRecordingsRep = nodecg.Replicant<boolean>('obs:cyclingRecordings');
+const {customElement, property, observe} = Polymer.decorators;
+const checklistRep = nodecg.Replicant<Checklist>('checklist');
+const stopwatchRep = nodecg.Replicant<Stopwatch>('stopwatch');
+const cyclingRecordingsRep = nodecg.Replicant<boolean>('obs:cyclingRecordings');
 
-	/**
-	 * @customElement
-	 * @polymer
-	 */
-	@customElement('gdq-checklist-recording')
-	class GdqChecklistRecording extends Polymer.Element {
-		@property({type: String})
-		name: string;
+/**
+ * @customElement
+ * @polymer
+ */
+@customElement('gdq-checklist-recording')
+export default class GdqChecklistRecording extends Polymer.Element {
+	@property({type: String})
+	name: string;
 
-		@property({type: String})
-		category: string;
+	@property({type: String})
+	category: string;
 
-		@property({type: Boolean, notify: true, reflectToAttribute: true})
-		checked: boolean;
+	@property({type: Boolean, notify: true, reflectToAttribute: true})
+	checked: boolean;
 
-		@property({type: Boolean, reflectToAttribute: true})
-		warning: boolean;
+	@property({type: Boolean, reflectToAttribute: true})
+	warning: boolean;
 
-		@property({type: Boolean, reflectToAttribute: true})
-		disabled: boolean;
+	@property({type: Boolean, reflectToAttribute: true})
+	disabled: boolean;
 
-		@property({type: Boolean})
-		_stopwatchState: boolean;
+	@property({type: Boolean})
+	_stopwatchState: boolean;
 
-		@property({type: Boolean})
-		_cyclingRecordings: boolean;
+	@property({type: Boolean})
+	_cyclingRecordings: boolean;
 
-		ready() {
-			super.ready();
+	ready() {
+		super.ready();
 
-			checklistRep.on('change', newVal => {
-				if (!newVal) {
-					return;
+		checklistRep.on('change', newVal => {
+			if (!newVal) {
+				return;
+			}
+
+			const incompleteTasks: ChecklistGroup = [];
+			for (const key in newVal) { // tslint:disable-line:no-for-in
+				if (!{}.hasOwnProperty.call(newVal, key)) {
+					continue;
 				}
 
-				const incompleteTasks: ChecklistGroup = [];
-				for (const key in newVal) { // tslint:disable-line:no-for-in
-					if (!{}.hasOwnProperty.call(newVal, key)) {
-						continue;
+				const category = (newVal as any)[key] as ChecklistGroup;
+				category.forEach(task => {
+					if (!task.complete) {
+						incompleteTasks.push(task);
 					}
+				});
+			}
+			this.warning = incompleteTasks.length > 1 && incompleteTasks[0].name !== 'Cycle Recordings';
+		});
 
-					const category = (newVal as any)[key] as ChecklistGroup;
-					category.forEach(task => {
-						if (!task.complete) {
-							incompleteTasks.push(task);
-						}
-					});
-				}
-				this.warning = incompleteTasks.length > 1 && incompleteTasks[0].name !== 'Cycle Recordings';
-			});
-
-			stopwatchRep.on('change', newVal => {
-				if (!newVal) {
-					return;
-				}
-
-				this._stopwatchState = newVal.state === 'running';
-			});
-
-			cyclingRecordingsRep.on('change', newVal => {
-				this._cyclingRecordings = newVal;
-			});
-
-			nodecg.listenFor('obs:recordingsCycled', error => {
-				// @TODO: how do we reference the UiToast typings here?
-				const toast = this.$.toast as IUiToast;
-
-				if (error) {
-					let errorString = error;
-					if (error.message) {
-						errorString = error.message;
-					} else if (error.error) {
-						errorString = error.error;
-					}
-					toast.showErrorToast('Failed to cycle recordings: ' + errorString);
-				} else {
-					toast.showSuccessToast('Recordings cycled.');
-				}
-			});
-
-			this.addEventListener('click', () => {
-				const checkbox = this.$.checkbox as PaperCheckboxElement;
-				checkbox.click();
-			});
-		}
-
-		@observe('_stopwatchState', '_cyclingRecordings')
-		_calcDisabled(stopwatchState: boolean, cyclingRecordings: boolean) {
-			this.disabled = Boolean(stopwatchState || cyclingRecordings);
-		}
-
-		_calcContextPage(warning: boolean, disabled: boolean, cyclingRecordings: boolean) {
-			if (cyclingRecordings) {
-				return 'cycling';
+		stopwatchRep.on('change', newVal => {
+			if (!newVal) {
+				return;
 			}
 
-			if (disabled) {
-				return 'disabled';
-			}
+			this._stopwatchState = newVal.state === 'running';
+		});
 
-			if (warning) {
-				return 'warning';
-			}
+		cyclingRecordingsRep.on('change', newVal => {
+			this._cyclingRecordings = newVal;
+		});
 
-			return 'all-clear';
-		}
+		nodecg.listenFor('obs:recordingsCycled', error => {
+			// @TODO: how do we reference the UiToast typings here?
+			const toast = this.$.toast as IUiToast;
+
+			if (error) {
+				let errorString = error;
+				if (error.message) {
+					errorString = error.message;
+				} else if (error.error) {
+					errorString = error.error;
+				}
+				toast.showErrorToast('Failed to cycle recordings: ' + errorString);
+			} else {
+				toast.showSuccessToast('Recordings cycled.');
+			}
+		});
+
+		this.addEventListener('click', () => {
+			const checkbox = this.$.checkbox as PaperCheckboxElement;
+			checkbox.click();
+		});
 	}
 
-	// This assignment to window is unnecessary, but tsc complains that the class is unused without it.
-	(window as any).GdqChecklistRecording = GdqChecklistRecording;
-});
+	@observe('_stopwatchState', '_cyclingRecordings')
+	_calcDisabled(stopwatchState: boolean, cyclingRecordings: boolean) {
+		this.disabled = Boolean(stopwatchState || cyclingRecordings);
+	}
+
+	_calcContextPage(warning: boolean, disabled: boolean, cyclingRecordings: boolean) {
+		if (cyclingRecordings) {
+			return 'cycling';
+		}
+
+		if (disabled) {
+			return 'disabled';
+		}
+
+		if (warning) {
+			return 'warning';
+		}
+
+		return 'all-clear';
+	}
+}
