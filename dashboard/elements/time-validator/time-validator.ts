@@ -1,13 +1,9 @@
-Polymer({
-	is: 'time-validator',
+const {customElement} = Polymer.decorators;
 
-	// @ts-ignore
-	behaviors: [
-		Polymer.IronValidatorBehavior
-	],
-
+@customElement('time-validator')
+export default class TimeValidator extends Polymer.mixinBehaviors([Polymer.IronValidatorBehavior], Polymer.Element) {
 	validate(value: string) {
 		// This regex validates incomplete times (by design)
 		return !value || value.match(/^[0-9]{0,2}:[0-9]{0,2}$/);
 	}
-});
+}

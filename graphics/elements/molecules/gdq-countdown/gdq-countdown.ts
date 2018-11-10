@@ -17,11 +17,8 @@ const nowPlaying = nodecg.Replicant<NowPlaying>('nowPlaying');
  */
 @customElement('gdq-countdown')
 export default class GdqCountdown extends Polymer.Element {
-	@property({type: Object, readOnly: true})
-	_countdownTimeline: TimelineLite = new TimelineLite({autoRemoveChildren: true});
-
-	@property({type: Object, readOnly: true})
-	_nowPlayingTimeline: TimelineLite = new TimelineLite({autoRemoveChildren: true});
+	@property({type: Object})
+	private readonly countdownTimeline: TimelineLite = new TimelineLite({autoRemoveChildren: true});
 
 	_initialized: boolean;
 	_didTweenRed: boolean;
@@ -86,7 +83,7 @@ export default class GdqCountdown extends Polymer.Element {
 
 		clearTimeout(this._fooTimeout);
 
-		const tl = this._countdownTimeline;
+		const tl = this.countdownTimeline;
 
 		tl.add(createMaybeRandomTween({
 			target: (this.$.pressStart as HTMLDivElement).style,
@@ -116,7 +113,7 @@ export default class GdqCountdown extends Polymer.Element {
 			return;
 		}
 
-		const tl = this._countdownTimeline;
+		const tl = this.countdownTimeline;
 
 		tl.add(createMaybeRandomTween({
 			target: (this.$.countdown as HTMLDivElement).style,

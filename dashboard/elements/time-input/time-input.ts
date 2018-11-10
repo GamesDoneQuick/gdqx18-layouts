@@ -1,53 +1,29 @@
-export interface ITimeInput extends Polymer.Element {
+const {customElement, property, observe} = Polymer.decorators;
+
+@customElement('time-input')
+export default class TimeInput extends Polymer.mixinBehaviors([Polymer.IronValidatableBehavior], Polymer.Element) {
+	@property({type: Boolean, reflectToAttribute: true})
+	invalid: boolean = false;
+
+	@property({type: String, notify: true})
 	value: string;
-	invalid: boolean;
-	setMS(m: number, s: number): void;
-}
 
-Polymer({
-	is: 'time-input',
+	@property({type: Number})
+	_minutes: number | string;
 
-	properties: {
-		invalid: {
-			reflectToAttribute: true,
-			type: Boolean,
-			value: false
-		},
+	@property({type: Number})
+	_seconds: number | string;
 
-		value: {
-			notify: true,
-			type: String
-		},
+	@property({type: String})
+	validator = 'time-validator';
 
-		_minutes: {
-			type: Number
-		},
-
-		_seconds: {
-			type: Number
-		},
-
-		validator: {
-			type: String,
-			value: 'time-validator'
-		}
-	},
-
-	// @ts-ignore
-	behaviors: [
-		Polymer.IronValidatableBehavior
-	],
-
-	observers: [
-		'_computeValue(_minutes,_seconds)'
-	],
+	@observe('_minutes', '_seconds')
+	_computeValue(minutes: number, seconds: number) {
+		this.value = `${minutes}:${seconds}`;
+	}
 
 	setMS(m: number, s: number) {
 		this._minutes = m < 10 ? `0${m}` : m;
 		this._seconds = s < 10 ? `0${s}` : s;
-	},
-
-	_computeValue(minutes: number, seconds: number) {
-		this.value = `${minutes}:${seconds}`;
 	}
-});
+}

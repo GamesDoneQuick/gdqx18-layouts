@@ -1,4 +1,4 @@
-import {ITimeInput} from '../time-input/time-input';
+import TimeInput from '../time-input/time-input';
 import {Countdown} from '../../../src/types/schemas/countdown';
 import {CountdownRunning} from '../../../src/types/schemas/countdownRunning';
 
@@ -13,7 +13,7 @@ export default class GdqCountdown extends Polymer.Element {
 
 		countdown.on('change', newVal => {
 			if (newVal) {
-				const timeInput = this.$.timeInput as ITimeInput;
+				const timeInput = this.$.timeInput as TimeInput;
 				timeInput.setMS(newVal.minutes, newVal.seconds);
 			}
 		});
@@ -34,7 +34,7 @@ export default class GdqCountdown extends Polymer.Element {
 	}
 
 	start() {
-		nodecg.sendMessage('startCountdown', (this.$.timeInput as ITimeInput).value);
+		nodecg.sendMessage('startCountdown', (this.$.timeInput as TimeInput).value);
 	}
 
 	stop() {

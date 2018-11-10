@@ -54,8 +54,8 @@ export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
 		 * and are at a point in the animation where we can show another one
 		 * without performing a full exit/enter cycle again.
 		 */
-		@property({type: Boolean, notify: true, observer: InterruptMixin.prototype._canExtendChanged, readOnly: true})
-		canExtend: boolean = false;
+		@property({type: Boolean, notify: true, observer: InterruptMixin.prototype._canExtendChanged})
+		readonly canExtend: boolean = false;
 
 		abstract _createEntranceAnim(item: any): TimelineLite;
 		abstract _createChangeAnim(item: any): TimelineLite;
