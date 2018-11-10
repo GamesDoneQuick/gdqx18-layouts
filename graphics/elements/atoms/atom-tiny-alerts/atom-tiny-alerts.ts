@@ -12,6 +12,7 @@ export interface Alert {
 	holdDuration?: number;
 }
 
+console.log('atom-tiny-alerts');
 window.addEventListener('load', () => {
 	const {customElement} = Polymer.decorators;
 
