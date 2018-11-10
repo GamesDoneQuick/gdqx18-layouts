@@ -14,7 +14,7 @@ import {Replicant} from '../types/nodecg';
 import {Gdq3AcurrentLayout} from '../types/schemas/gdq%3AcurrentLayout';
 import {AutoUploadRecordings} from '../types/schemas/autoUploadRecordings';
 import {Obs3AcyclingRecordings} from '../types/schemas/obs%3AcyclingRecordings';
-import * as gdqUtils from '../../shared/lib/gdq-utils';
+import * as gdqUtils from '../../dist/shared/lib/gdq-utils';
 
 const nodecg = nodecgApiContext.get();
 

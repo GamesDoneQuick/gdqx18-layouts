@@ -1,17 +1,18 @@
 {
 	"extends": "./tsconfig.base",
 	"compilerOptions": {
-		"target": "es2015",
 		"module": "es2015",
-		"sourceMap": false,
-		"inlineSourceMap": true,
-		"declaration": false,
 		"experimentalDecorators": true,
 		"skipLibCheck": true,
-		"moduleResolution": "node",
 		"paths": {
 			"tslib" : ["node_modules/tslib/tslib.d.ts"]
-		}
+		},
+
+		// Extra output
+		"declaration": false,
+		"declarationMap": false,
+		"sourceMap": false,
+		"inlineSourceMap": true
 	},
 	"include": [
 		"../../types/browser.d.ts",
@@ -21,6 +22,5 @@
 		"dashboard/**/*.ts",
 		"graphics/**/*.ts",
 		"shared/**/*.ts"
-	],
-	"references": [{"path": "src/types"}]
+	]
 }

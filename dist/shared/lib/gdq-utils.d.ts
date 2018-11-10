@@ -5,3 +5,4 @@
  */
 export declare function preloadImage(src: string): any;
 export declare function isGameScene(sceneName: string): boolean;
+//# sourceMappingURL=gdq-utils.d.ts.map
