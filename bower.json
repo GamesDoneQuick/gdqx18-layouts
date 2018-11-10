@@ -1,7 +1,6 @@
 {
   "name": "gdqx18-layouts",
   "dependencies": {
-    "EaselJS": "1.0.2",
     "iron-icons": "PolymerElements/iron-icons#^2.0.0",
     "iron-image": "PolymerElements/iron-image#^2.1.1",
     "iron-list": "PolymerElements/iron-list#^2.0.2",
@@ -35,7 +34,7 @@
     "web-animations-js": "^2.3.1",
     "paper-spinner": "PolymerElements/paper-spinner#^2.1.0",
     "sc-data-binding-helpers": "SupportClass/sc-data-binding-helpers#^1.2.0",
-    "polymer-decorators": "Polymer/polymer-decorators#2"
+    "polymer-decorators": "Polymer/polymer-decorators#^2.1.0"
   },
   "devDependencies": {
     "mock-nodecg": "nodecg/mock-nodecg#^1.5.1"
@@ -44,6 +43,6 @@
     "vaadin-combo-box": "v2.0.0",
     "polymer": "^2.4",
     "webcomponentsjs": "^v1.1.0",
-    "polymer-decorators": "2"
+    "polymer-decorators": "^2.1.0"
   }
 }

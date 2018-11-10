@@ -1,7 +1,7 @@
 {
-	"extends": "../../tsconfig",
+	"extends": "../../tsconfig.node",
 	"compilerOptions": {
-		"outDir": "../../dist/extension",
+		"outDir": "../../dist",
 		"module": "commonjs",
 		"moduleResolution": "node"
 	},

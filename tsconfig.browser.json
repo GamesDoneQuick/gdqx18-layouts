@@ -8,12 +8,14 @@
 		"declaration": false,
 		"experimentalDecorators": true,
 		"skipLibCheck": true,
+		"moduleResolution": "node",
 		"paths": {
 			"tslib" : ["node_modules/tslib/tslib.d.ts"]
 		}
 	},
 	"include": [
 		"../../types/browser.d.ts",
+		"src/types/easeljs.d.ts",
 		"bower_components/**/*.d.ts",
 		"bower_components/svg.js/svg.js.d.ts",
 		"dashboard/**/*.ts",
