@@ -4,7 +4,22 @@
 	<meta charset="UTF-8">
 	<title>Countdown</title>
 	<link rel="stylesheet" href="style/layout.css">
-	<link rel="import" href="elements/molecules/gdq-countdown/gdq-countdown.html">
+	<link rel="import" href="../bower_components/polymer/polymer-element.html">
+	<link rel="import" href="../bower_components/polymer/lib/utils/debounce.html">
+	<link rel="import" href="../bower_components/polymer-decorators/polymer-decorators.html">
+	<script>
+		{
+			const links = [
+				'elements/molecules/gdq-countdown/gdq-countdown.html'
+			];
+			for (const link of links) {
+				const linkElem = document.createElement('link');
+				linkElem.rel = 'import';
+				linkElem.href = link;
+				document.head.appendChild(linkElem);
+			}
+		}
+	</script>
 
 	<style>
 		#container {

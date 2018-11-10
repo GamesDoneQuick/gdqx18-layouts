@@ -1,120 +1,108 @@
 import {Run, Runner} from '../../../../src/types/index';
 import {TweenLite, TimelineMax, Sine} from 'gsap';
 
-export interface IGdqBreakScheduleRun extends Polymer.Element {
+const {customElement, property} = Polymer.decorators;
+const DISPALY_DURATION = nodecg.bundleConfig.displayDuration;
+
+/**
+ * @customElement
+ * @polymer
+ */
+@customElement('gdq-break-schedule-run')
+export default class GdqBreakScheduleRun extends Polymer.MutableData(Polymer.Element) {
+	@property({type: Object, observer: GdqBreakScheduleRun.prototype._runChanged})
 	run: Run;
-	upNext: boolean;
-	_currentRunnerIndex: number;
+
+	@property({type: Boolean, reflectToAttribute: true})
+	upNext: boolean = false;
+
+	@property({type: Number})
+	_currentRunnerIndex: number = 0;
+
 	_runnerTimeline: TimelineMax | null;
-}
 
-window.addEventListener('load', () => {
-	const {customElement, property} = Polymer.decorators;
-	const DISPALY_DURATION = nodecg.bundleConfig.displayDuration;
+	ready() {
+		super.ready();
+		this.hidden = true;
+	}
 
-	/**
-	 * @customElement
-	 * @polymer
-	 */
-	@customElement('gdq-break-schedule-run')
-	class GdqBreakScheduleRun extends Polymer.MutableData(Polymer.Element) {
-		@property({type: Object, observer: GdqBreakScheduleRun.prototype._runChanged})
-		run: Run;
-
-		@property({type: Boolean, reflectToAttribute: true})
-		upNext: boolean = false;
-
-		@property({type: Number})
-		_currentRunnerIndex: number = 0;
-
-		_runnerTimeline: TimelineMax | null;
-
-		ready() {
-			super.ready();
-			this.hidden = true;
+	_runChanged(newVal: Run) {
+		this.hidden = !newVal;
+		if (!newVal) {
+			return;
 		}
 
-		_runChanged(newVal: Run) {
-			this.hidden = !newVal;
-			if (!newVal) {
-				return;
+		const WIDTH_ADDED_BY_BORDERS = 2;
+		const PADDING_OF_INFO_RUNNER = 48;
+		const infoRunnerElem = this.$['info-runner'] as Polymer.Element;
+
+		this._killRunnerLoopTimeline();
+
+		(infoRunnerElem as any).maxWidth = 0;
+		(infoRunnerElem as any).text = this._getLongestName(newVal.runners);
+		TweenLite.set(infoRunnerElem, {opacity: 1, width: 'auto'});
+		TweenLite.set(infoRunnerElem.$.fittedContent, {scaleX: 1});
+
+		Polymer.RenderStatus.beforeNextRender(this, () => {
+			(infoRunnerElem as any).maxWidth =
+				this.$.info.clientWidth -
+				WIDTH_ADDED_BY_BORDERS -
+				PADDING_OF_INFO_RUNNER -
+				this.$['info-category'].clientWidth;
+
+			infoRunnerElem.style.width = `${this.$['info-runner'].clientWidth - PADDING_OF_INFO_RUNNER}px`;
+			(infoRunnerElem as any).text = newVal.runners[0].name;
+
+			if (newVal.runners.length > 1) {
+				this._killRunnerLoopTimeline();
+				this._runnerTimeline = this._createRunnerLoopTimeline(newVal.runners);
 			}
+		});
+	}
 
-			const WIDTH_ADDED_BY_BORDERS = 2;
-			const PADDING_OF_INFO_RUNNER = 48;
-			const infoRunnerElem = this.$['info-runner'] as Polymer.Element;
+	_createRunnerLoopTimeline(runners: Runner[]) {
+		const tl = new TimelineMax({repeat: -1});
 
-			this._killRunnerLoopTimeline();
+		runners.slice(1).concat([runners[0]]).forEach(runner => {
+			tl.to(this.$['info-runner'], 0.5, {
+				opacity: 0,
+				ease: Sine.easeInOut
+			}, `+=${DISPALY_DURATION}`);
 
-			(infoRunnerElem as any).maxWidth = 0;
-			(infoRunnerElem as any).text = this._getLongestName(newVal.runners);
-			TweenLite.set(infoRunnerElem, {opacity: 1, width: 'auto'});
-			TweenLite.set(infoRunnerElem.$.fittedContent, {scaleX: 1});
-
-			Polymer.RenderStatus.beforeNextRender(this, () => {
-				(infoRunnerElem as any).maxWidth =
-					this.$.info.clientWidth -
-					WIDTH_ADDED_BY_BORDERS -
-					PADDING_OF_INFO_RUNNER -
-					this.$['info-category'].clientWidth;
-
-				infoRunnerElem.style.width = `${this.$['info-runner'].clientWidth - PADDING_OF_INFO_RUNNER}px`;
-				(infoRunnerElem as any).text = newVal.runners[0].name;
-
-				if (newVal.runners.length > 1) {
-					this._killRunnerLoopTimeline();
-					this._runnerTimeline = this._createRunnerLoopTimeline(newVal.runners);
-				}
-			});
-		}
-
-		_createRunnerLoopTimeline(runners: Runner[]) {
-			const tl = new TimelineMax({repeat: -1});
-
-			runners.slice(1).concat([runners[0]]).forEach(runner => {
-				tl.to(this.$['info-runner'], 0.5, {
-					opacity: 0,
-					ease: Sine.easeInOut
-				}, `+=${DISPALY_DURATION}`);
-
-				tl.call(() => {
-					(this.$['info-runner'] as any).text = runner.name;
-				});
-
-				tl.to(this.$['info-runner'], 0.5, {
-					opacity: 1,
-					ease: Sine.easeInOut
-				}, '+=0.1');
+			tl.call(() => {
+				(this.$['info-runner'] as any).text = runner.name;
 			});
 
-			return tl;
-		}
+			tl.to(this.$['info-runner'], 0.5, {
+				opacity: 1,
+				ease: Sine.easeInOut
+			}, '+=0.1');
+		});
 
-		_killRunnerLoopTimeline() {
-			if (this._runnerTimeline) {
-				this._runnerTimeline.kill();
-				this._runnerTimeline = null;
-			}
-		}
+		return tl;
+	}
 
-		_formatRunName(runName: unknown) {
-			if (!runName || typeof runName !== 'string') {
-				return '?';
-			}
-
-			return runName.replace(/\\n/g, ' ');
-		}
-
-		_getLongestName(runners: Runner[]) {
-			return runners.reduce((accumulator, currentValue) => {
-				if (!currentValue || !currentValue.name) {
-					return accumulator;
-				}
-				return currentValue.name.length > accumulator.length ? currentValue.name : accumulator;
-			}, '');
+	_killRunnerLoopTimeline() {
+		if (this._runnerTimeline) {
+			this._runnerTimeline.kill();
+			this._runnerTimeline = null;
 		}
 	}
 
-	// This assignment to window is unnecessary, but tsc complains that the class is unused without it.
-	(window as any).GdqBreakScheduleRun = GdqBreakScheduleRun;
-});
+	_formatRunName(runName: unknown) {
+		if (!runName || typeof runName !== 'string') {
+			return '?';
+		}
+
+		return runName.replace(/\\n/g, ' ');
+	}
+
+	_getLongestName(runners: Runner[]) {
+		return runners.reduce((accumulator, currentValue) => {
+			if (!currentValue || !currentValue.name) {
+				return accumulator;
+			}
+			return currentValue.name.length > accumulator.length ? currentValue.name : accumulator;
+		}, '');
+	}
+}

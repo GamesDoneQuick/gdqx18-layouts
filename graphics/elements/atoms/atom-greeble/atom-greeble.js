@@ -1,42 +1,30 @@
-"use strict";
+import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
+const {
+  customElement,
+  property
+} = Polymer.decorators;
+/**
+ * @customElement
+ * @polymer
+ */
 
-var __decorate = this && this.__decorate || function (decorators, target, key, desc) {
-  var c = arguments.length,
-      r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-      d;
-  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-  return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-window.addEventListener('load', () => {
-  const {
-    customElement,
-    property
-  } = Polymer.decorators;
+let AtomGreeble = class AtomGreeble extends Polymer.Element {
   /**
    * @customElement
    * @polymer
    */
+  constructor() {
+    super(...arguments);
+    this.align = 'left';
+  }
 
-  let AtomGreeble = class AtomGreeble extends Polymer.Element {
-    /**
-     * @customElement
-     * @polymer
-     */
-    constructor() {
-      super(...arguments);
-      this.align = 'left';
-    }
+};
 
-  };
+tslib_1.__decorate([property({
+  type: String,
+  reflectToAttribute: true
+})], AtomGreeble.prototype, "align", void 0);
 
-  __decorate([property({
-    type: String,
-    reflectToAttribute: true
-  })], AtomGreeble.prototype, "align", void 0);
-
-  AtomGreeble = __decorate([customElement('atom-greeble')], AtomGreeble); // This assignment to window is unnecessary, but tsc complains that the class is unused without it.
-
-  window.AtomGreeble = AtomGreeble;
-});
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImF0b20tZ3JlZWJsZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0FBQUEsTUFBTSxDQUFDLGdCQUFQLENBQXdCLE1BQXhCLEVBQWdDLE1BQUs7QUFDcEMsUUFBTTtBQUFDLElBQUEsYUFBRDtBQUFnQixJQUFBO0FBQWhCLE1BQTRCLE9BQU8sQ0FBQyxVQUExQztBQUVBOzs7OztBQUtBLE1BQU0sV0FBVyxHQUFqQixNQUFNLFdBQU4sU0FBMEIsT0FBTyxDQUFDLE9BQWxDLENBQXlDO0FBTHpDOzs7O0FBSUEsSUFBQSxXQUFBLEdBQUE7O0FBR0MsV0FBQSxLQUFBLEdBQTBCLE1BQTFCO0FBQ0E7O0FBSHdDLEdBQXpDOztBQUVDLEVBQUEsVUFBQSxDQUFBLENBREMsUUFBUSxDQUFDO0FBQUMsSUFBQSxJQUFJLEVBQUUsTUFBUDtBQUFlLElBQUEsa0JBQWtCLEVBQUU7QUFBbkMsR0FBRCxDQUNULENBQUEsRSxxQkFBQSxFLE9BQUEsRSxLQUFpQyxDQUFqQyxDQUFBOztBQUZLLEVBQUEsV0FBVyxHQUFBLFVBQUEsQ0FBQSxDQURoQixhQUFhLENBQUMsY0FBRCxDQUNHLENBQUEsRUFBWCxXQUFXLENBQVgsQ0FSOEIsQ0FhcEM7O0FBQ0MsRUFBQSxNQUFjLENBQUMsV0FBZixHQUE2QixXQUE3QjtBQUNELENBZkQiLCJzb3VyY2VSb290IjoiIn0=
+AtomGreeble = tslib_1.__decorate([customElement('atom-greeble')], AtomGreeble);
+export default AtomGreeble;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImF0b20tZ3JlZWJsZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQUEsTUFBTTtBQUFDLEVBQUEsYUFBRDtBQUFnQixFQUFBO0FBQWhCLElBQTRCLE9BQU8sQ0FBQyxVQUExQztBQUVBOzs7OztBQUtBLElBQXFCLFdBQVcsR0FBaEMsTUFBcUIsV0FBckIsU0FBeUMsT0FBTyxDQUFDLE9BQWpELENBQXdEO0FBTHhEOzs7O0FBSUEsRUFBQSxXQUFBLEdBQUE7O0FBR0MsU0FBQSxLQUFBLEdBQTBCLE1BQTFCO0FBQ0E7O0FBSHVELENBQXhEOztBQUVDLE9BQUEsQ0FBQSxVQUFBLENBQUEsQ0FEQyxRQUFRLENBQUM7QUFBQyxFQUFBLElBQUksRUFBRSxNQUFQO0FBQWUsRUFBQSxrQkFBa0IsRUFBRTtBQUFuQyxDQUFELENBQ1QsQ0FBQSxFLHFCQUFBLEUsT0FBQSxFLEtBQWlDLENBQWpDOztBQUZvQixXQUFXLEdBQUEsT0FBQSxDQUFBLFVBQUEsQ0FBQSxDQUQvQixhQUFhLENBQUMsY0FBRCxDQUNrQixDQUFBLEVBQVgsV0FBVyxDQUFYO2VBQUEsVyIsInNvdXJjZVJvb3QiOiIifQ==
