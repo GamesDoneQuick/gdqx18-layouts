@@ -15,9 +15,9 @@ export default class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) 
 	svgDoc: svgjs.Doc;
 	arrowBlock: svgjs.Element;
 
-	static DEFAULT_STROKE_SIZE: 1;
-	static DEFAULT_CHEVRON_WIDTH: 17;
-	static DEFAULT_SHADOW_SIZE: 12;
+	static DEFAULT_STROKE_SIZE = 1;
+	static DEFAULT_CHEVRON_WIDTH = 17;
+	static DEFAULT_SHADOW_SIZE = 12;
 
 	/**
 	 * Creates a new arrow block shape as an SVG.js Polygon.

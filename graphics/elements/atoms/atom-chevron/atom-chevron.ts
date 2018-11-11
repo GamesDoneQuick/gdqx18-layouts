@@ -1,7 +1,7 @@
 import CSSReflectionMixin from '../../../mixins/CSSReflectionMixin';
 
 const {customElement, property} = Polymer.decorators;
-const SVG = (window as any).svgjs as svgjs.Library;
+const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
 
 /**
  * @customElement
@@ -23,8 +23,8 @@ export default class AtomChevron extends CSSReflectionMixin(Polymer.Element) {
 
 	_lastDirection: 'left' | 'right';
 
-	static DEFAULT_THICKNESS: 6;
-	static DEFAULT_STROKE_SIZE: 1;
+	static DEFAULT_THICKNESS = 6;
+	static DEFAULT_STROKE_SIZE = 1;
 
 	/**
 	 * Creates a new chevron shape as an SVG.js Polygon.

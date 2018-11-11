@@ -1,3 +1,4 @@
+console.log('hello from atom-tronlines.js')
 import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
 var AtomTronlines_1;
 import Random from "../../../../shared/lib/vendor/random.js";

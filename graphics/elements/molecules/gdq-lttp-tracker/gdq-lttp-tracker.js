@@ -1,218 +1,251 @@
-(function () {
-	'use strict';
+import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
+const urlParams = new URLSearchParams(window.location.search);
+const MIRROR_MODE = getBooleanUrlParam(urlParams, 'mirrored');
+const GAME_ID = urlParams.has('game_id') ? urlParams.get('game_id') : 'supportclass';
+const {
+  customElement,
+  property
+} = Polymer.decorators;
 
-	const urlParams = new URLSearchParams(window.location.search);
-	const MIRROR_MODE = getBooleanUrlParam(urlParams, 'mirrored');
-	const GAME_ID = urlParams.has('game_id') ? urlParams.get('game_id') : 'supportclass';
-	if (MIRROR_MODE) {
-		document.title = `${document.title} (Mirrored)`;
-	}
+if (MIRROR_MODE) {
+  document.title = `${document.title} (Mirrored)`;
+}
 
-	function getBooleanUrlParam(urlParams, paramName) {
-		return urlParams.has(paramName) && urlParams.get(paramName) !== 'false' && urlParams.get(paramName) !== '0';
-	}
+function getBooleanUrlParam(params, paramName) {
+  return params.has(paramName) && params.get(paramName) !== 'false' && params.get(paramName) !== '0';
+}
 
-	const ITEM_ROWS = [[
-		{name: 'hookshot'},
-		{name: 'silvers'},
-		{name: 'bow'},
-		{name: 'boss0'}
-	], [
-		{name: 'firerod'},
-		{name: 'somaria'},
-		{name: 'hammer'},
-		{name: 'boss1'}
-	], [
-		{name: 'icerod'},
-		{name: 'byrna'},
-		{name: 'flute'},
-		{name: 'boss2'}
-	], [
-		{name: 'quake'},
-		{name: 'ether'},
-		{name: 'bombos'},
-		{name: 'boss3'}
-	], [
-		{name: 'boots'},
-		{name: 'moonpearl'},
-		{name: 'glove', hasLevels: true}, // has 2 variants (0-2)
-		{name: 'boss4'}
-	], [
-		{name: 'flippers'},
-		{name: 'mirror'},
-		{name: 'lantern'},
-		{name: 'boss5'}
-	], [
-		{name: 'powder'},
-		{name: 'book'},
-		{name: 'bottle', hasLevels: true}, // can be 0-4
-		{name: 'boss6'}
-	], [
-		{name: 'mushroom'},
-		{name: 'shovel'},
-		{name: 'net'},
-		{name: 'boss7'}
-	], [
-		{name: 'tunic', hasLevels: true}, // can be 1-3
-		{name: 'shield', hasLevels: true}, // can be 0-3
-		{name: 'sword', hasLevels: true}, // can be 0-4
-		{name: 'boss8'}
-	], [
-		{name: 'cape'},
-		{name: 'boomerang', hasLevels: true}, // can be 0-3
-		{name: 'boss10'},
-		{name: 'boss9'}
-	]];
+const ITEM_ROWS = [[{
+  name: 'hookshot'
+}, {
+  name: 'silvers'
+}, {
+  name: 'bow'
+}, {
+  name: 'boss0'
+}], [{
+  name: 'firerod'
+}, {
+  name: 'somaria'
+}, {
+  name: 'hammer'
+}, {
+  name: 'boss1'
+}], [{
+  name: 'icerod'
+}, {
+  name: 'byrna'
+}, {
+  name: 'flute'
+}, {
+  name: 'boss2'
+}], [{
+  name: 'quake'
+}, {
+  name: 'ether'
+}, {
+  name: 'bombos'
+}, {
+  name: 'boss3'
+}], [{
+  name: 'boots'
+}, {
+  name: 'moonpearl'
+}, {
+  name: 'glove',
+  hasLevels: true
+}, {
+  name: 'boss4'
+}], [{
+  name: 'flippers'
+}, {
+  name: 'mirror'
+}, {
+  name: 'lantern'
+}, {
+  name: 'boss5'
+}], [{
+  name: 'powder'
+}, {
+  name: 'book'
+}, {
+  name: 'bottle',
+  hasLevels: true
+}, {
+  name: 'boss6'
+}], [{
+  name: 'mushroom'
+}, {
+  name: 'shovel'
+}, {
+  name: 'net'
+}, {
+  name: 'boss7'
+}], [{
+  name: 'tunic',
+  hasLevels: true
+}, {
+  name: 'shield',
+  hasLevels: true
+}, {
+  name: 'sword',
+  hasLevels: true
+}, {
+  name: 'boss8'
+}], [{
+  name: 'cape'
+}, {
+  name: 'boomerang',
+  hasLevels: true
+}, {
+  name: 'boss10'
+}, {
+  name: 'boss9'
+}]];
+/**
+ * @customElement
+ * @polymer
+ */
 
-	/**
-	 * @customElement
-	 * @polymer
-	 */
-	class GdqLttpTracker extends Polymer.Element {
-		static get is() {
-			return 'gdq-lttp-tracker';
-		}
+let GdqLttpTracker = class GdqLttpTracker extends Polymer.Element {
+  /**
+   * @customElement
+   * @polymer
+   */
+  constructor() {
+    super(...arguments);
+    this.gameId = GAME_ID;
+    this.mirrored = MIRROR_MODE;
+  }
 
-		static get properties() {
-			return {
-				importPath: String, // https://github.com/Polymer/polymer-linter/issues/71
-				itemsAndPrizes: {
-					type: Array
-				},
-				gameId: {
-					type: String,
-					value: GAME_ID
-				},
-				items: {
-					type: Object
-				},
-				prizes: {
-					type: Object
-				},
-				medallions: {
-					type: Array
-				},
-				mirrored: {
-					type: Boolean,
-					reflectToAttribute: true,
-					value: MIRROR_MODE
-				}
-			};
-		}
+  static get observers() {
+    return ['_computeItemsAndPrizes(items.*, prizes.*, medallions.*)'];
+  }
 
-		static get observers() {
-			return [
-				'_computeItemsAndPrizes(items.*, prizes.*, medallions.*)'
-			];
-		}
+  ready() {
+    super.ready();
+    this.$.auth.signInAnonymously().then(() => {
+      nodecg.log.info('Signed in anonymously.');
+    }).catch(error => {
+      nodecg.log.error('Failed to sign in:', error);
+    });
+  }
 
-		ready() {
-			super.ready();
+  _computeItemsAndPrizes() {
+    const finalArray = [];
+    const items = this.items;
+    const prizes = this.prizes;
+    const medallions = this.medallions;
 
-			this.$.auth.signInAnonymously().then(() => {
-				nodecg.log.info('Signed in anonymously.');
-			}).catch(error => {
-				nodecg.log.error('Failed to sign in:', error);
-			});
-		}
+    if (!items || Object.keys(items).length <= 0 || !prizes || prizes.length <= 0 || !medallions || medallions.length <= 0) {
+      this.itemsAndPrizes = finalArray;
+      return;
+    }
 
-		_computeItemsAndPrizes() {
-			const finalArray = [];
-			const items = this.items;
-			const prizes = this.prizes;
-			const medallions = this.medallions;
+    ITEM_ROWS.forEach((row, rowIndex) => {
+      row.forEach((item, itemIndex) => {
+        const itemValue = items[item.name];
 
-			if (!items || items.length <= 0 ||
-				!prizes || prizes.length <= 0 ||
-				!medallions || medallions.length <= 0) {
-				this.itemsAndPrizes = finalArray;
-				return;
-			}
+        if (itemIndex === 3) {
+          // Empty placeholder for the 4th column, which is blank.
+          finalArray.push({});
+        }
 
-			console.log('prizes:', this.prizes);
-			console.log('medallions:', this.medallions);
+        finalArray.push({
+          name: item.name,
+          hasLevels: item.hasLevels,
+          level: itemValue,
+          dimmed: typeof item.name === 'string' && item.name.startsWith('boss') ? itemValue === 1 : itemValue === 0 || itemValue === false
+        });
+      }); // Dungeon prize.
 
-			ITEM_ROWS.forEach((row, rowIndex) => {
-				row.forEach((item, itemIndex) => {
-					const itemValue = items[item.name];
+      const dungeonInfo = {
+        name: 'dungeon',
+        hasLevels: true,
+        level: prizes[rowIndex],
+        dimmed: false,
+        medallionLevel: undefined
+      }; // Only these two bosses have medallion info.
 
-					if (itemIndex === 3) {
-						// Empty placeholder for the 4th column, which is blank.
-						finalArray.push({});
-					}
+      if (rowIndex === 8 || rowIndex === 9) {
+        dungeonInfo.medallionLevel = medallions[rowIndex];
+      }
 
-					finalArray.push({
-						name: item.name,
-						hasLevels: item.hasLevels,
-						level: itemValue,
-						dimmed: item.name.startsWith('boss') ?
-							itemValue === 1 :
-							itemValue === 0 || itemValue === false
-					});
-				});
+      finalArray.push(dungeonInfo);
+    });
+    this.itemsAndPrizes = finalArray;
+  }
 
-				// Dungeon prize.
-				const dungeonInfo = {
-					name: 'dungeon',
-					hasLevels: true,
-					level: prizes[rowIndex],
-					dimmed: false
-				};
+  _calcCellClass(itemOrPrize, index) {
+    const classes = new Set(['cell']);
+    const sixesRemainder = (index + 1) % 6;
 
-				// Only these two bosses have medallion info.
-				if (rowIndex === 8 || rowIndex === 9) {
-					dungeonInfo.medallionLevel = medallions[rowIndex];
-				}
+    if (itemOrPrize.dimmed) {
+      classes.add('cell--dimmed');
+    }
 
-				finalArray.push(dungeonInfo);
-			});
+    if (sixesRemainder === 0) {
+      classes.add('cell--prize');
+    } else if (sixesRemainder === 4) {
+      classes.add('cell--zeroWidth');
+    }
 
-			this.itemsAndPrizes = finalArray;
-		}
+    return Array.from(classes).join(' ');
+  }
 
-		_calcCellClass(itemOrPrize, index) {
-			const classes = new Set(['cell']);
-			const sixesRemainder = (index + 1) % 6;
+  _calcCellSrc(itemOrPrize) {
+    let src = itemOrPrize.name;
 
-			if (itemOrPrize.dimmed) {
-				classes.add('cell--dimmed');
-			}
+    if (itemOrPrize.hasLevels) {
+      if (typeof itemOrPrize.level === 'number') {
+        src = String(src) + itemOrPrize.level;
+      } else {
+        return 'blank-pixel';
+      }
+    }
 
-			if (sixesRemainder === 0) {
-				classes.add('cell--prize');
-			} else if (sixesRemainder === 4) {
-				classes.add('cell--zeroWidth');
-			}
+    return src ? src : 'blank-pixel';
+  }
 
-			return Array.from(classes).join(' ');
-		}
+  _hasMedallion(itemOrPrize) {
+    return 'medallionLevel' in itemOrPrize && itemOrPrize.medallionLevel !== undefined;
+  }
 
-		_calcCellSrc(itemOrPrize) {
-			let src = itemOrPrize.name;
+  _calcCellMedallionSrc(itemOrPrize) {
+    if (itemOrPrize.name !== 'dungeon') {
+      return 'blank-pixel';
+    }
 
-			if (itemOrPrize.hasLevels) {
-				if (typeof itemOrPrize.level === 'number') {
-					src += itemOrPrize.level;
-				} else {
-					return 'blank-pixel';
-				}
-			}
+    return `medallion${itemOrPrize.medallionLevel}`;
+  }
 
-			return src ? src : 'blank-pixel';
-		}
+};
 
-		_hasMedallion(itemOrPrize) {
-			return 'medallionLevel' in itemOrPrize;
-		}
+tslib_1.__decorate([property({
+  type: Array
+})], GdqLttpTracker.prototype, "items", void 0);
 
-		_calcCellMedallionSrc(itemOrPrize) {
-			if (itemOrPrize.name !== 'dungeon') {
-				return 'blank-pixel';
-			}
+tslib_1.__decorate([property({
+  type: Array
+})], GdqLttpTracker.prototype, "prizes", void 0);
 
-			return `medallion${itemOrPrize.medallionLevel}`;
-		}
-	}
+tslib_1.__decorate([property({
+  type: Array
+})], GdqLttpTracker.prototype, "medallions", void 0);
 
-	customElements.define(GdqLttpTracker.is, GdqLttpTracker);
-})();
+tslib_1.__decorate([property({
+  type: Array
+})], GdqLttpTracker.prototype, "itemsAndPrizes", void 0);
+
+tslib_1.__decorate([property({
+  type: String
+})], GdqLttpTracker.prototype, "gameId", void 0);
+
+tslib_1.__decorate([property({
+  type: Boolean,
+  reflectToAttribute: true
+})], GdqLttpTracker.prototype, "mirrored", void 0);
+
+GdqLttpTracker = tslib_1.__decorate([customElement('gdq-lttp-tracker')], GdqLttpTracker);
+export default GdqLttpTracker;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,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

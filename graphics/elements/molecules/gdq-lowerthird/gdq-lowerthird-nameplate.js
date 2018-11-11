@@ -1,81 +1,94 @@
-(function () {
-	'use strict';
+import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
+var GdqLowerthirdNameplate_1;
+import { Power2, TimelineLite, TweenLite } from "/bundles/gdqx18-layouts/node_modules/gsap/index.js";
+const ENTRANCE_ANIM_DURATION = 0.5;
+const ENTRANCE_ANIM_EASE = Power2.easeInOut;
+const {
+  customElement,
+  property
+} = Polymer.decorators;
+/**
+ * @customElement
+ * @polymer
+ */
 
-	const ENTRANCE_ANIM_DURATION = 0.5;
-	const ENTRANCE_ANIM_EASE = Power2.easeInOut;
+let GdqLowerthirdNameplate = GdqLowerthirdNameplate_1 = class GdqLowerthirdNameplate extends Polymer.Element {
+  /**
+   * @customElement
+   * @polymer
+   */
+  constructor() {
+    super(...arguments);
+    this.header = false;
+  }
 
-	/**
-	 * @customElement
-	 * @polymer
-	 */
-	class GdqLowerthirdNameplate extends Polymer.Element {
-		static get is() {
-			return 'gdq-lowerthird-nameplate';
-		}
+  enter() {
+    const tl = new TimelineLite();
+    tl.to(this.$.occluder, ENTRANCE_ANIM_DURATION, {
+      x: '250%',
+      ease: ENTRANCE_ANIM_EASE
+    }, 0);
+    tl.to(this.$.clipped, ENTRANCE_ANIM_DURATION, {
+      clipPath: 'inset(0 0% 0 0)',
+      ease: ENTRANCE_ANIM_EASE
+    }, 0);
+    tl.to(this.$.title, 0.4, {
+      y: '0%',
+      ease: Power2.easeOut,
+      onStart: () => {
+        this.$.title.style.opacity = '1';
+        this.$['title-text'].maxWidth = this.$.title.clientWidth - 60;
+      }
+    }, '-=0.1');
+    return tl;
+  }
 
-		static get properties() {
-			return {
-				importPath: String, // https://github.com/Polymer/polymer-linter/issues/71
-				header: {
-					type: Boolean,
-					reflectToAttribute: true,
-					value: false
-				},
-				name: {
-					type: String,
-					observer: '_nameChanged'
-				},
-				title: {
-					type: String
-				},
-				hasTitle: {
-					type: Boolean,
-					reflectToAttribute: true,
-					computed: '_computeHasTitle(title)'
-				}
-			};
-		}
+  reset() {
+    TweenLite.set(this.$.occluder, {
+      x: '-100%'
+    });
+    TweenLite.set(this.$.clipped, {
+      clipPath: 'inset(0 100% 0 0)'
+    });
+    TweenLite.set(this.$.title, {
+      y: '-100%',
+      opacity: 0
+    });
+  }
 
-		enter() {
-			const tl = new TimelineLite();
+  _nameChanged(newVal) {
+    return this.$.nameplate.updateName({
+      alias: newVal,
+      rotate: false
+    });
+  }
 
-			tl.to(this.$.occluder, ENTRANCE_ANIM_DURATION, {
-				x: '250%',
-				ease: ENTRANCE_ANIM_EASE
-			}, 0);
+  _computeHasTitle(title) {
+    return Boolean(title && title.trim().length > 0);
+  }
 
-			tl.to(this.$.clipped, ENTRANCE_ANIM_DURATION, {
-				clipPath: 'inset(0 0% 0 0)',
-				ease: ENTRANCE_ANIM_EASE
-			}, 0);
+};
 
-			tl.to(this.$.title, 0.4, {
-				y: '0%',
-				ease: Power2.easeOut,
-				callbackScope: this,
-				onStart() {
-					this.$.title.style.opacity = 1;
-					this.$['title-text'].maxWidth = this.$.title.clientWidth - 60;
-				}
-			}, '-=0.1');
+tslib_1.__decorate([property({
+  type: Boolean,
+  reflectToAttribute: true
+})], GdqLowerthirdNameplate.prototype, "header", void 0);
 
-			return tl;
-		}
+tslib_1.__decorate([property({
+  type: String,
+  observer: GdqLowerthirdNameplate_1.prototype._nameChanged
+})], GdqLowerthirdNameplate.prototype, "name", void 0);
 
-		reset() {
-			TweenLite.set(this.$.occluder, {x: '-100%'});
-			TweenLite.set(this.$.clipped, {clipPath: 'inset(0 100% 0 0)'});
-			TweenLite.set(this.$.title, {y: '-100%', opacity: 0});
-		}
+tslib_1.__decorate([property({
+  type: String
+})], GdqLowerthirdNameplate.prototype, "title", void 0);
 
-		_nameChanged(newVal) {
-			return this.$.nameplate.updateName({alias: newVal, twitchAlias: null, rotate: false});
-		}
+tslib_1.__decorate([property({
+  type: Boolean,
+  reflectToAttribute: true,
+  computed: '_computeHasTitle(title)'
+})], GdqLowerthirdNameplate.prototype, "hasTitle", void 0);
 
-		_computeHasTitle(title) {
-			return Boolean(title && title.trim().length > 0);
-		}
-	}
-
-	customElements.define(GdqLowerthirdNameplate.is, GdqLowerthirdNameplate);
-})();
+GdqLowerthirdNameplate = GdqLowerthirdNameplate_1 = tslib_1.__decorate([customElement('gdq-lowerthird-nameplate')], GdqLowerthirdNameplate);
+export default GdqLowerthirdNameplate;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImdkcS1sb3dlcnRoaXJkLW5hbWVwbGF0ZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLFNBQVEsTUFBUixFQUFnQixZQUFoQixFQUE4QixTQUE5QixRQUE4QyxvREFBOUM7QUFHQSxNQUFNLHNCQUFzQixHQUFHLEdBQS9CO0FBQ0EsTUFBTSxrQkFBa0IsR0FBRyxNQUFNLENBQUMsU0FBbEM7QUFDQSxNQUFNO0FBQUMsRUFBQSxhQUFEO0FBQWdCLEVBQUE7QUFBaEIsSUFBNEIsT0FBTyxDQUFDLFVBQTFDO0FBRUE7Ozs7O0FBS0EsSUFBcUIsc0JBQXNCLEdBQUEsd0JBQUEsR0FBM0MsTUFBcUIsc0JBQXJCLFNBQW9ELE9BQU8sQ0FBQyxPQUE1RCxDQUFtRTtBQUxuRTs7OztBQUlBLEVBQUEsV0FBQSxHQUFBOztBQUdDLFNBQUEsTUFBQSxHQUFrQixLQUFsQjtBQWlEQTs7QUF0Q0EsRUFBQSxLQUFLLEdBQUE7QUFDSixVQUFNLEVBQUUsR0FBRyxJQUFJLFlBQUosRUFBWDtBQUVBLElBQUEsRUFBRSxDQUFDLEVBQUgsQ0FBTSxLQUFLLENBQUwsQ0FBTyxRQUFiLEVBQXVCLHNCQUF2QixFQUErQztBQUM5QyxNQUFBLENBQUMsRUFBRSxNQUQyQztBQUU5QyxNQUFBLElBQUksRUFBRTtBQUZ3QyxLQUEvQyxFQUdHLENBSEg7QUFLQSxJQUFBLEVBQUUsQ0FBQyxFQUFILENBQU0sS0FBSyxDQUFMLENBQU8sT0FBYixFQUFzQixzQkFBdEIsRUFBOEM7QUFDN0MsTUFBQSxRQUFRLEVBQUUsaUJBRG1DO0FBRTdDLE1BQUEsSUFBSSxFQUFFO0FBRnVDLEtBQTlDLEVBR0csQ0FISDtBQUtBLElBQUEsRUFBRSxDQUFDLEVBQUgsQ0FBTSxLQUFLLENBQUwsQ0FBTyxLQUFiLEVBQW9CLEdBQXBCLEVBQXlCO0FBQ3hCLE1BQUEsQ0FBQyxFQUFFLElBRHFCO0FBRXhCLE1BQUEsSUFBSSxFQUFFLE1BQU0sQ0FBQyxPQUZXO0FBR3hCLE1BQUEsT0FBTyxFQUFFLE1BQUs7QUFDWixhQUFLLENBQUwsQ0FBTyxLQUFQLENBQWdDLEtBQWhDLENBQXNDLE9BQXRDLEdBQWdELEdBQWhEO0FBQ0EsYUFBSyxDQUFMLENBQU8sWUFBUCxFQUE2QixRQUE3QixHQUF3QyxLQUFLLENBQUwsQ0FBTyxLQUFQLENBQWEsV0FBYixHQUEyQixFQUFuRTtBQUNEO0FBTnVCLEtBQXpCLEVBT0csT0FQSDtBQVNBLFdBQU8sRUFBUDtBQUNBOztBQUVELEVBQUEsS0FBSyxHQUFBO0FBQ0osSUFBQSxTQUFTLENBQUMsR0FBVixDQUFjLEtBQUssQ0FBTCxDQUFPLFFBQXJCLEVBQStCO0FBQUMsTUFBQSxDQUFDLEVBQUU7QUFBSixLQUEvQjtBQUNBLElBQUEsU0FBUyxDQUFDLEdBQVYsQ0FBYyxLQUFLLENBQUwsQ0FBTyxPQUFyQixFQUE4QjtBQUFDLE1BQUEsUUFBUSxFQUFFO0FBQVgsS0FBOUI7QUFDQSxJQUFBLFNBQVMsQ0FBQyxHQUFWLENBQWMsS0FBSyxDQUFMLENBQU8sS0FBckIsRUFBNEI7QUFBQyxNQUFBLENBQUMsRUFBRSxPQUFKO0FBQWEsTUFBQSxPQUFPLEVBQUU7QUFBdEIsS0FBNUI7QUFDQTs7QUFFRCxFQUFBLFlBQVksQ0FBQyxNQUFELEVBQWU7QUFDMUIsV0FBUSxLQUFLLENBQUwsQ0FBTyxTQUFQLENBQW1DLFVBQW5DLENBQThDO0FBQUMsTUFBQSxLQUFLLEVBQUUsTUFBUjtBQUFnQixNQUFBLE1BQU0sRUFBRTtBQUF4QixLQUE5QyxDQUFSO0FBQ0E7O0FBRUQsRUFBQSxnQkFBZ0IsQ0FBQyxLQUFELEVBQWM7QUFDN0IsV0FBTyxPQUFPLENBQUMsS0FBSyxJQUFJLEtBQUssQ0FBQyxJQUFOLEdBQWEsTUFBYixHQUFzQixDQUFoQyxDQUFkO0FBQ0E7O0FBbERpRSxDQUFuRTs7QUFFQyxPQUFBLENBQUEsVUFBQSxDQUFBLENBREMsUUFBUSxDQUFDO0FBQUMsRUFBQSxJQUFJLEVBQUUsT0FBUDtBQUFnQixFQUFBLGtCQUFrQixFQUFFO0FBQXBDLENBQUQsQ0FDVCxDQUFBLEUsZ0NBQUEsRSxRQUFBLEUsS0FBd0IsQ0FBeEI7O0FBR0EsT0FBQSxDQUFBLFVBQUEsQ0FBQSxDQURDLFFBQVEsQ0FBQztBQUFDLEVBQUEsSUFBSSxFQUFFLE1BQVA7QUFBZSxFQUFBLFFBQVEsRUFBRSx3QkFBc0IsQ0FBQyxTQUF2QixDQUFpQztBQUExRCxDQUFELENBQ1QsQ0FBQSxFLGdDQUFBLEUsTUFBQSxFLEtBQWEsQ0FBYjs7QUFHQSxPQUFBLENBQUEsVUFBQSxDQUFBLENBREMsUUFBUSxDQUFDO0FBQUMsRUFBQSxJQUFJLEVBQUU7QUFBUCxDQUFELENBQ1QsQ0FBQSxFLGdDQUFBLEUsT0FBQSxFLEtBQWMsQ0FBZDs7QUFHQSxPQUFBLENBQUEsVUFBQSxDQUFBLENBREMsUUFBUSxDQUFDO0FBQUMsRUFBQSxJQUFJLEVBQUUsT0FBUDtBQUFnQixFQUFBLGtCQUFrQixFQUFFLElBQXBDO0FBQTBDLEVBQUEsUUFBUSxFQUFFO0FBQXBELENBQUQsQ0FDVCxDQUFBLEUsZ0NBQUEsRSxVQUFBLEUsS0FBa0IsQ0FBbEI7O0FBWG9CLHNCQUFzQixHQUFBLHdCQUFBLEdBQUEsT0FBQSxDQUFBLFVBQUEsQ0FBQSxDQUQxQyxhQUFhLENBQUMsMEJBQUQsQ0FDNkIsQ0FBQSxFQUF0QixzQkFBc0IsQ0FBdEI7ZUFBQSxzQiIsInNvdXJjZVJvb3QiOiIifQ==
