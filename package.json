@@ -14,7 +14,7 @@
     "casparcg-connection": "^4.5.3",
     "cheerio": "^1.0.0-rc.1",
     "clone": "^2.1.1",
-    "d3-random": "^1.1.2",
+    "d3-random": "github:Lange/d3-random#explicit-extensions",
     "deep-diff": "^0.3.4",
     "deep-equal": "^1.0.1",
     "express": "^4.16.3",
