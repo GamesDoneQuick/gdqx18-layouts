@@ -4,6 +4,9 @@
 		"module": "commonjs",
 		"rootDir": "src/extension",
 		"outDir": "dist/extension",
+		"types": [
+			"node"
+		],
 
 		// Extra output
 		"declaration": true,
