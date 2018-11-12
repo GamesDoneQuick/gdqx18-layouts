@@ -1,51 +1,39 @@
-import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
-const {
-  customElement,
-  property,
-  observe
-} = Polymer.decorators;
+import * as tslib_1 from "tslib";
+const { customElement, property, observe } = Polymer.decorators;
 let TimeInput = class TimeInput extends Polymer.mixinBehaviors([Polymer.IronValidatableBehavior], Polymer.Element) {
-  constructor() {
-    super(...arguments);
-    this.invalid = false;
-    this.validator = 'time-validator';
-  }
-
-  _computeValue(minutes, seconds) {
-    this.value = `${minutes}:${seconds}`;
-  }
-
-  setMS(m, s) {
-    this._minutes = m < 10 ? `0${m}` : m;
-    this._seconds = s < 10 ? `0${s}` : s;
-  }
-
+    constructor() {
+        super(...arguments);
+        this.invalid = false;
+        this.validator = 'time-validator';
+    }
+    _computeValue(minutes, seconds) {
+        this.value = `${minutes}:${seconds}`;
+    }
+    setMS(m, s) {
+        this._minutes = m < 10 ? `0${m}` : m;
+        this._seconds = s < 10 ? `0${s}` : s;
+    }
 };
-
-tslib_1.__decorate([property({
-  type: Boolean,
-  reflectToAttribute: true
-})], TimeInput.prototype, "invalid", void 0);
-
-tslib_1.__decorate([property({
-  type: String,
-  notify: true
-})], TimeInput.prototype, "value", void 0);
-
-tslib_1.__decorate([property({
-  type: Number
-})], TimeInput.prototype, "_minutes", void 0);
-
-tslib_1.__decorate([property({
-  type: Number
-})], TimeInput.prototype, "_seconds", void 0);
-
-tslib_1.__decorate([property({
-  type: String
-})], TimeInput.prototype, "validator", void 0);
-
-tslib_1.__decorate([observe('_minutes', '_seconds')], TimeInput.prototype, "_computeValue", null);
-
-TimeInput = tslib_1.__decorate([customElement('time-input')], TimeInput);
+tslib_1.__decorate([
+    property({ type: Boolean, reflectToAttribute: true })
+], TimeInput.prototype, "invalid", void 0);
+tslib_1.__decorate([
+    property({ type: String, notify: true })
+], TimeInput.prototype, "value", void 0);
+tslib_1.__decorate([
+    property({ type: Number })
+], TimeInput.prototype, "_minutes", void 0);
+tslib_1.__decorate([
+    property({ type: Number })
+], TimeInput.prototype, "_seconds", void 0);
+tslib_1.__decorate([
+    property({ type: String })
+], TimeInput.prototype, "validator", void 0);
+tslib_1.__decorate([
+    observe('_minutes', '_seconds')
+], TimeInput.prototype, "_computeValue", null);
+TimeInput = tslib_1.__decorate([
+    customElement('time-input')
+], TimeInput);
 export default TimeInput;
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRpbWUtaW5wdXQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFBLE1BQU07QUFBQyxFQUFBLGFBQUQ7QUFBZ0IsRUFBQSxRQUFoQjtBQUEwQixFQUFBO0FBQTFCLElBQXFDLE9BQU8sQ0FBQyxVQUFuRDtBQUdBLElBQXFCLFNBQVMsR0FBOUIsTUFBcUIsU0FBckIsU0FBdUMsT0FBTyxDQUFDLGNBQVIsQ0FBdUIsQ0FBQyxPQUFPLENBQUMsdUJBQVQsQ0FBdkIsRUFBMEQsT0FBTyxDQUFDLE9BQWxFLENBQXZDLENBQWlIO0FBRGpILEVBQUEsV0FBQSxHQUFBOztBQUdDLFNBQUEsT0FBQSxHQUFtQixLQUFuQjtBQVlBLFNBQUEsU0FBQSxHQUFZLGdCQUFaO0FBV0E7O0FBUkEsRUFBQSxhQUFhLENBQUMsT0FBRCxFQUFrQixPQUFsQixFQUFpQztBQUM3QyxTQUFLLEtBQUwsR0FBYSxHQUFHLE9BQU8sSUFBSSxPQUFPLEVBQWxDO0FBQ0E7O0FBRUQsRUFBQSxLQUFLLENBQUMsQ0FBRCxFQUFZLENBQVosRUFBcUI7QUFDekIsU0FBSyxRQUFMLEdBQWdCLENBQUMsR0FBRyxFQUFKLEdBQVMsSUFBSSxDQUFDLEVBQWQsR0FBbUIsQ0FBbkM7QUFDQSxTQUFLLFFBQUwsR0FBZ0IsQ0FBQyxHQUFHLEVBQUosR0FBUyxJQUFJLENBQUMsRUFBZCxHQUFtQixDQUFuQztBQUNBOztBQXhCK0csQ0FBakg7O0FBRUMsT0FBQSxDQUFBLFVBQUEsQ0FBQSxDQURDLFFBQVEsQ0FBQztBQUFDLEVBQUEsSUFBSSxFQUFFLE9BQVA7QUFBZ0IsRUFBQSxrQkFBa0IsRUFBRTtBQUFwQyxDQUFELENBQ1QsQ0FBQSxFLG1CQUFBLEUsU0FBQSxFLEtBQXlCLENBQXpCOztBQUdBLE9BQUEsQ0FBQSxVQUFBLENBQUEsQ0FEQyxRQUFRLENBQUM7QUFBQyxFQUFBLElBQUksRUFBRSxNQUFQO0FBQWUsRUFBQSxNQUFNLEVBQUU7QUFBdkIsQ0FBRCxDQUNULENBQUEsRSxtQkFBQSxFLE9BQUEsRSxLQUFjLENBQWQ7O0FBR0EsT0FBQSxDQUFBLFVBQUEsQ0FBQSxDQURDLFFBQVEsQ0FBQztBQUFDLEVBQUEsSUFBSSxFQUFFO0FBQVAsQ0FBRCxDQUNULENBQUEsRSxtQkFBQSxFLFVBQUEsRSxLQUEwQixDQUExQjs7QUFHQSxPQUFBLENBQUEsVUFBQSxDQUFBLENBREMsUUFBUSxDQUFDO0FBQUMsRUFBQSxJQUFJLEVBQUU7QUFBUCxDQUFELENBQ1QsQ0FBQSxFLG1CQUFBLEUsVUFBQSxFLEtBQTBCLENBQTFCOztBQUdBLE9BQUEsQ0FBQSxVQUFBLENBQUEsQ0FEQyxRQUFRLENBQUM7QUFBQyxFQUFBLElBQUksRUFBRTtBQUFQLENBQUQsQ0FDVCxDQUFBLEUsbUJBQUEsRSxXQUFBLEUsS0FBNkIsQ0FBN0I7O0FBR0EsT0FBQSxDQUFBLFVBQUEsQ0FBQSxDQURDLE9BQU8sQ0FBQyxVQUFELEVBQWEsVUFBYixDQUNSLENBQUEsRSxtQkFBQSxFLGVBQUEsRUFFQyxJQUZEOztBQWpCb0IsU0FBUyxHQUFBLE9BQUEsQ0FBQSxVQUFBLENBQUEsQ0FEN0IsYUFBYSxDQUFDLFlBQUQsQ0FDZ0IsQ0FBQSxFQUFULFNBQVMsQ0FBVDtlQUFBLFMiLCJzb3VyY2VSb290IjoiIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGltZS1pbnB1dC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbInRpbWUtaW5wdXQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFBLE1BQU0sRUFBQyxhQUFhLEVBQUUsUUFBUSxFQUFFLE9BQU8sRUFBQyxHQUFHLE9BQU8sQ0FBQyxVQUFVLENBQUM7QUFHOUQsSUFBcUIsU0FBUyxHQUE5QixNQUFxQixTQUFVLFNBQVEsT0FBTyxDQUFDLGNBQWMsQ0FBQyxDQUFDLE9BQU8sQ0FBQyx1QkFBdUIsQ0FBQyxFQUFFLE9BQU8sQ0FBQyxPQUFPLENBQUM7SUFEakg7O1FBR0MsWUFBTyxHQUFZLEtBQUssQ0FBQztRQVl6QixjQUFTLEdBQUcsZ0JBQWdCLENBQUM7SUFXOUIsQ0FBQztJQVJBLGFBQWEsQ0FBQyxPQUFlLEVBQUUsT0FBZTtRQUM3QyxJQUFJLENBQUMsS0FBSyxHQUFHLEdBQUcsT0FBTyxJQUFJLE9BQU8sRUFBRSxDQUFDO0lBQ3RDLENBQUM7SUFFRCxLQUFLLENBQUMsQ0FBUyxFQUFFLENBQVM7UUFDekIsSUFBSSxDQUFDLFFBQVEsR0FBRyxDQUFDLEdBQUcsRUFBRSxDQUFDLENBQUMsQ0FBQyxJQUFJLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUM7UUFDckMsSUFBSSxDQUFDLFFBQVEsR0FBRyxDQUFDLEdBQUcsRUFBRSxDQUFDLENBQUMsQ0FBQyxJQUFJLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUM7SUFDdEMsQ0FBQztDQUNELENBQUE7QUF2QkE7SUFEQyxRQUFRLENBQUMsRUFBQyxJQUFJLEVBQUUsT0FBTyxFQUFFLGtCQUFrQixFQUFFLElBQUksRUFBQyxDQUFDOzBDQUMzQjtBQUd6QjtJQURDLFFBQVEsQ0FBQyxFQUFDLElBQUksRUFBRSxNQUFNLEVBQUUsTUFBTSxFQUFFLElBQUksRUFBQyxDQUFDO3dDQUN6QjtBQUdkO0lBREMsUUFBUSxDQUFDLEVBQUMsSUFBSSxFQUFFLE1BQU0sRUFBQyxDQUFDOzJDQUNDO0FBRzFCO0lBREMsUUFBUSxDQUFDLEVBQUMsSUFBSSxFQUFFLE1BQU0sRUFBQyxDQUFDOzJDQUNDO0FBRzFCO0lBREMsUUFBUSxDQUFDLEVBQUMsSUFBSSxFQUFFLE1BQU0sRUFBQyxDQUFDOzRDQUNJO0FBRzdCO0lBREMsT0FBTyxDQUFDLFVBQVUsRUFBRSxVQUFVLENBQUM7OENBRy9CO0FBbkJtQixTQUFTO0lBRDdCLGFBQWEsQ0FBQyxZQUFZLENBQUM7R0FDUCxTQUFTLENBeUI3QjtlQXpCb0IsU0FBUyJ9

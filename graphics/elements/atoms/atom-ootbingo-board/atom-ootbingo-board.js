@@ -1,87 +1,85 @@
-import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
-const {
-  customElement,
-  property
-} = Polymer.decorators;
+import * as tslib_1 from "tslib";
+const { customElement, property } = Polymer.decorators;
 /**
  * @customElement
  * @polymer
  * @appliesMixin Polymer.MutableData
  */
-
 let AtomOotbingoBoard = class AtomOotbingoBoard extends Polymer.MutableData(Polymer.Element) {
-  /**
-   * @customElement
-   * @polymer
-   * @appliesMixin Polymer.MutableData
-   */
-  constructor() {
-    super(...arguments);
-    this.lineFocused = true;
-  }
-
-  _computeLineFocused(lineFocused) {
-    return lineFocused;
-  }
-
-  _calcCells(cells, selectedLine, lineFocused) {
-    if (!lineFocused || !selectedLine) {
-      return cells;
+    /**
+     * @customElement
+     * @polymer
+     * @appliesMixin Polymer.MutableData
+     */
+    constructor() {
+        super(...arguments);
+        this.lineFocused = true;
     }
-
-    switch (selectedLine) {
-      case 'row1':
-      case 'row2':
-      case 'row3':
-      case 'row4':
-      case 'row5':
-        {
-          const rowIndex = parseInt(selectedLine.slice(3), 10) - 1;
-          const rowStart = rowIndex * 5;
-          return cells.slice(rowStart, rowStart + 5);
-        }
-
-      case 'col1':
-      case 'col2':
-      case 'col3':
-      case 'col4':
-      case 'col5':
-        {
-          const columnStart = parseInt(selectedLine.slice(3), 10) - 1;
-          return [cells[columnStart], cells[columnStart + 5], cells[columnStart + 10], cells[columnStart + 15], cells[columnStart + 20]];
-        }
-
-      case 'tl-br':
-        {
-          return [cells[0], cells[6], cells[12], cells[18], cells[24]];
-        }
-
-      case 'bl-tr':
-        {
-          return [cells[20], cells[16], cells[12], cells[8], cells[4]];
-        }
-
-      default:
-        return cells;
+    _computeLineFocused(lineFocused) {
+        return lineFocused;
     }
-  }
-
-  _calcComplete(cell) {
-    if (!cell || !cell.colors) {
-      return false;
+    _calcCells(cells, selectedLine, lineFocused) {
+        if (!lineFocused || !selectedLine) {
+            return cells;
+        }
+        switch (selectedLine) {
+            case 'row1':
+            case 'row2':
+            case 'row3':
+            case 'row4':
+            case 'row5': {
+                const rowIndex = parseInt(selectedLine.slice(3), 10) - 1;
+                const rowStart = rowIndex * 5;
+                return cells.slice(rowStart, rowStart + 5);
+            }
+            case 'col1':
+            case 'col2':
+            case 'col3':
+            case 'col4':
+            case 'col5': {
+                const columnStart = parseInt(selectedLine.slice(3), 10) - 1;
+                return [
+                    cells[columnStart],
+                    cells[columnStart + 5],
+                    cells[columnStart + 10],
+                    cells[columnStart + 15],
+                    cells[columnStart + 20]
+                ];
+            }
+            case 'tl-br': {
+                return [
+                    cells[0],
+                    cells[6],
+                    cells[12],
+                    cells[18],
+                    cells[24]
+                ];
+            }
+            case 'bl-tr': {
+                return [
+                    cells[20],
+                    cells[16],
+                    cells[12],
+                    cells[8],
+                    cells[4]
+                ];
+            }
+            default:
+                return cells;
+        }
     }
-
-    return cell.colors.length > 0 && cell.colors !== 'none' && cell.colors !== 'blank';
-  }
-
+    _calcComplete(cell) {
+        if (!cell || !cell.colors) {
+            return false;
+        }
+        return cell.colors.length > 0 && cell.colors !== 'none' && cell.colors !== 'blank';
+    }
 };
-
-tslib_1.__decorate([property({
-  type: Boolean,
-  reflectToAttribute: true,
-  computed: '_computeLineFocused(board.lineFocused)'
-})], AtomOotbingoBoard.prototype, "lineFocused", void 0);
-
-AtomOotbingoBoard = tslib_1.__decorate([customElement('atom-ootbingo-board')], AtomOotbingoBoard);
+tslib_1.__decorate([
+    property({ type: Boolean, reflectToAttribute: true, computed: '_computeLineFocused(board.lineFocused)' })
+], AtomOotbingoBoard.prototype, "lineFocused", void 0);
+AtomOotbingoBoard = tslib_1.__decorate([
+    customElement('atom-ootbingo-board')
+], AtomOotbingoBoard);
 export default AtomOotbingoBoard;
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,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
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXRvbS1vb3RiaW5nby1ib2FyZC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbImF0b20tb290YmluZ28tYm9hcmQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFBLE1BQU0sRUFBQyxhQUFhLEVBQUUsUUFBUSxFQUFDLEdBQUcsT0FBTyxDQUFDLFVBQVUsQ0FBQztBQVFyRDs7OztHQUlHO0FBRUgsSUFBcUIsaUJBQWlCLEdBQXRDLE1BQXFCLGlCQUFrQixTQUFRLE9BQU8sQ0FBQyxXQUFXLENBQUMsT0FBTyxDQUFDLE9BQU8sQ0FBQztJQU5uRjs7OztPQUlHO0lBQ0g7O1FBR0MsZ0JBQVcsR0FBWSxJQUFJLENBQUM7SUFpRTdCLENBQUM7SUEvREEsbUJBQW1CLENBQUMsV0FBb0I7UUFDdkMsT0FBTyxXQUFXLENBQUM7SUFDcEIsQ0FBQztJQUVELFVBQVUsQ0FBQyxLQUFrQixFQUFFLFlBQW9CLEVBQUUsV0FBb0I7UUFDeEUsSUFBSSxDQUFDLFdBQVcsSUFBSSxDQUFDLFlBQVksRUFBRTtZQUNsQyxPQUFPLEtBQUssQ0FBQztTQUNiO1FBRUQsUUFBUSxZQUFZLEVBQUU7WUFDckIsS0FBSyxNQUFNLENBQUM7WUFDWixLQUFLLE1BQU0sQ0FBQztZQUNaLEtBQUssTUFBTSxDQUFDO1lBQ1osS0FBSyxNQUFNLENBQUM7WUFDWixLQUFLLE1BQU0sQ0FBQyxDQUFDO2dCQUNaLE1BQU0sUUFBUSxHQUFHLFFBQVEsQ0FBQyxZQUFZLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQyxFQUFFLEVBQUUsQ0FBQyxHQUFHLENBQUMsQ0FBQztnQkFDekQsTUFBTSxRQUFRLEdBQUcsUUFBUSxHQUFHLENBQUMsQ0FBQztnQkFDOUIsT0FBTyxLQUFLLENBQUMsS0FBSyxDQUFDLFFBQVEsRUFBRSxRQUFRLEdBQUcsQ0FBQyxDQUFDLENBQUM7YUFDM0M7WUFDRCxLQUFLLE1BQU0sQ0FBQztZQUNaLEtBQUssTUFBTSxDQUFDO1lBQ1osS0FBSyxNQUFNLENBQUM7WUFDWixLQUFLLE1BQU0sQ0FBQztZQUNaLEtBQUssTUFBTSxDQUFDLENBQUM7Z0JBQ1osTUFBTSxXQUFXLEdBQUcsUUFBUSxDQUFDLFlBQVksQ0FBQyxLQUFLLENBQUMsQ0FBQyxDQUFDLEVBQUUsRUFBRSxDQUFDLEdBQUcsQ0FBQyxDQUFDO2dCQUM1RCxPQUFPO29CQUNOLEtBQUssQ0FBQyxXQUFXLENBQUM7b0JBQ2xCLEtBQUssQ0FBQyxXQUFXLEdBQUcsQ0FBQyxDQUFDO29CQUN0QixLQUFLLENBQUMsV0FBVyxHQUFHLEVBQUUsQ0FBQztvQkFDdkIsS0FBSyxDQUFDLFdBQVcsR0FBRyxFQUFFLENBQUM7b0JBQ3ZCLEtBQUssQ0FBQyxXQUFXLEdBQUcsRUFBRSxDQUFDO2lCQUN2QixDQUFDO2FBQ0Y7WUFDRCxLQUFLLE9BQU8sQ0FBQyxDQUFDO2dCQUNiLE9BQU87b0JBQ04sS0FBSyxDQUFDLENBQUMsQ0FBQztvQkFDUixLQUFLLENBQUMsQ0FBQyxDQUFDO29CQUNSLEtBQUssQ0FBQyxFQUFFLENBQUM7b0JBQ1QsS0FBSyxDQUFDLEVBQUUsQ0FBQztvQkFDVCxLQUFLLENBQUMsRUFBRSxDQUFDO2lCQUNULENBQUM7YUFDRjtZQUNELEtBQUssT0FBTyxDQUFDLENBQUM7Z0JBQ2IsT0FBTztvQkFDTixLQUFLLENBQUMsRUFBRSxDQUFDO29CQUNULEtBQUssQ0FBQyxFQUFFLENBQUM7b0JBQ1QsS0FBSyxDQUFDLEVBQUUsQ0FBQztvQkFDVCxLQUFLLENBQUMsQ0FBQyxDQUFDO29CQUNSLEtBQUssQ0FBQyxDQUFDLENBQUM7aUJBQ1IsQ0FBQzthQUNGO1lBQ0Q7Z0JBQ0MsT0FBTyxLQUFLLENBQUM7U0FDZDtJQUNGLENBQUM7SUFFRCxhQUFhLENBQUMsSUFBZ0I7UUFDN0IsSUFBSSxDQUFDLElBQUksSUFBSSxDQUFDLElBQUksQ0FBQyxNQUFNLEVBQUU7WUFDMUIsT0FBTyxLQUFLLENBQUM7U0FDYjtRQUVELE9BQU8sSUFBSSxDQUFDLE1BQU0sQ0FBQyxNQUFNLEdBQUcsQ0FBQyxJQUFJLElBQUksQ0FBQyxNQUFNLEtBQUssTUFBTSxJQUFJLElBQUksQ0FBQyxNQUFNLEtBQUssT0FBTyxDQUFDO0lBQ3BGLENBQUM7Q0FDRCxDQUFBO0FBakVBO0lBREMsUUFBUSxDQUFDLEVBQUMsSUFBSSxFQUFFLE9BQU8sRUFBRSxrQkFBa0IsRUFBRSxJQUFJLEVBQUUsUUFBUSxFQUFFLHdDQUF3QyxFQUFDLENBQUM7c0RBQzVFO0FBRlIsaUJBQWlCO0lBRHJDLGFBQWEsQ0FBQyxxQkFBcUIsQ0FBQztHQUNoQixpQkFBaUIsQ0FtRXJDO2VBbkVvQixpQkFBaUIifQ==

@@ -1,90 +1,74 @@
-import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
-import PQueue from "../../../../shared/lib/vendor/p-queue.js";
-const {
-  customElement,
-  property
-} = Polymer.decorators;
+import * as tslib_1 from "tslib";
+import PQueue from '../../../../shared/lib/vendor/p-queue';
+const { customElement, property } = Polymer.decorators;
 /**
  * @customElement
  * @polymer
  */
-
 let GdqBreak = class GdqBreak extends Polymer.Element {
-  /**
-   * @customElement
-   * @polymer
-   */
-  constructor() {
-    super(...arguments);
-    this._queue = new PQueue({
-      concurrency: 1
-    });
-  }
-
-  ready() {
-    super.ready();
-    const tweetElem = this.$.tweet;
-    const fanartElem = this.$.fanart;
-    tweetElem.companionElement = this.$.prizes;
-    fanartElem.companionElement = [this.$.bids, this.$.prizes];
-
-    this._setupInterrupt({
-      messageName: 'showTweet',
-      interruptElement: tweetElem
-    });
-
-    this._setupInterrupt({
-      messageName: 'showFanart',
-      interruptElement: fanartElem
-    });
-  }
-
-  _setupInterrupt({
-    messageName,
-    interruptElement
-  }) {
-    let queued = false;
-    let queue = [];
-    nodecg.listenFor(messageName, payload => {
-      if (interruptElement.canExtend) {
-        interruptElement.playItem(payload);
-        return;
-      }
-
-      if (queued) {
-        queue.push(payload);
-      } else {
-        queued = true;
-
-        this._queue.add(async () => {
-          interruptElement.addEventListener('can-extend', () => {
-            queue.forEach(queuedFanart => {
-              interruptElement.playItem(queuedFanart);
-            });
-            queued = false;
-            queue = [];
-          }, {
-            once: true,
-            passive: true
-          });
-          return this._promisifyTimeline(interruptElement.playItem(payload));
+    /**
+     * @customElement
+     * @polymer
+     */
+    constructor() {
+        super(...arguments);
+        this._queue = new PQueue({ concurrency: 1 });
+    }
+    ready() {
+        super.ready();
+        const tweetElem = this.$.tweet;
+        const fanartElem = this.$.fanart;
+        tweetElem.companionElement = this.$.prizes;
+        fanartElem.companionElement = [
+            this.$.bids,
+            this.$.prizes
+        ];
+        this._setupInterrupt({
+            messageName: 'showTweet',
+            interruptElement: tweetElem
         });
-      }
-    });
-  }
-
-  _promisifyTimeline(tl) {
-    return new Promise(resolve => {
-      tl.call(resolve, undefined, null, '+=0.03');
-    });
-  }
-
+        this._setupInterrupt({
+            messageName: 'showFanart',
+            interruptElement: fanartElem
+        });
+    }
+    _setupInterrupt({ messageName, interruptElement }) {
+        let queued = false;
+        let queue = [];
+        nodecg.listenFor(messageName, payload => {
+            if (interruptElement.canExtend) {
+                interruptElement.playItem(payload);
+                return;
+            }
+            if (queued) {
+                queue.push(payload);
+            }
+            else {
+                queued = true;
+                this._queue.add(async () => {
+                    interruptElement.addEventListener('can-extend', () => {
+                        queue.forEach(queuedFanart => {
+                            interruptElement.playItem(queuedFanart);
+                        });
+                        queued = false;
+                        queue = [];
+                    }, { once: true, passive: true });
+                    return this._promisifyTimeline(interruptElement.playItem(payload));
+                });
+            }
+        });
+    }
+    _promisifyTimeline(tl) {
+        return new Promise(resolve => {
+            tl.call(resolve, undefined, null, '+=0.03');
+        });
+    }
 };
-
-tslib_1.__decorate([property({
-  type: Object
-})], GdqBreak.prototype, "_queue", void 0);
-
-GdqBreak = tslib_1.__decorate([customElement('gdq-break')], GdqBreak);
+tslib_1.__decorate([
+    property({ type: Object })
+], GdqBreak.prototype, "_queue", void 0);
+GdqBreak = tslib_1.__decorate([
+    customElement('gdq-break')
+], GdqBreak);
 export default GdqBreak;
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,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
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ2RxLWJyZWFrLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiZ2RxLWJyZWFrLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFFQSxPQUFPLE1BQU0sTUFBTSx1Q0FBdUMsQ0FBQztBQUUzRCxNQUFNLEVBQUMsYUFBYSxFQUFFLFFBQVEsRUFBQyxHQUFHLE9BQU8sQ0FBQyxVQUFVLENBQUM7QUFFckQ7OztHQUdHO0FBRUgsSUFBcUIsUUFBUSxHQUE3QixNQUFxQixRQUFTLFNBQVEsT0FBTyxDQUFDLE9BQU87SUFMckQ7OztPQUdHO0lBQ0g7O1FBR0MsV0FBTSxHQUFXLElBQUksTUFBTSxDQUFDLEVBQUMsV0FBVyxFQUFFLENBQUMsRUFBQyxDQUFDLENBQUM7SUF1RC9DLENBQUM7SUFyREEsS0FBSztRQUNKLEtBQUssQ0FBQyxLQUFLLEVBQUUsQ0FBQztRQUNkLE1BQU0sU0FBUyxHQUFHLElBQUksQ0FBQyxDQUFDLENBQUMsS0FBd0IsQ0FBQztRQUNsRCxNQUFNLFVBQVUsR0FBRyxJQUFJLENBQUMsQ0FBQyxDQUFDLE1BQXlCLENBQUM7UUFDcEQsU0FBUyxDQUFDLGdCQUFnQixHQUFHLElBQUksQ0FBQyxDQUFDLENBQUMsTUFBMkIsQ0FBQztRQUNoRSxVQUFVLENBQUMsZ0JBQWdCLEdBQUc7WUFDN0IsSUFBSSxDQUFDLENBQUMsQ0FBQyxJQUFJO1lBQ1gsSUFBSSxDQUFDLENBQUMsQ0FBQyxNQUFNO1NBQ1UsQ0FBQztRQUV6QixJQUFJLENBQUMsZUFBZSxDQUFDO1lBQ3BCLFdBQVcsRUFBRSxXQUFXO1lBQ3hCLGdCQUFnQixFQUFFLFNBQVM7U0FDM0IsQ0FBQyxDQUFDO1FBRUgsSUFBSSxDQUFDLGVBQWUsQ0FBQztZQUNwQixXQUFXLEVBQUUsWUFBWTtZQUN6QixnQkFBZ0IsRUFBRSxVQUFVO1NBQzVCLENBQUMsQ0FBQztJQUNKLENBQUM7SUFFRCxlQUFlLENBQUMsRUFBQyxXQUFXLEVBQUUsZ0JBQWdCLEVBQTZEO1FBQzFHLElBQUksTUFBTSxHQUFHLEtBQUssQ0FBQztRQUNuQixJQUFJLEtBQUssR0FBYyxFQUFFLENBQUM7UUFDMUIsTUFBTSxDQUFDLFNBQVMsQ0FBQyxXQUFXLEVBQUUsT0FBTyxDQUFDLEVBQUU7WUFDdkMsSUFBSSxnQkFBZ0IsQ0FBQyxTQUFTLEVBQUU7Z0JBQy9CLGdCQUFnQixDQUFDLFFBQVEsQ0FBQyxPQUFPLENBQUMsQ0FBQztnQkFDbkMsT0FBTzthQUNQO1lBRUQsSUFBSSxNQUFNLEVBQUU7Z0JBQ1gsS0FBSyxDQUFDLElBQUksQ0FBQyxPQUFPLENBQUMsQ0FBQzthQUNwQjtpQkFBTTtnQkFDTixNQUFNLEdBQUcsSUFBSSxDQUFDO2dCQUNkLElBQUksQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLEtBQUssSUFBSSxFQUFFO29CQUMxQixnQkFBZ0IsQ0FBQyxnQkFBZ0IsQ0FBQyxZQUFZLEVBQUUsR0FBRyxFQUFFO3dCQUNwRCxLQUFLLENBQUMsT0FBTyxDQUFDLFlBQVksQ0FBQyxFQUFFOzRCQUM1QixnQkFBZ0IsQ0FBQyxRQUFRLENBQUMsWUFBWSxDQUFDLENBQUM7d0JBQ3pDLENBQUMsQ0FBQyxDQUFDO3dCQUNILE1BQU0sR0FBRyxLQUFLLENBQUM7d0JBQ2YsS0FBSyxHQUFHLEVBQUUsQ0FBQztvQkFDWixDQUFDLEVBQUUsRUFBQyxJQUFJLEVBQUUsSUFBSSxFQUFFLE9BQU8sRUFBRSxJQUFJLEVBQUMsQ0FBQyxDQUFDO29CQUNoQyxPQUFPLElBQUksQ0FBQyxrQkFBa0IsQ0FBQyxnQkFBZ0IsQ0FBQyxRQUFRLENBQUMsT0FBTyxDQUFDLENBQUMsQ0FBQztnQkFDcEUsQ0FBQyxDQUFDLENBQUM7YUFDSDtRQUNGLENBQUMsQ0FBQyxDQUFDO0lBQ0osQ0FBQztJQUVELGtCQUFrQixDQUFDLEVBQThCO1FBQ2hELE9BQU8sSUFBSSxPQUFPLENBQUMsT0FBTyxDQUFDLEVBQUU7WUFDNUIsRUFBRSxDQUFDLElBQUksQ0FBQyxPQUFPLEVBQUUsU0FBUyxFQUFFLElBQUksRUFBRSxRQUFRLENBQUMsQ0FBQztRQUM3QyxDQUFDLENBQUMsQ0FBQztJQUNKLENBQUM7Q0FDRCxDQUFBO0FBdkRBO0lBREMsUUFBUSxDQUFDLEVBQUMsSUFBSSxFQUFFLE1BQU0sRUFBQyxDQUFDO3dDQUNxQjtBQUYxQixRQUFRO0lBRDVCLGFBQWEsQ0FBQyxXQUFXLENBQUM7R0FDTixRQUFRLENBeUQ1QjtlQXpEb0IsUUFBUSJ9

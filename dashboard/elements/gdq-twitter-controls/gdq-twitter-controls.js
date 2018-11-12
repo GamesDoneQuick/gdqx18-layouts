@@ -1,8 +1,5 @@
-import * as tslib_1 from "/bundles/gdqx18-layouts/node_modules/tslib/tslib.es6.js";
-const {
-  customElement,
-  property
-} = Polymer.decorators;
+import * as tslib_1 from "tslib";
+const { customElement, property } = Polymer.decorators;
 const currentLayout = nodecg.Replicant('gdq:currentLayout');
 const tweets = nodecg.Replicant('tweets');
 /**
@@ -10,43 +7,39 @@ const tweets = nodecg.Replicant('tweets');
  * @polymer
  * @appliesMixin Polymer.MutableData
  */
-
 let GdqTwitterControls = class GdqTwitterControls extends Polymer.MutableData(Polymer.Element) {
-  ready() {
-    super.ready();
-    const cover = this.$.cover;
-    currentLayout.on('change', newVal => {
-      switch (newVal) {
-        case 'countdown':
-        case 'interview':
-        case 'standard_4':
-        case 'widescreen_4':
-        case 'gameboy_4':
-        case 'ds':
-          cover.style.display = 'flex';
-          break;
-
-        default:
-          cover.style.display = 'none';
-      }
-    });
-    tweets.on('change', newVal => {
-      this.$.empty.style.display = newVal.length > 0 ? 'none' : 'flex';
-      this.tweets = newVal;
-    });
-  }
-
-  _sortTweets(a, b) {
-    // @ts-ignore
-    return new Date(b.created_at) - new Date(a.created_at);
-  }
-
+    ready() {
+        super.ready();
+        const cover = this.$.cover;
+        currentLayout.on('change', newVal => {
+            switch (newVal) {
+                case 'countdown':
+                case 'interview':
+                case 'standard_4':
+                case 'widescreen_4':
+                case 'gameboy_4':
+                case 'ds':
+                    cover.style.display = 'flex';
+                    break;
+                default:
+                    cover.style.display = 'none';
+            }
+        });
+        tweets.on('change', newVal => {
+            this.$.empty.style.display = newVal.length > 0 ? 'none' : 'flex';
+            this.tweets = newVal;
+        });
+    }
+    _sortTweets(a, b) {
+        // @ts-ignore
+        return new Date(b.created_at) - new Date(a.created_at);
+    }
 };
-
-tslib_1.__decorate([property({
-  type: Array
-})], GdqTwitterControls.prototype, "tweets", void 0);
-
-GdqTwitterControls = tslib_1.__decorate([customElement('gdq-twitter-controls')], GdqTwitterControls);
+tslib_1.__decorate([
+    property({ type: Array })
+], GdqTwitterControls.prototype, "tweets", void 0);
+GdqTwitterControls = tslib_1.__decorate([
+    customElement('gdq-twitter-controls')
+], GdqTwitterControls);
 export default GdqTwitterControls;
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImdkcS10d2l0dGVyLWNvbnRyb2xzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFJQSxNQUFNO0FBQUMsRUFBQSxhQUFEO0FBQWdCLEVBQUE7QUFBaEIsSUFBNEIsT0FBTyxDQUFDLFVBQTFDO0FBQ0EsTUFBTSxhQUFhLEdBQUcsTUFBTSxDQUFDLFNBQVAsQ0FBcUMsbUJBQXJDLENBQXRCO0FBQ0EsTUFBTSxNQUFNLEdBQUcsTUFBTSxDQUFDLFNBQVAsQ0FBeUIsUUFBekIsQ0FBZjtBQUVBOzs7Ozs7QUFNQSxJQUFxQixrQkFBa0IsR0FBdkMsTUFBcUIsa0JBQXJCLFNBQWdELE9BQU8sQ0FBQyxXQUFSLENBQW9CLE9BQU8sQ0FBQyxPQUE1QixDQUFoRCxDQUFvRjtBQUluRixFQUFBLEtBQUssR0FBQTtBQUNKLFVBQU0sS0FBTjtBQUNBLFVBQU0sS0FBSyxHQUFHLEtBQUssQ0FBTCxDQUFPLEtBQXJCO0FBRUEsSUFBQSxhQUFhLENBQUMsRUFBZCxDQUFpQixRQUFqQixFQUEyQixNQUFNLElBQUc7QUFDbkMsY0FBUSxNQUFSO0FBQ0MsYUFBSyxXQUFMO0FBQ0EsYUFBSyxXQUFMO0FBQ0EsYUFBSyxZQUFMO0FBQ0EsYUFBSyxjQUFMO0FBQ0EsYUFBSyxXQUFMO0FBQ0EsYUFBSyxJQUFMO0FBQ0MsVUFBQSxLQUFLLENBQUMsS0FBTixDQUFZLE9BQVosR0FBc0IsTUFBdEI7QUFDQTs7QUFDRDtBQUNDLFVBQUEsS0FBSyxDQUFDLEtBQU4sQ0FBWSxPQUFaLEdBQXNCLE1BQXRCO0FBVkY7QUFZQSxLQWJEO0FBZUEsSUFBQSxNQUFNLENBQUMsRUFBUCxDQUFVLFFBQVYsRUFBb0IsTUFBTSxJQUFHO0FBQzNCLFdBQUssQ0FBTCxDQUFPLEtBQVAsQ0FBNkIsS0FBN0IsQ0FBbUMsT0FBbkMsR0FBNkMsTUFBTSxDQUFDLE1BQVAsR0FBZ0IsQ0FBaEIsR0FBb0IsTUFBcEIsR0FBNkIsTUFBMUU7QUFDRCxXQUFLLE1BQUwsR0FBYyxNQUFkO0FBQ0EsS0FIRDtBQUlBOztBQUVELEVBQUEsV0FBVyxDQUFDLENBQUQsRUFBVyxDQUFYLEVBQW1CO0FBQzdCO0FBQ0EsV0FBTyxJQUFJLElBQUosQ0FBUyxDQUFDLENBQUMsVUFBWCxJQUF5QixJQUFJLElBQUosQ0FBUyxDQUFDLENBQUMsVUFBWCxDQUFoQztBQUNBOztBQWhDa0YsQ0FBcEY7O0FBRUMsT0FBQSxDQUFBLFVBQUEsQ0FBQSxDQURDLFFBQVEsQ0FBQztBQUFDLEVBQUEsSUFBSSxFQUFFO0FBQVAsQ0FBRCxDQUNULENBQUEsRSw0QkFBQSxFLFFBQUEsRSxLQUFlLENBQWY7O0FBRm9CLGtCQUFrQixHQUFBLE9BQUEsQ0FBQSxVQUFBLENBQUEsQ0FEdEMsYUFBYSxDQUFDLHNCQUFELENBQ3lCLENBQUEsRUFBbEIsa0JBQWtCLENBQWxCO2VBQUEsa0IiLCJzb3VyY2VSb290IjoiIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ2RxLXR3aXR0ZXItY29udHJvbHMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJnZHEtdHdpdHRlci1jb250cm9scy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBSUEsTUFBTSxFQUFDLGFBQWEsRUFBRSxRQUFRLEVBQUMsR0FBRyxPQUFPLENBQUMsVUFBVSxDQUFDO0FBQ3JELE1BQU0sYUFBYSxHQUFHLE1BQU0sQ0FBQyxTQUFTLENBQXFCLG1CQUFtQixDQUFDLENBQUM7QUFDaEYsTUFBTSxNQUFNLEdBQUcsTUFBTSxDQUFDLFNBQVMsQ0FBUyxRQUFRLENBQUMsQ0FBQztBQUVsRDs7OztHQUlHO0FBRUgsSUFBcUIsa0JBQWtCLEdBQXZDLE1BQXFCLGtCQUFtQixTQUFRLE9BQU8sQ0FBQyxXQUFXLENBQUMsT0FBTyxDQUFDLE9BQU8sQ0FBQztJQUluRixLQUFLO1FBQ0osS0FBSyxDQUFDLEtBQUssRUFBRSxDQUFDO1FBQ2QsTUFBTSxLQUFLLEdBQUcsSUFBSSxDQUFDLENBQUMsQ0FBQyxLQUFvQixDQUFDO1FBRTFDLGFBQWEsQ0FBQyxFQUFFLENBQUMsUUFBUSxFQUFFLE1BQU0sQ0FBQyxFQUFFO1lBQ25DLFFBQVEsTUFBTSxFQUFFO2dCQUNmLEtBQUssV0FBVyxDQUFDO2dCQUNqQixLQUFLLFdBQVcsQ0FBQztnQkFDakIsS0FBSyxZQUFZLENBQUM7Z0JBQ2xCLEtBQUssY0FBYyxDQUFDO2dCQUNwQixLQUFLLFdBQVcsQ0FBQztnQkFDakIsS0FBSyxJQUFJO29CQUNSLEtBQUssQ0FBQyxLQUFLLENBQUMsT0FBTyxHQUFHLE1BQU0sQ0FBQztvQkFDN0IsTUFBTTtnQkFDUDtvQkFDQyxLQUFLLENBQUMsS0FBSyxDQUFDLE9BQU8sR0FBRyxNQUFNLENBQUM7YUFDOUI7UUFDRixDQUFDLENBQUMsQ0FBQztRQUVILE1BQU0sQ0FBQyxFQUFFLENBQUMsUUFBUSxFQUFFLE1BQU0sQ0FBQyxFQUFFO1lBQzNCLElBQUksQ0FBQyxDQUFDLENBQUMsS0FBcUIsQ0FBQyxLQUFLLENBQUMsT0FBTyxHQUFHLE1BQU0sQ0FBQyxNQUFNLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQyxNQUFNLENBQUMsQ0FBQyxDQUFDLE1BQU0sQ0FBQztZQUNsRixJQUFJLENBQUMsTUFBTSxHQUFHLE1BQU0sQ0FBQztRQUN0QixDQUFDLENBQUMsQ0FBQztJQUNKLENBQUM7SUFFRCxXQUFXLENBQUMsQ0FBUSxFQUFFLENBQVE7UUFDN0IsYUFBYTtRQUNiLE9BQU8sSUFBSSxJQUFJLENBQUMsQ0FBQyxDQUFDLFVBQVUsQ0FBQyxHQUFHLElBQUksSUFBSSxDQUFDLENBQUMsQ0FBQyxVQUFVLENBQUMsQ0FBQztJQUN4RCxDQUFDO0NBQ0QsQ0FBQTtBQS9CQTtJQURDLFFBQVEsQ0FBQyxFQUFDLElBQUksRUFBRSxLQUFLLEVBQUMsQ0FBQztrREFDVDtBQUZLLGtCQUFrQjtJQUR0QyxhQUFhLENBQUMsc0JBQXNCLENBQUM7R0FDakIsa0JBQWtCLENBaUN0QztlQWpDb0Isa0JBQWtCIn0=
