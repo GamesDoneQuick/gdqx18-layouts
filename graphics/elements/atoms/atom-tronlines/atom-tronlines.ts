@@ -209,21 +209,22 @@ export default class AtomTronlines extends Polymer.Element {
 		const opacityRange = Math.abs(this.opacityStart - this.opacityEnd);
 		const tickTime = Date.now();
 		const TIME_PER_TICK_IDEAL = 1000 / 60;
-		Array.from(this._allocatedNodes).forEach(node => {
+		Array.from(this._allocatedNodes).forEach((node: createjs.Shape) => {
+			const metadata = fooMap.get(node);
 			let percent = 1;
-			if (node.lastTickTime) {
-				percent = (tickTime - node.lastTickTime) / TIME_PER_TICK_IDEAL;
+			if (metadata.lastTickTime) {
+				percent = (tickTime - metadata.lastTickTime) / TIME_PER_TICK_IDEAL;
 			}
 
-			node.y -= node.speed * percent;
+			node.y -= metadata.speed * percent;
 
 			const journeyPercentage = 1 - (node.y / (this._invertDimensions ? this.width : this.height));
 			node.alpha = this.opacityStart - (opacityRange * journeyPercentage);
-			node.lastTickTime = tickTime;
+			metadata.lastTickTime = tickTime;
 
 			// If a node's alpha is less than zero, remove it.
 			// Or a node has completely scrolled off the canvas, remove it.
-			if (node.alpha <= 0 || (node.y + node.tailLength) <= 0) {
+			if (node.alpha <= 0 || (node.y + metadata.tailLength) <= 0) {
 				this._freeNode(node);
 			}
 		});
