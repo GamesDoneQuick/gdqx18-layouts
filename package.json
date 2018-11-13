@@ -7,7 +7,7 @@
     "Chris Hanel <chrishanel@gmail.com>"
   ],
   "dependencies": {
-    "@createjs/easeljs": "^2.0.0-beta.3",
+    "@createjs/easeljs": "github:Lange/createjs-EaselJS#04dae0fa95b55531f76fdff638d914a4d3adb9a3",
     "bluebird": "^3.4.0",
     "body-parser": "^1.18.3",
     "bower-npm-resolver": "^0.8.2",
@@ -76,7 +76,7 @@
     "glob": "^7.1.3",
     "istanbul": "^0.4.3",
     "json-schema-to-typescript": "^6.0.1",
-    "nodecg-screenshot-tester": "^2.1.2",
+    "nodecg-screenshot-tester": "github:nodecg/nodecg-screenshot-tester#81752a8a34919a40effaa769f6677bebd28825e5",
     "trash-cli": "^1.4.0",
     "ts-node": "^6.0.3",
     "tslint": "^5.10.0",
