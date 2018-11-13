@@ -87,6 +87,7 @@
   "license": "Apache-2.0",
   "nodecg": {
     "compatibleRange": "^1.0.0",
+    "transformBareModuleSpecifiers": true,
     "dashboardPanels": [
       {
         "name": "Stream Tech Dashboard",
