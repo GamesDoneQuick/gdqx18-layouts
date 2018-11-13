@@ -7,7 +7,7 @@ const {customElement, property} = Polymer.decorators;
  * @customElement
  * @polymer
  */
-@customElement('atom-arrow-block')
+@customElement('atom-binary-clock')
 export default class AtomBinaryClock extends Polymer.Element {
 	@property({type: Number, observer: AtomBinaryClock.prototype._updateHours})
 	hours: number;
@@ -18,7 +18,7 @@ export default class AtomBinaryClock extends Polymer.Element {
 	@property({type: Number, observer: AtomBinaryClock.prototype._updateSeconds})
 	seconds: number;
 
-	@property({type: Number, observer: AtomBinaryClock.prototype._updateSeconds})
+	@property({type: Number, observer: AtomBinaryClock.prototype._updateMilliseconds})
 	milliseconds: number;
 
 	@property({type: Boolean, reflectToAttribute: true})
