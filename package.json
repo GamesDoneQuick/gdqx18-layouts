@@ -7,7 +7,7 @@
     "Chris Hanel <chrishanel@gmail.com>"
   ],
   "dependencies": {
-    "@createjs/easeljs": "github:Lange/createjs-EaselJS#04dae0fa95b55531f76fdff638d914a4d3adb9a3",
+    "@createjs/easeljs": "github:Lange/createjs-EaselJS#405387865ebb4816507a5a38c7f9680a04a8d0eb",
     "bluebird": "^3.4.0",
     "body-parser": "^1.18.3",
     "bower-npm-resolver": "^0.8.2",
