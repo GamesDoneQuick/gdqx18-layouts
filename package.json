@@ -76,7 +76,7 @@
     "glob": "^7.1.3",
     "istanbul": "^0.4.3",
     "json-schema-to-typescript": "^6.0.1",
-    "nodecg-screenshot-tester": "github:nodecg/nodecg-screenshot-tester#81752a8a34919a40effaa769f6677bebd28825e5",
+    "nodecg-screenshot-tester": "github:nodecg/nodecg-screenshot-tester#44d82078c15300b354cf96da9e06414c764ef3c5",
     "trash-cli": "^1.4.0",
     "ts-node": "^6.0.3",
     "tslint": "^5.10.0",

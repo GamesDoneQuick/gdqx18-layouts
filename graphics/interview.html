@@ -4,9 +4,26 @@
 	<meta charset="UTF-8">
 	<title>Interview</title>
 	<link rel="stylesheet" href="style/layout.css">
-	<link rel="import" href="../shared/imports/gsap.html">
-	<link rel="import" href="elements/molecules/gdq-lowerthird/gdq-lowerthird.html">
-	<link rel="import" href="elements/molecules/gdq-interview-question/gdq-interview-question.html">
+	<link rel="import" href="../bower_components/polymer-decorators/polymer-decorators.html">
+	<link rel="import" href="../bower_components/polymer/lib/mixins/mutable-data.html">
+	<link rel="import" href="../bower_components/polymer/lib/utils/debounce.html">
+	<link rel="import" href="../bower_components/polymer/polymer-element.html">
+	<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="../shared/imports/svgjs.html">
+	<script>
+		{
+			const links = [
+				'elements/molecules/gdq-lowerthird/gdq-lowerthird.html',
+				'elements/molecules/gdq-interview-question/gdq-interview-question.html'
+			];
+			for (const link of links) {
+				const linkElem = document.createElement('link');
+				linkElem.rel = 'import';
+				linkElem.href = link;
+				document.head.appendChild(linkElem);
+			}
+		}
+	</script>
 </head>
 <body>
 	<div id="container">

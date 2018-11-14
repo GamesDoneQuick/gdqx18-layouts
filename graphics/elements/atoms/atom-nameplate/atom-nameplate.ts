@@ -65,7 +65,7 @@ export default class AtomNameplate extends Polymer.Element {
 		}, '+=80');
 	}
 
-	updateName({alias = '?', twitchAlias = '?', rotate = true} = {}) {
+	updateName({alias = '?', twitchAlias = '', rotate = true} = {}) {
 		const doTheDangThing = () => {
 			this.name = alias;
 			this.twitch = twitchAlias;

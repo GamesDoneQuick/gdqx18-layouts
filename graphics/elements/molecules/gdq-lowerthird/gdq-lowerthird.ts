@@ -27,7 +27,6 @@ export default class GdqLowerthird extends Polymer.MutableData(Polymer.Element) 
 	ready() {
 		super.ready();
 		this._$nameElements = Array.from(this.shadowRoot!.querySelectorAll('#mainNames gdq-lowerthird-nameplate, #hostName'));
-		this.reset();
 
 		if (!this.preview && !(window as any).__SCREENSHOT_TESTING__) {
 			lowerthirdShowing.on('change', newVal => {
@@ -38,6 +37,13 @@ export default class GdqLowerthird extends Polymer.MutableData(Polymer.Element) 
 				}
 			});
 		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		Polymer.RenderStatus.beforeNextRender(this, () => {
+			this.reset();
+		});
 	}
 
 	updatePreview(names: Interview3Anames) {
