@@ -1,219 +1,196 @@
-/* global AtomChevron */
-(function () {
-	'use strict';
-
-	const CHEVRON_WIDTH = 25;
-	const CHEVRON_HEIGHT = 45;
-	const CHEVRON_THICKNESS = 7;
-	const EXPAND_DURATION = 0.678;
-	const CONTRACT_DURATION = EXPAND_DURATION;
-	const EXPAND_EASE = Power3.easeInOut;
-	const CONTRACT_EASE = Power3.easeIn;
-
-	/**
-	 * @customElement
-	 * @polymer
-	 */
-	class GdqOmnibarCta extends Polymer.Element {
-		static get is() {
-			return 'gdq-omnibar-cta';
-		}
-
-		ready() {
-			super.ready();
-
-			Polymer.RenderStatus.beforeNextRender(this, () => {
-				const chevrons = this.shadowRoot.querySelectorAll('.chevron');
-				const bgChevrons = this.shadowRoot.querySelectorAll('.chevron--bg');
-
-				// The chevrons get confused by our `width: 0px` trick on their parents, so
-				// we have to manually re-render them at the correct size here.
-				chevrons.forEach(chevron => {
-					chevron.render(CHEVRON_WIDTH, CHEVRON_HEIGHT);
-				});
-
-				bgChevrons.forEach(bgChevron => {
-					const gradient = new SVG.Gradient('linear');
-					gradient.from(0, 0).to(0, 1);
-					gradient.update(stop => {
-						stop.at(0, '#0c1219');
-						stop.at(1, '#01070d');
-					});
-					bgChevron.svgDoc.add(gradient);
-					bgChevron.chevron.fill(gradient.fill());
-				});
-
-				this._$chevrons = chevrons;
-				this._$bgChevrons = bgChevrons;
-
-				TweenLite.set(this._$chevrons, {scaleY: 0});
-			});
-		}
-
-		reset() {
-			const tl = new TimelineLite();
-			tl.set(this._$chevrons, {scaleY: 0});
-			tl.set([this.$.leftChevrons, this.$.rightChevrons], {x: 0});
-			tl.call(() => {
-				this._$chevrons.forEach(chevronElement => {
-					const pointArray = AtomChevron.createChevronPointArray({
-						width: CHEVRON_THICKNESS,
-						height: CHEVRON_HEIGHT, // Doesn't change the height.
-						thickness: CHEVRON_THICKNESS // Doesn't change the thickness.
-					});
-					chevronElement.chevron.plot(pointArray);
-				});
-			});
-
-			tl.set([this.$.benefitsContent, this.$.donateContent], {clipPath: 'inset(0 50%)'});
-			return tl;
-		}
-
-		show(displayDuration) {
-			const tl = new TimelineLite();
-
-			tl.add(this.reset());
-
-			tl.to(this._$chevrons, 0.334, {
-				scaleY: 1,
-				ease: Sine.easeInOut
-			});
-
-			// Show first line.
-			const benefitsContent = this.$.benefitsContent;
-			const benefitsContentWidth = benefitsContent.clientWidth;
-			tl.addLabel('expand1');
-			tl.to(this.$.leftChevrons, EXPAND_DURATION, {
-				x: -(benefitsContentWidth / 2),
-				ease: EXPAND_EASE
-			}, 'expand1');
-			tl.to(this.$.rightChevrons, EXPAND_DURATION, {
-				x: benefitsContentWidth / 2,
-				ease: EXPAND_EASE
-			}, 'expand1');
-			tl.add(this.tweenClipPath({
-				element: benefitsContent,
-				start: 50,
-				end: 0,
-				duration: EXPAND_DURATION,
-				ease: EXPAND_EASE
-			}), 'expand1');
-			this._$chevrons.forEach(chevron => {
-				tl.add(this.bendChevron(chevron, EXPAND_DURATION), 'expand1');
-			});
-			tl.to(this, displayDuration, {}); // Hold for displayDuration.
-
-			// Hide first line.
-			tl.addLabel('contract');
-			tl.to([this.$.leftChevrons, this.$.rightChevrons], CONTRACT_DURATION, {
-				x: 0,
-				ease: CONTRACT_EASE
-			}, 'contract');
-			tl.add(this.tweenClipPath({
-				element: benefitsContent,
-				start: 0,
-				end: 50,
-				duration: CONTRACT_DURATION,
-				ease: CONTRACT_EASE
-			}), 'contract');
-			this._$chevrons.forEach(chevron => {
-				tl.add(this.straightenChevron(chevron, CONTRACT_DURATION), 'contract');
-			});
-
-			// Show second line.
-			const donateContent = this.$.donateContent;
-			const donateContentWidth = donateContent.clientWidth;
-			tl.addLabel('expand2');
-			tl.to(this.$.leftChevrons, EXPAND_DURATION, {
-				x: -(donateContentWidth / 2),
-				ease: Power3.easeOut
-			}, 'expand2');
-			tl.to(this.$.rightChevrons, EXPAND_DURATION, {
-				x: donateContentWidth / 2,
-				ease: Power3.easeOut
-			}, 'expand2');
-			tl.add(this.tweenClipPath({
-				element: donateContent,
-				start: 50,
-				end: 0,
-				duration: EXPAND_DURATION,
-				ease: Power3.easeOut
-			}), 'expand2');
-			this._$chevrons.forEach(chevron => {
-				tl.add(this.bendChevron(chevron, EXPAND_DURATION), 'expand2');
-			});
-			tl.to(this, displayDuration, {}); // Hold for displayDuration.
-
-			// Hide second line.
-			tl.addLabel('contract2');
-			tl.to([this.$.leftChevrons, this.$.rightChevrons], CONTRACT_DURATION, {
-				x: 0,
-				ease: CONTRACT_EASE
-			}, 'contract2');
-			tl.add(this.tweenClipPath({
-				element: donateContent,
-				start: 0,
-				end: 50,
-				duration: CONTRACT_DURATION,
-				ease: CONTRACT_EASE
-			}), 'contract2');
-			this._$chevrons.forEach(chevron => {
-				tl.add(this.straightenChevron(chevron, CONTRACT_DURATION), 'contract2');
-			});
-
-			// Exit.
-			tl.to(this._$chevrons, 0.334, {
-				scaleY: 0,
-				ease: Sine.easeInOut,
-				callbackScope: this,
-				onStart() {
-					this.$.lineSelector.selected = '';
-				}
-			});
-
-			return tl;
-		}
-
-		straightenChevron(chevronElement, duration = 1) {
-			const tl = new TimelineLite();
-			const proxy = {width: CHEVRON_WIDTH};
-			tl.to(proxy, duration, {
-				width: CHEVRON_THICKNESS,
-				ease: Sine.easeInOut,
-				autoRound: false,
-				onUpdate() {
-					const pointArray = AtomChevron.createChevronPointArray({
-						width: proxy.width,
-						height: CHEVRON_HEIGHT, // Doesn't change the height.
-						thickness: CHEVRON_THICKNESS // Doesn't change the thickness.
-					});
-					chevronElement.chevron.plot(pointArray);
-				}
-			});
-			return tl;
-		}
-
-		bendChevron(...args) {
-			const tl = this.straightenChevron(...args);
-			tl.reverse(0);
-			return tl;
-		}
-
-		tweenClipPath({element, start, end, duration, ease}) {
-			const proxy = {percentage: start};
-			return TweenLite.to(proxy, duration, {
-				percentage: end,
-				ease,
-				callbackScope: this,
-				onStart() {
-					this.$.lineSelector.selected = element.parentNode.id;
-				},
-				onUpdate() {
-					element.style.clipPath = `inset(0 calc(${proxy.percentage}% - 7px)`;
-				}
-			});
-		}
-	}
-
-	customElements.define(GdqOmnibarCta.is, GdqOmnibarCta);
-})();
+import * as tslib_1 from "tslib";
+import AtomChevron from '../../atoms/atom-chevron/atom-chevron';
+import { Power3, TweenLite, TimelineLite, Sine } from 'gsap';
+const SVG = window.SVG;
+const { customElement } = Polymer.decorators;
+const CHEVRON_WIDTH = 25;
+const CHEVRON_HEIGHT = 45;
+const CHEVRON_THICKNESS = 7;
+const EXPAND_DURATION = 0.678;
+const CONTRACT_DURATION = EXPAND_DURATION;
+const EXPAND_EASE = Power3.easeInOut;
+const CONTRACT_EASE = Power3.easeIn;
+/**
+ * @customElement
+ * @polymer
+ */
+let GdqOmnibarCta = class GdqOmnibarCta extends Polymer.Element {
+    ready() {
+        super.ready();
+        Polymer.RenderStatus.beforeNextRender(this, () => {
+            const chevrons = this.shadowRoot.querySelectorAll('.chevron');
+            const bgChevrons = this.shadowRoot.querySelectorAll('.chevron--bg');
+            // The chevrons get confused by our `width: 0px` trick on their parents, so
+            // we have to manually re-render them at the correct size here.
+            chevrons.forEach(chevron => {
+                chevron.render(CHEVRON_WIDTH, CHEVRON_HEIGHT);
+            });
+            bgChevrons.forEach(bgChevron => {
+                const gradient = new SVG.Gradient('linear');
+                gradient.from(0, 0).to(0, 1);
+                gradient.update((stop) => {
+                    stop.at(0, '#0c1219');
+                    stop.at(1, '#01070d');
+                });
+                bgChevron.svgDoc.add(gradient);
+                bgChevron.chevron.fill(gradient.fill());
+            });
+            this._$chevrons = chevrons;
+            TweenLite.set(this._$chevrons, { scaleY: 0 });
+        });
+    }
+    reset() {
+        const tl = new TimelineLite();
+        tl.set(this._$chevrons, { scaleY: 0 });
+        tl.set([this.$.leftChevrons, this.$.rightChevrons], { x: 0 });
+        tl.call(() => {
+            this._$chevrons.forEach(chevronElement => {
+                const pointArray = AtomChevron.createChevronPointArray({
+                    width: CHEVRON_THICKNESS,
+                    height: CHEVRON_HEIGHT,
+                    thickness: CHEVRON_THICKNESS // Doesn't change the thickness.
+                });
+                chevronElement.chevron.plot(pointArray);
+            });
+        });
+        tl.set([this.$.benefitsContent, this.$.donateContent], { clipPath: 'inset(0 50%)' });
+        return tl;
+    }
+    show(displayDuration) {
+        const tl = new TimelineLite();
+        tl.add(this.reset());
+        tl.to(this._$chevrons, 0.334, {
+            scaleY: 1,
+            ease: Sine.easeInOut
+        });
+        // Show first line.
+        const benefitsContent = this.$.benefitsContent;
+        const benefitsContentWidth = benefitsContent.clientWidth;
+        tl.addLabel('expand1', '+=0');
+        tl.to(this.$.leftChevrons, EXPAND_DURATION, {
+            x: -(benefitsContentWidth / 2),
+            ease: EXPAND_EASE
+        }, 'expand1');
+        tl.to(this.$.rightChevrons, EXPAND_DURATION, {
+            x: benefitsContentWidth / 2,
+            ease: EXPAND_EASE
+        }, 'expand1');
+        tl.add(this.tweenClipPath({
+            element: benefitsContent,
+            start: 50,
+            end: 0,
+            duration: EXPAND_DURATION,
+            ease: EXPAND_EASE
+        }), 'expand1');
+        this._$chevrons.forEach(chevron => {
+            tl.add(this.bendChevron(chevron, EXPAND_DURATION), 'expand1');
+        });
+        tl.to(this, displayDuration, {}); // Hold for displayDuration.
+        // Hide first line.
+        tl.addLabel('contract', '+=0');
+        tl.to([this.$.leftChevrons, this.$.rightChevrons], CONTRACT_DURATION, {
+            x: 0,
+            ease: CONTRACT_EASE
+        }, 'contract');
+        tl.add(this.tweenClipPath({
+            element: benefitsContent,
+            start: 0,
+            end: 50,
+            duration: CONTRACT_DURATION,
+            ease: CONTRACT_EASE
+        }), 'contract');
+        this._$chevrons.forEach(chevron => {
+            tl.add(this.straightenChevron(chevron, CONTRACT_DURATION), 'contract');
+        });
+        // Show second line.
+        const donateContent = this.$.donateContent;
+        const donateContentWidth = donateContent.clientWidth;
+        tl.addLabel('expand2', '+=0');
+        tl.to(this.$.leftChevrons, EXPAND_DURATION, {
+            x: -(donateContentWidth / 2),
+            ease: Power3.easeOut
+        }, 'expand2');
+        tl.to(this.$.rightChevrons, EXPAND_DURATION, {
+            x: donateContentWidth / 2,
+            ease: Power3.easeOut
+        }, 'expand2');
+        tl.add(this.tweenClipPath({
+            element: donateContent,
+            start: 50,
+            end: 0,
+            duration: EXPAND_DURATION,
+            ease: Power3.easeOut
+        }), 'expand2');
+        this._$chevrons.forEach(chevron => {
+            tl.add(this.bendChevron(chevron, EXPAND_DURATION), 'expand2');
+        });
+        tl.to(this, displayDuration, {}); // Hold for displayDuration.
+        // Hide second line.
+        tl.addLabel('contract2', '+=0');
+        tl.to([this.$.leftChevrons, this.$.rightChevrons], CONTRACT_DURATION, {
+            x: 0,
+            ease: CONTRACT_EASE
+        }, 'contract2');
+        tl.add(this.tweenClipPath({
+            element: donateContent,
+            start: 0,
+            end: 50,
+            duration: CONTRACT_DURATION,
+            ease: CONTRACT_EASE
+        }), 'contract2');
+        this._$chevrons.forEach(chevron => {
+            tl.add(this.straightenChevron(chevron, CONTRACT_DURATION), 'contract2');
+        });
+        // Exit.
+        tl.to(this._$chevrons, 0.334, {
+            scaleY: 0,
+            ease: Sine.easeInOut,
+            onStart: () => {
+                this.$.lineSelector.selected = '';
+            }
+        });
+        return tl;
+    }
+    straightenChevron(chevronElement, duration = 1) {
+        const tl = new TimelineLite();
+        const proxy = { width: CHEVRON_WIDTH };
+        tl.to(proxy, duration, {
+            width: CHEVRON_THICKNESS,
+            ease: Sine.easeInOut,
+            autoRound: false,
+            onUpdate: () => {
+                const pointArray = AtomChevron.createChevronPointArray({
+                    width: proxy.width,
+                    height: CHEVRON_HEIGHT,
+                    thickness: CHEVRON_THICKNESS // Doesn't change the thickness.
+                });
+                chevronElement.chevron.plot(pointArray);
+            }
+        });
+        return tl;
+    }
+    bendChevron(chevronElement, duration = 1) {
+        const tl = this.straightenChevron(chevronElement, duration);
+        tl.reverse(0);
+        return tl;
+    }
+    tweenClipPath({ element, start, end, duration, ease }) {
+        const proxy = { percentage: start };
+        return TweenLite.to(proxy, duration, {
+            percentage: end,
+            ease,
+            callbackScope: this,
+            onStart() {
+                this.$.lineSelector.selected = element.parentElement.id;
+            },
+            onUpdate() {
+                element.style.clipPath = `inset(0 calc(${proxy.percentage}% - 7px)`;
+            }
+        });
+    }
+};
+GdqOmnibarCta = tslib_1.__decorate([
+    customElement('gdq-omnibar-cta')
+], GdqOmnibarCta);
+export default GdqOmnibarCta;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ2RxLW9tbmliYXItY3RhLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiZ2RxLW9tbmliYXItY3RhLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBQSxPQUFPLFdBQVcsTUFBTSx1Q0FBdUMsQ0FBQztBQUNoRSxPQUFPLEVBQUMsTUFBTSxFQUFFLFNBQVMsRUFBRSxZQUFZLEVBQUUsSUFBSSxFQUFPLE1BQU0sTUFBTSxDQUFDO0FBQ2pFLE1BQU0sR0FBRyxHQUFJLE1BQWMsQ0FBQyxHQUFvQixDQUFDO0FBRWpELE1BQU0sRUFBQyxhQUFhLEVBQUMsR0FBRyxPQUFPLENBQUMsVUFBVSxDQUFDO0FBRTNDLE1BQU0sYUFBYSxHQUFHLEVBQUUsQ0FBQztBQUN6QixNQUFNLGNBQWMsR0FBRyxFQUFFLENBQUM7QUFDMUIsTUFBTSxpQkFBaUIsR0FBRyxDQUFDLENBQUM7QUFDNUIsTUFBTSxlQUFlLEdBQUcsS0FBSyxDQUFDO0FBQzlCLE1BQU0saUJBQWlCLEdBQUcsZUFBZSxDQUFDO0FBQzFDLE1BQU0sV0FBVyxHQUFHLE1BQU0sQ0FBQyxTQUFTLENBQUM7QUFDckMsTUFBTSxhQUFhLEdBQUcsTUFBTSxDQUFDLE1BQU0sQ0FBQztBQUVwQzs7O0dBR0c7QUFFSCxJQUFxQixhQUFhLEdBQWxDLE1BQXFCLGFBQWMsU0FBUSxPQUFPLENBQUMsT0FBTztJQUd6RCxLQUFLO1FBQ0osS0FBSyxDQUFDLEtBQUssRUFBRSxDQUFDO1FBRWQsT0FBTyxDQUFDLFlBQVksQ0FBQyxnQkFBZ0IsQ0FBQyxJQUFJLEVBQUUsR0FBRyxFQUFFO1lBQ2hELE1BQU0sUUFBUSxHQUFHLElBQUksQ0FBQyxVQUFXLENBQUMsZ0JBQWdCLENBQUMsVUFBVSxDQUE0QixDQUFDO1lBQzFGLE1BQU0sVUFBVSxHQUFHLElBQUksQ0FBQyxVQUFXLENBQUMsZ0JBQWdCLENBQUMsY0FBYyxDQUE0QixDQUFDO1lBRWhHLDJFQUEyRTtZQUMzRSwrREFBK0Q7WUFDL0QsUUFBUSxDQUFDLE9BQU8s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

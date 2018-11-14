@@ -1,7 +1,7 @@
 import CSSReflectionMixin from '../../../mixins/CSSReflectionMixin';
 
 const {customElement, property} = Polymer.decorators;
-const SVG = (window as any).svgjs as svgjs.Library;
+const SVG = (window as any).SVG as svgjs.Library;
 
 /**
  * @customElement
@@ -33,14 +33,14 @@ export default class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) 
 	 * @returns - The constructed SVG.js Polygon instance.
 	 */
 	static createArrowBlock({
-								height,
-								bodyWidth,
-								chevronWidth,
-								fillColor,
-								fillOpacity,
-								strokeSize,
-								strokeColor
-							}: {
+		height,
+		bodyWidth,
+		chevronWidth,
+		fillColor,
+		fillOpacity,
+		strokeSize,
+		strokeColor
+	}: {
 		height: number;
 		bodyWidth: number;
 		chevronWidth: number;
@@ -62,7 +62,7 @@ export default class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) 
 
 	static createArrowBlockPointArray(
 		{height, bodyWidth, chevronWidth}:
-			{ height: number; bodyWidth: number; chevronWidth: number }
+		{ height: number; bodyWidth: number; chevronWidth: number }
 	) {
 		return new SVG.PointArray([
 			[0, 0],

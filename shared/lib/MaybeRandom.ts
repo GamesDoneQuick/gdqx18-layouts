@@ -26,7 +26,7 @@ export interface MaybeRandomTweenParams {
 	delay?: number;
 	start: MaybeRandomNumberParams;
 	end: MaybeRandomNumberParams;
-	onUpdate?: Function;
+	onUpdate?(randomValue: number): void;
 }
 
 /**

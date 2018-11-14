@@ -5,7 +5,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('atom-gradient-text')
-export default class AtromGradientText extends Polymer.Element {
+export default class AtomGradientText extends Polymer.Element {
 	@property({type: String})
 	text: string;
 

@@ -19,7 +19,7 @@ export default class AtomChevron extends CSSReflectionMixin(Polymer.Element) {
 	noAutoRender = false;
 
 	svgDoc: svgjs.Doc;
-	chevron: svgjs.Element;
+	chevron: svgjs.Polygon;
 
 	_lastDirection: 'left' | 'right';
 
@@ -96,7 +96,7 @@ export default class AtomChevron extends CSSReflectionMixin(Polymer.Element) {
 		}
 	}
 
-	render(width: number | undefined, height: number | undefined) {
+	render(width?: number, height?: number) {
 		this.svgDoc.clear();
 
 		/* tslint:disable:no-parameter-reassignment */
