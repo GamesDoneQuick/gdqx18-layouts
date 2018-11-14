@@ -4,13 +4,12 @@
 	<meta charset="UTF-8">
 	<title>Standard, 1 Player (SM/LTTP Randomizer)</title>
 	<link rel="stylesheet" href="style/layout.css">
-	<link rel="import" href="../shared/imports/gsap.html">
-	<link rel="import" href="elements/molecules/gdq-runner-nameplate/gdq-runner-nameplate.html">
-	<link rel="import" href="elements/molecules/gdq-runinfo/gdq-runinfo.html">
-	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
-	<link rel="import" href="elements/molecules/gdq-smalttp-tracker/gdq-smalttp-tracker.html">
-	<link rel="import" href="elements/atoms/atom-tronlines/atom-tronlines.html">
-	<link rel="import" href="elements/atoms/atom-gridlines/atom-gridlines.html">
+	<script>
+		window.extraImports = [
+			'elements/molecules/gdq-smalttp-tracker/gdq-smalttp-tracker.html'
+		];
+	</script>
+	<link rel="import" href="../shared/imports/bootstrap-layout.html">
 	<style>
 		#bottomLeft {
 			display: flex;

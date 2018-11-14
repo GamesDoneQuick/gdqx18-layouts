@@ -10,7 +10,7 @@
 <link rel="import" href="svgjs.html">
 <script>
 	{
-		const links = [
+		let links = [
 			'elements/atoms/atom-gridlines/atom-gridlines.html',
 			'elements/atoms/atom-tronlines/atom-tronlines.html',
 			'elements/molecules/gdq-runinfo/gdq-runinfo.html',
@@ -19,6 +19,11 @@
 			'elements/molecules/gdq-timer/gdq-timer.html',
 			'elements/molecules/gdq-tweet/gdq-tweet.html'
 		];
+
+		if (window.extraImports && Array.isArray(window.extraImports)) {
+			links = links.concat(extraImports)
+		}
+
 		for (const link of links) {
 			const linkElem = document.createElement('link');
 			linkElem.rel = 'import';
