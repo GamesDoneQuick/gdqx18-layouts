@@ -22,7 +22,7 @@ export interface MaybeRandomTweenParams {
     delay?: number;
     start: MaybeRandomNumberParams;
     end: MaybeRandomNumberParams;
-    onUpdate?: Function;
+    onUpdate?(randomValue: number): void;
 }
 /**
  * Returns a number that has a chance of being random.
