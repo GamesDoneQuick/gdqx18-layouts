@@ -71,7 +71,7 @@ export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
 			});
 		}
 
-		_flashAddedNodes(container: HTMLElement | ShadowRoot, selector: string, condition?: Function) {
+		_flashAddedNodes(container: HTMLElement | ShadowRoot, selector: string, condition?: (node: HTMLElement) => boolean) {
 			const observer = new MutationObserver(mutations => {
 				mutations.forEach(mutation => {
 					if (!mutation.addedNodes) {
@@ -81,7 +81,7 @@ export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
 					Array.from(mutation.addedNodes).filter(node => {
 						return node && 'matches' in node && (node as HTMLElement).matches(selector);
 					}).forEach(node => {
-						if (condition && !condition(node)) {
+						if (condition && !condition(node as HTMLElement)) {
 							return;
 						}
 
