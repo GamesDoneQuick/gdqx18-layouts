@@ -4,6 +4,39 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type VictorOps3Aincidents = {
-	[k: string]: any;
-}[];
+export type VictorOps3Aincidents = Incident[];
+
+export interface Incident {
+	incidentNumber: string;
+	startTime: string;
+	currentPhase: string;
+	alertCount: number;
+	lastAlertTime: string;
+	lastAlertId: string;
+	entityId: string;
+	host: string;
+	service: string;
+	pagedUsers: string[];
+	pagedTeams: string[];
+	pagedPolicies: PagedPolicy[];
+	transitions: Transition[];
+}
+export interface PagedPolicy {
+	policy: {
+		name: string;
+		slug: string;
+	};
+	team?: {
+		name: string;
+		slug: string;
+	};
+}
+export interface Transition {
+	name: string;
+	at: string;
+	by: string;
+	message: string;
+	manually: boolean;
+	alertId: string;
+	alertUrl: string;
+}
