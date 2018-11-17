@@ -15,7 +15,7 @@ export default class GDQNameplateAudioIndicatorElement extends Polymer.Element {
 	vertPos: string = 'top';
 
 	@property({type: String, reflectToAttribute: true})
-	horisPos: string = 'left';
+	horizPos: string = 'left';
 
 	@property({type: Number})
 	animationDuration: number = 0.25;

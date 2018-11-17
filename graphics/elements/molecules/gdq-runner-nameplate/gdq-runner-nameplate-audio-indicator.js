@@ -13,7 +13,7 @@ let GDQNameplateAudioIndicatorElement = class GDQNameplateAudioIndicatorElement 
     constructor() {
         super(...arguments);
         this.vertPos = 'top';
-        this.horisPos = 'left';
+        this.horizPos = 'left';
         this.animationDuration = 0.25;
         this._maskProxy = [-10, -10, 0];
     }
@@ -64,7 +64,7 @@ tslib_1.__decorate([
 ], GDQNameplateAudioIndicatorElement.prototype, "vertPos", void 0);
 tslib_1.__decorate([
     property({ type: String, reflectToAttribute: true })
-], GDQNameplateAudioIndicatorElement.prototype, "horisPos", void 0);
+], GDQNameplateAudioIndicatorElement.prototype, "horizPos", void 0);
 tslib_1.__decorate([
     property({ type: Number })
 ], GDQNameplateAudioIndicatorElement.prototype, "animationDuration", void 0);
