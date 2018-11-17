@@ -30,39 +30,40 @@ export default class AtomNameplate extends Polymer.Element {
 	@property({type: Object})
 	private readonly _nameTL = new TimelineMax({repeat: -1, paused: true});
 
-	ready() {
-		super.ready();
+	connectedCallback() {
+		super.connectedCallback();
+		Polymer.RenderStatus.beforeNextRender(this, () => {
+			// Workaround for: https://bugs.chromium.org/p/chromium/issues/detail?id=844880
+			this.shadowRoot!.querySelectorAll('sc-fitted-text').forEach((node: Polymer.Element) => {
+				(node.$.fittedContent as HTMLDivElement).style.webkitBackgroundClip = 'text';
+			});
 
-		// Workaround for: https://bugs.chromium.org/p/chromium/issues/detail?id=844880
-		this.shadowRoot!.querySelectorAll('sc-fitted-text').forEach((node: Polymer.Element) => {
-			(node.$.fittedContent as HTMLDivElement).style.webkitBackgroundClip = 'text';
+			// Create looping anim for main nameplate.
+			this._nameTL.to(this.$.names, this.nameFadeDuration, {
+				onStart: () => {
+					this.$.namesTwitch.classList.remove('hidden');
+					this.$.namesName.classList.add('hidden');
+				},
+				opacity: 1,
+				ease: NAME_FADE_IN_EASE
+			});
+			this._nameTL.to(this.$.names, this.nameFadeDuration, {
+				opacity: 0,
+				ease: NAME_FADE_OUT_EASE
+			}, '+=10');
+			this._nameTL.to(this.$.names, this.nameFadeDuration, {
+				onStart: () => {
+					this.$.namesTwitch.classList.add('hidden');
+					this.$.namesName.classList.remove('hidden');
+				},
+				opacity: 1,
+				ease: NAME_FADE_IN_EASE
+			});
+			this._nameTL.to(this.$.names, this.nameFadeDuration, {
+				opacity: 0,
+				ease: NAME_FADE_OUT_EASE
+			}, '+=80');
 		});
-
-		// Create looping anim for main nameplate.
-		this._nameTL.to(this.$.names, this.nameFadeDuration, {
-			onStart: () => {
-				this.$.namesTwitch.classList.remove('hidden');
-				this.$.namesName.classList.add('hidden');
-			},
-			opacity: 1,
-			ease: NAME_FADE_IN_EASE
-		});
-		this._nameTL.to(this.$.names, this.nameFadeDuration, {
-			opacity: 0,
-			ease: NAME_FADE_OUT_EASE
-		}, '+=10');
-		this._nameTL.to(this.$.names, this.nameFadeDuration, {
-			onStart: () => {
-				this.$.namesTwitch.classList.add('hidden');
-				this.$.namesName.classList.remove('hidden');
-			},
-			opacity: 1,
-			ease: NAME_FADE_IN_EASE
-		});
-		this._nameTL.to(this.$.names, this.nameFadeDuration, {
-			opacity: 0,
-			ease: NAME_FADE_OUT_EASE
-		}, '+=80');
 	}
 
 	updateName({alias = '?', twitchAlias = '', rotate = true} = {}) {

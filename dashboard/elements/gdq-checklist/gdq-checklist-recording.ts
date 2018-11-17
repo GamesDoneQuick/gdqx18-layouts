@@ -1,6 +1,6 @@
 import {Stopwatch} from '../../../src/types/schemas/stopwatch';
 import {Checklist, ChecklistGroup} from '../../../src/types/schemas/checklist';
-import {IUiToast} from '../../../shared/elements/interfaces/ui-toast/ui-toast';
+import UiToast from '../../../shared/elements/interfaces/ui-toast/ui-toast';
 
 const {customElement, property, observe} = Polymer.decorators;
 const checklistRep = nodecg.Replicant<Checklist>('checklist');
@@ -71,8 +71,7 @@ export default class GdqChecklistRecording extends Polymer.Element {
 		});
 
 		nodecg.listenFor('obs:recordingsCycled', error => {
-			// @TODO: how do we reference the UiToast typings here?
-			const toast = this.$.toast as IUiToast;
+			const toast = this.$.toast as UiToast;
 
 			if (error) {
 				let errorString = error;
