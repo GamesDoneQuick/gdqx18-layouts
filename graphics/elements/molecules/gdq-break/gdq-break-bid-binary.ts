@@ -32,6 +32,8 @@ export default class GDQBreakBidBinaryElement extends Polymer.Element implements
 		const tl = new TimelineLite();
 		const winningPercent = this.bid.options[0].rawTotal / this.bid.rawTotal;
 		const proxy = {percent: 0};
+		const winningOptionNameEl = this.$.winningOptionName as HTMLDivElement;
+		const losingOptionNameEl = this.$.losingOptionName as HTMLDivElement;
 		const winningOptionAmountEl = this.$.winningOptionAmount as HTMLDivElement;
 		const losingOptionAmountEl = this.$.losingOptionAmount as HTMLDivElement;
 
@@ -74,10 +76,10 @@ export default class GDQBreakBidBinaryElement extends Polymer.Element implements
 			onStart: () => {
 				this._svgDoc.style({transform: `rotate(${ROTATION_FACTOR}turn)`});
 
-				winningOptionAmountEl.innerText = this.bid.options[0].description || this.bid.options[0].name;
-				losingOptionAmountEl.innerText = this.bid.options[1].description || this.bid.options[1].name;
-				typeAnim(winningOptionAmountEl);
-				typeAnim(losingOptionAmountEl);
+				winningOptionNameEl.innerText = this.bid.options[0].description || this.bid.options[0].name;
+				losingOptionNameEl.innerText = this.bid.options[1].description || this.bid.options[1].name;
+				typeAnim(winningOptionNameEl);
+				typeAnim(losingOptionNameEl);
 			},
 			onUpdate: () => {
 				this.drawWinningSlice(proxy.percent);
