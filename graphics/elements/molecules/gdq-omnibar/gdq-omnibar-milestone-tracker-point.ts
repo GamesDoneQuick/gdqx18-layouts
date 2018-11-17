@@ -3,8 +3,8 @@ const ONE_MILLION = 1000000;
 type Alignment = 'left' | 'center' | 'right';
 
 @customElement('gdq-omnibar-milestone-tracker-point')
-export default class GdqOmnibarMilestoneTrackerPoint extends Polymer.Element {
-	@property({type: String, reflectToAttribute: true, observer: GdqOmnibarMilestoneTrackerPoint.prototype._alignChanged})
+export default class GDQOmnibarMilestoneTrackerPointElement extends Polymer.Element {
+	@property({type: String, reflectToAttribute: true, observer: GDQOmnibarMilestoneTrackerPointElement.prototype._alignChanged})
 	align: Alignment = 'left';
 
 	@property({type: Number})

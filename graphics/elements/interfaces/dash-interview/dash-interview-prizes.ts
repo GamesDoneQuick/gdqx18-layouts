@@ -11,7 +11,7 @@ const prizePlaylistRep = nodecg.Replicant<Interview3AprizePlaylist>('interview:p
  * @appliesMixin Polymer.MutableData
  */
 @customElement('dash-interview-prizes')
-export default class DashInterviewPrizes extends Polymer.MutableData(Polymer.Element) {
+export default class DashInterviewPrizesElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Array})
 	allPrizes: Prize[];
 

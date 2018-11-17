@@ -1,7 +1,7 @@
 const {customElement, property} = Polymer.decorators;
 
 @customElement('dash-host')
-class DashHost extends Polymer.MutableData(Polymer.Element) {
+export default class DashHostElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: String})
 	currentTime: string;
 

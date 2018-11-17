@@ -3,7 +3,7 @@ import {Tweet} from '../../../../src/types/index';
 import {Interview3AquestionTweets} from '../../../../src/types/schemas/interview%3AquestionTweets';
 import {Interview3AquestionSortMap} from '../../../../src/types/schemas/interview%3AquestionSortMap';
 import {Interview3AquestionShowing} from '../../../../src/types/schemas/interview%3AquestionShowing';
-import GdqTweet from '../gdq-tweet/gdq-tweet';
+import GDQTweetElement from '../gdq-tweet/gdq-tweet';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -12,7 +12,7 @@ const questionSortMap = nodecg.Replicant<Interview3AquestionSortMap>('interview:
 const questionShowing = nodecg.Replicant<Interview3AquestionShowing>('interview:questionShowing');
 
 @customElement('gdq-interview-question')
-export default class GdqInterviewQuestion extends Polymer.Element {
+export default class GDQInterviewQuestionElement extends Polymer.Element {
 	@property({type: Object, computed: 'calcOnScreenTweet(_questionsVal, _sortMapVal)'})
 	onScreenTweet: Tweet | null = null;
 
@@ -46,7 +46,7 @@ export default class GdqInterviewQuestion extends Polymer.Element {
 		if (!this.onScreenTweet) {
 			return;
 		}
-		const tweetEl = this.$.tweet as GdqTweet;
+		const tweetEl = this.$.tweet as GDQTweetElement;
 
 		this._timeline.call(() => {
 			tweetEl._addReset();
@@ -60,7 +60,7 @@ export default class GdqInterviewQuestion extends Polymer.Element {
 		}
 
 		this._timeline.call(() => {
-			(this.$.tweet as GdqTweet)._createExitAnim();
+			(this.$.tweet as GDQTweetElement)._createExitAnim();
 		}, undefined, null, '+=0.5');
 	}
 

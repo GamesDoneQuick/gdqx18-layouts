@@ -1,5 +1,5 @@
 import MapSortMixin from '../../../mixins/MapSortMixin';
-import UiSortableListItem from './ui-sortable-list-item';
+import UiSortableListItemElement from './ui-sortable-list-item';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -10,7 +10,7 @@ const {customElement, property} = Polymer.decorators;
  * @appliesMixin MapSortMixin
  */
 @customElement('ui-sortable-list')
-export default class UiSortableList extends MapSortMixin(Polymer.MutableData(Polymer.Element)) {
+export default class UiSortableListElement extends MapSortMixin(Polymer.MutableData(Polymer.Element)) {
 	@property({type: String})
 	replicantName: string;
 
@@ -71,7 +71,7 @@ export default class UiSortableList extends MapSortMixin(Polymer.MutableData(Pol
 							return;
 						}
 
-						const items = Array.from((this as any).shadowRoot.querySelectorAll('ui-sortable-list-item')) as UiSortableListItem[];
+						const items = Array.from((this as any).shadowRoot.querySelectorAll('ui-sortable-list-item')) as UiSortableListItemElement[];
 						items.forEach(item => {
 							if (item._itemTemplateInstance) {
 								item._itemTemplateInstance.set(prop, value);

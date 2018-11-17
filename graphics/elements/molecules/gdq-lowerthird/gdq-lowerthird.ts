@@ -1,7 +1,7 @@
 import {TimelineLite, Power4, Power3, TweenLite} from 'gsap';
 import {Interview3Anames} from '../../../../src/types/schemas/interview%3Anames';
 import Random from '../../../../shared/lib/vendor/random';
-import GdqLowerthirdNameplate from './gdq-lowerthird-nameplate';
+import GDQLowerthirdNameplateElement from './gdq-lowerthird-nameplate';
 
 const {customElement, property} = Polymer.decorators;
 const NAME_ELEMENT_ENTRANCE_STAGGER = 0.15;
@@ -14,7 +14,7 @@ const lowerthirdShowing = nodecg.Replicant<boolean>('interview:lowerthirdShowing
  * @appliesMixin Polymer.MutableData
  */
 @customElement('gdq-lowerthird')
-export default class GdqLowerthird extends Polymer.MutableData(Polymer.Element) {
+export default class GDQLowerthirdElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Boolean, reflectToAttribute: true})
 	preview: boolean = false;
 
@@ -22,7 +22,7 @@ export default class GdqLowerthird extends Polymer.MutableData(Polymer.Element) 
 	numNames: number;
 
 	readonly tl = new TimelineLite({autoRemoveChildren: true});
-	private _$nameElements: GdqLowerthirdNameplate[];
+	private _$nameElements: GDQLowerthirdNameplateElement[];
 
 	ready() {
 		super.ready();
@@ -64,7 +64,7 @@ export default class GdqLowerthird extends Polymer.MutableData(Polymer.Element) 
 		const nameElementsToShow = this._$nameElements.slice(0, names.length);
 		const randomizedNameElements = Random.shuffle(
 			Random.engines.browserCrypto,
-			nameElementsToShow.slice(0).concat([this.$.header as GdqLowerthirdNameplate])
+			nameElementsToShow.slice(0).concat([this.$.header as GDQLowerthirdNameplateElement])
 		);
 
 		this.reset();
@@ -112,7 +112,7 @@ export default class GdqLowerthird extends Polymer.MutableData(Polymer.Element) 
 	}
 
 	reset() {
-		(this.$.header as GdqLowerthirdNameplate).reset();
+		(this.$.header as GDQLowerthirdNameplateElement).reset();
 		this._$nameElements.forEach(nameElem => nameElem.reset());
 		TweenLite.set(this.$.background, {y: '100%'});
 		TweenLite.set(this, {y: '0%', opacity: 1});

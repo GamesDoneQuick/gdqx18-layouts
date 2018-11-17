@@ -8,7 +8,7 @@ const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
  * @polymer
  */
 @customElement('atom-chevron')
-export default class AtomChevron extends CSSReflectionMixin(Polymer.Element) {
+export default class AtomChevronElement extends CSSReflectionMixin(Polymer.Element) {
 	/**
 	 * The direction the chevron should point.
 	 */
@@ -54,7 +54,7 @@ export default class AtomChevron extends CSSReflectionMixin(Polymer.Element) {
 		strokeColor: string;
 	}) {
 		const chevron = new SVG.Polygon();
-		const pointArray = AtomChevron.createChevronPointArray({width, height, thickness});
+		const pointArray = AtomChevronElement.createChevronPointArray({width, height, thickness});
 		chevron.plot(pointArray);
 		chevron.fill(fillColor);
 		if (strokeSize > 0) {
@@ -106,15 +106,15 @@ export default class AtomChevron extends CSSReflectionMixin(Polymer.Element) {
 
 		const strokeSize = parseInt(this.readCSSCustomProperty(
 			'--atom-chevron-stroke-size',
-			AtomChevron.DEFAULT_STROKE_SIZE
+			AtomChevronElement.DEFAULT_STROKE_SIZE
 		), 10);
 		const thickness = parseInt(this.readCSSCustomProperty(
 			'--atom-chevron-thickness',
-			AtomChevron.DEFAULT_THICKNESS
+			AtomChevronElement.DEFAULT_THICKNESS
 		), 10);
 		this.svgDoc.size(width, height);
 
-		const chevron = AtomChevron.createChevron({
+		const chevron = AtomChevronElement.createChevron({
 			width: width - strokeSize,
 			height: height - strokeSize,
 			thickness,

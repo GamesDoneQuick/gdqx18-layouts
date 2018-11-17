@@ -4,7 +4,7 @@ const {customElement, property} = Polymer.decorators;
 const scoresRep = nodecg.Replicant<Scores>('scores');
 
 @customElement('gdq-marioscores')
-export default class GdqMarioScores extends Polymer.Element {
+export default class GDQMarioScoresElement extends Polymer.Element {
 	@property({type: Object})
 	scores: Scores;
 

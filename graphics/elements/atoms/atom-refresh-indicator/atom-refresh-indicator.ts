@@ -5,8 +5,8 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('atom-refresh-indicator')
-export default class AtomRefreshIndicator extends Polymer.Element {
-	@property({type: Boolean, reflectToAttribute: true, observer: AtomRefreshIndicator.prototype._indeterminateChanged})
+export default class AtomRefreshIndicatorElement extends Polymer.Element {
+	@property({type: Boolean, reflectToAttribute: true, observer: AtomRefreshIndicatorElement.prototype._indeterminateChanged})
 	indeterminate: boolean = true;
 
 	@property({type: String})

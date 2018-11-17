@@ -2,7 +2,7 @@ import {TimelineLite, Power4} from 'gsap';
 import {BidElement} from './gdq-break-bids';
 import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
 import {ParentBid} from '../../../../src/types/index';
-import GdqBreakBidManyOption from './gdq-break-bid-many-option';
+import GDQBreakBidManyOptionElement from './gdq-break-bid-many-option';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -11,7 +11,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-break-bid-many')
-export default class GdqBreakBidMany extends Polymer.Element implements BidElement {
+export default class GDQBreakBidManyElement extends Polymer.Element implements BidElement {
 	@property({type: Object})
 	bid: ParentBid;
 
@@ -19,7 +19,7 @@ export default class GdqBreakBidMany extends Polymer.Element implements BidEleme
 		(this.$.optionRepeat as Polymer.DomRepeat).render();
 
 		const tl = new TimelineLite();
-		const optionElements = Array.from(this.shadowRoot!.querySelectorAll('gdq-break-bid-many-option')) as GdqBreakBidManyOption[];
+		const optionElements = Array.from(this.shadowRoot!.querySelectorAll('gdq-break-bid-many-option')) as GDQBreakBidManyOptionElement[];
 
 		tl.addLabel('flickerOptions', '+=0');
 		optionElements.forEach((optionElement, index) => {
@@ -45,7 +45,7 @@ export default class GdqBreakBidMany extends Polymer.Element implements BidEleme
 	exit() {
 		const tl = new TimelineLite();
 
-		const optionElements = Array.from(this.shadowRoot!.querySelectorAll('gdq-break-bid-many-option')) as GdqBreakBidManyOption[];
+		const optionElements = Array.from(this.shadowRoot!.querySelectorAll('gdq-break-bid-many-option')) as GDQBreakBidManyOptionElement[];
 
 		tl.addLabel('flickerOptions', '+=0');
 		optionElements.slice(0).reverse().forEach((optionElement, index) => {

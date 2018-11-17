@@ -10,7 +10,7 @@ const currentRun = nodecg.Replicant<CurrentRun>('currentRun');
 const checklistComplete = nodecg.Replicant<ChecklistComplete>('checklistComplete');
 
 @customElement('gdq-timekeeper')
-export default class GdqTimekeeper extends Polymer.Element {
+export default class GDQTimekeeperElement extends Polymer.Element {
 	@property({type: Boolean, reflectToAttribute: true})
 	checklistIncomplete = true;
 

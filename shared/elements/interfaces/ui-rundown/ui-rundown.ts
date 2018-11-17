@@ -10,7 +10,7 @@ const schedule = nodecg.Replicant<ScheduleItem[]>('schedule');
 const stopwatch = nodecg.Replicant<Stopwatch>('stopwatch');
 
 @customElement('ui-rundown')
-export default class UiRundown extends Polymer.MutableData(Polymer.Element) {
+export default class UiRundownElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Array})
 	schedule: ScheduleItem[];
 
@@ -20,7 +20,7 @@ export default class UiRundown extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Array})
 	currentItems: (ScheduleItem | IntermissionContentItem)[];
 
-	@property({type: Number, observer: UiRundown.prototype._maxRunsToShowChanged})
+	@property({type: Number, observer: UiRundownElement.prototype._maxRunsToShowChanged})
 	maxRunsToShow: number = 4;
 
 	@property({type: Boolean, reflectToAttribute: true})

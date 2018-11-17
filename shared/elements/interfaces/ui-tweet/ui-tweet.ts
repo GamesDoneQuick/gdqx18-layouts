@@ -3,8 +3,8 @@ import {Tweet} from '../../../../src/types';
 const {customElement, property} = Polymer.decorators;
 
 @customElement('ui-tweet')
-export default class UiTweet extends Polymer.Element {
-	@property({type: Object, observer: UiTweet.prototype.populateBody})
+export default class UiTweetElement extends Polymer.Element {
+	@property({type: Object, observer: UiTweetElement.prototype.populateBody})
 	tweet: Tweet;
 
 	@property({type: String, computed: 'computeProfileUrl(tweet)'})

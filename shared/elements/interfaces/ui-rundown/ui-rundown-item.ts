@@ -3,8 +3,8 @@ import {ScheduleItem} from '../../../../src/types';
 const {customElement, property} = Polymer.decorators;
 
 @customElement('ui-rundown-item')
-export default class UiRundownItem extends Polymer.Element {
-	@property({type: Object, observer: UiRundownItem.prototype._itemChanged})
+export default class UiRundownItemElement extends Polymer.Element {
+	@property({type: Object, observer: UiRundownItemElement.prototype._itemChanged})
 	item: ScheduleItem;
 
 	@property({type: Object, reflectToAttribute: true})

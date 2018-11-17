@@ -7,7 +7,7 @@ const {customElement, property} = Polymer.decorators;
  * @appliesMixin Polymer.MutableData
  */
 @customElement('fanart-item')
-export default class FanartItem extends Polymer.MutableData(Polymer.Element) {
+export default class FanartItemElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Object})
 	value: Tweet;
 

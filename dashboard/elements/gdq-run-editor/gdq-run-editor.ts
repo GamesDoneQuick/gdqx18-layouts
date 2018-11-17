@@ -3,7 +3,7 @@ import {Run, Runner} from '../../../src/types/Run';
 const {customElement, property} = Polymer.decorators;
 
 @customElement('gdq-run-editor')
-export default class GdqRunEditor extends Polymer.MutableData(Polymer.Element) {
+export default class GDQRunEditorElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Boolean})
 	showingOriginal = false;
 

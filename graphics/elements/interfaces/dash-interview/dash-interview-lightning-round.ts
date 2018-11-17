@@ -10,7 +10,7 @@ const questionShowing = nodecg.Replicant<boolean>('interview:questionShowing');
  * @appliesMixin Polymer.MutableData
  */
 @customElement('dash-interview-lightning-round')
-export default class DashInterviewLightningRound extends Polymer.MutableData(Polymer.Element) {
+export default class DashInterviewLightningRoundElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Boolean, notify: true})
 	questionShowing: boolean = false;
 

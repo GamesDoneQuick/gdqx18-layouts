@@ -1,9 +1,9 @@
 import {TimelineLite, Linear, Sine, Power2} from 'gsap';
 import InterruptMixin, {IInterruptMixin} from '../../../mixins/InterruptMixin';
 import {Tweet} from '../../../../src/types/Twitter';
-import AtomGridmaskImage from '../../atoms/atom-gridmask-image/atom-gridmask-image';
+import AtomGridmaskImageElement from '../../atoms/atom-gridmask-image/atom-gridmask-image';
 import {typeAnim} from '../../../../shared/lib/TypeAnims';
-import GdqTweet from '../gdq-tweet/gdq-tweet';
+import GDQTweetElement from '../gdq-tweet/gdq-tweet';
 import * as DrawSVGPlugin from '../../../../shared/lib/vendor/DrawSVGPlugin';
 
 (window as any)._gsapPlugins = [DrawSVGPlugin]; // prevent tree shaking
@@ -16,7 +16,7 @@ const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
  * @polymer
  */
 @customElement('gdq-break-fanart')
-export default class GdqBreakFanart extends InterruptMixin(Polymer.Element) {
+export default class GDQBreakFanartElement extends InterruptMixin(Polymer.Element) {
 	@property({type: Number})
 	backgroundOpacity: number = 0.25;
 
@@ -52,7 +52,7 @@ export default class GdqBreakFanart extends InterruptMixin(Polymer.Element) {
 	 */
 	_createEntranceAnim(tweet: Tweet) {
 		const tl = new TimelineLite();
-		const $image = this.$.image as AtomGridmaskImage;
+		const $image = this.$.image as AtomGridmaskImageElement;
 
 		const media = tweet.gdqMedia;
 		if (!media) {
@@ -84,7 +84,7 @@ export default class GdqBreakFanart extends InterruptMixin(Polymer.Element) {
 		}, 'start');
 
 		tl.add($image.enter(), 'start');
-		tl.add((this.$.tweet as GdqTweet)._createEntranceAnim(tweet), 'start+=0.1');
+		tl.add((this.$.tweet as GDQTweetElement)._createEntranceAnim(tweet), 'start+=0.1');
 
 		tl.to(this.$.label, 0.334, {
 			scaleX: 1,
@@ -132,7 +132,7 @@ export default class GdqBreakFanart extends InterruptMixin(Polymer.Element) {
 
 			tl.pause();
 			const exitTextTl = new TimelineLite();
-			exitTextTl.add((this.$.tweet as GdqTweet)._createChangeAnim(tweet), 0);
+			exitTextTl.add((this.$.tweet as GDQTweetElement)._createChangeAnim(tweet), 0);
 			exitTextTl.call(() => {
 				exitedPreviousItem = true;
 				tl.resume();
@@ -159,7 +159,7 @@ export default class GdqBreakFanart extends InterruptMixin(Polymer.Element) {
 	 */
 	_changeImage(newSrc: string) {
 		const tl = new TimelineLite();
-		const $image = this.$.image as AtomGridmaskImage;
+		const $image = this.$.image as AtomGridmaskImageElement;
 
 		tl.add($image.exit({
 			onComplete: () => {
@@ -204,8 +204,8 @@ export default class GdqBreakFanart extends InterruptMixin(Polymer.Element) {
 			ease: Sine.easeInOut
 		}, 'exit+=0.9');
 
-		tl.add((this.$.tweet as GdqTweet)._createExitAnim(), 'exit');
-		tl.add((this.$.image as AtomGridmaskImage).exit(), 'exit+=0.1');
+		tl.add((this.$.tweet as GDQTweetElement)._createExitAnim(), 'exit');
+		tl.add((this.$.image as AtomGridmaskImageElement).exit(), 'exit+=0.1');
 
 		return tl;
 	}

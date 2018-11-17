@@ -8,7 +8,7 @@ const SVG = (window as any).SVG as svgjs.Library;
  * @polymer
  */
 @customElement('atom-arrow-block')
-export default class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) {
+export default class AtomArrowBlockElement extends CSSReflectionMixin(Polymer.Element) {
 	@property({type: Boolean})
 	glow = true;
 
@@ -50,7 +50,7 @@ export default class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) 
 		strokeColor: string;
 	}) {
 		const chevron = new SVG.Polygon();
-		const pointArray = AtomArrowBlock.createArrowBlockPointArray({height, bodyWidth, chevronWidth});
+		const pointArray = AtomArrowBlockElement.createArrowBlockPointArray({height, bodyWidth, chevronWidth});
 		chevron.plot(pointArray);
 		chevron.fill({color: fillColor, opacity: fillOpacity});
 		if (strokeSize > 0) {
@@ -85,15 +85,15 @@ export default class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) 
 
 		const strokeSize = parseInt(this.readCSSCustomProperty(
 			'--atom-arrow-block-stroke-size',
-			AtomArrowBlock.DEFAULT_STROKE_SIZE
+			AtomArrowBlockElement.DEFAULT_STROKE_SIZE
 		), 10);
 		const chevronWidth = parseInt(this.readCSSCustomProperty(
 			'--atom-arrow-block-chevron-width',
-			AtomArrowBlock.DEFAULT_CHEVRON_WIDTH
+			AtomArrowBlockElement.DEFAULT_CHEVRON_WIDTH
 		), 10);
 		const shadowSize = parseFloat(this.readCSSCustomProperty(
 			'--atom-arrow-block-shadow-size',
-			AtomArrowBlock.DEFAULT_SHADOW_SIZE
+			AtomArrowBlockElement.DEFAULT_SHADOW_SIZE
 		));
 		const fillOpacity = parseFloat(this.readCSSCustomProperty(
 			'--atom-arrow-block-fill-opacity',
@@ -106,7 +106,7 @@ export default class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) 
 		const height = this.clientHeight;
 		const width = bodyWidth + (chevronWidth * 2) + strokeSize;
 
-		const arrowBlock = AtomArrowBlock.createArrowBlock({
+		const arrowBlock = AtomArrowBlockElement.createArrowBlock({
 			height: height - strokeSize,
 			bodyWidth,
 			chevronWidth,

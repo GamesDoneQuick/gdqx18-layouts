@@ -10,7 +10,7 @@ const cyclingRecordingsRep = nodecg.Replicant<Obs3AcyclingRecordings>('obs:cycli
  * @appliesMixin Polymer.MutableData
  */
 @customElement('ui-obs-status-item')
-export default class UiObsStatusItem extends Polymer.MutableData(Polymer.Element) {
+export default class UiObsStatusItemElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: String})
 	namespace: string;
 

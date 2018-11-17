@@ -7,7 +7,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('dash-host-bid-option')
-export default class DashHostBidOption extends Polymer.Element {
+export default class DashHostBidOptionElement extends Polymer.Element {
 	@property({type: Object})
 	bid: ParentBid;
 

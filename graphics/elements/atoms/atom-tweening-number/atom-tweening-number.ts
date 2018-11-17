@@ -16,11 +16,11 @@ const defaultDisplayValueTransform = (displayValue: number) => {
  * @polymer
  */
 @customElement('atom-tweening-number')
-export default class AtomTweeningNumber extends Polymer.Element {
+export default class AtomTweeningNumberElement extends Polymer.Element {
 	/**
 	 * The value you wish to tween to.
 	 */
-	@property({type: Number, observer: AtomTweeningNumber.prototype._valueChanged})
+	@property({type: Number, observer: AtomTweeningNumberElement.prototype._valueChanged})
 	value: number;
 
 	/**

@@ -1,7 +1,7 @@
 import {Tweet} from '../../../../src/types';
 import MapSortMixin from '../../../mixins/MapSortMixin';
 import {Interview3AquestionSortMap} from '../../../../src/types/schemas/interview%3AquestionSortMap';
-import DashInterviewMonitorTweet from './dash-interview-monitor-tweet';
+import DashInterviewMonitorTweetElement from './dash-interview-monitor-tweet';
 
 const {customElement, property} = Polymer.decorators;
 const questionTweetsRep = nodecg.Replicant<Tweet[]>('interview:questionTweets');
@@ -13,7 +13,7 @@ const questionSortMapRep = nodecg.Replicant<Interview3AquestionSortMap>('intervi
  * @appliesMixin window.MapSortMixin
  */
 @customElement('dash-interview-monitor-tweets')
-export default class DashInterviewMonitorTweets extends MapSortMixin(Polymer.MutableData(Polymer.Element)) {
+export default class DashInterviewMonitorTweetsElement extends MapSortMixin(Polymer.MutableData(Polymer.Element)) {
 	@property({type: Array})
 	questionTweets: Tweet[];
 
@@ -82,7 +82,7 @@ export default class DashInterviewMonitorTweets extends MapSortMixin(Polymer.Mut
 		(this.$.repeat as Polymer.DomRepeat).render();
 		Polymer.flush();
 
-		const firstMonitorTweet = this.shadowRoot!.querySelector('dash-interview-monitor-tweet') as DashInterviewMonitorTweet;
+		const firstMonitorTweet = this.shadowRoot!.querySelector('dash-interview-monitor-tweet') as DashInterviewMonitorTweetElement;
 		if (!firstMonitorTweet) {
 			return;
 		}

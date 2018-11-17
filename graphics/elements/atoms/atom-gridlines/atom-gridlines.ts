@@ -5,4 +5,4 @@ const {customElement} = Polymer.decorators;
  * @polymer
  */
 @customElement('atom-gridlines')
-export default class AtomGridlines extends Polymer.Element {}
+export default class AtomGridlinesElement extends Polymer.Element {}

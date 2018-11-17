@@ -8,7 +8,7 @@ const casparConnected = nodecg.Replicant<boolean>('caspar:connected');
 const compositingOBSWebsocket = nodecg.Replicant<WebsocketStatus>('compositingOBS:websocket');
 
 @customElement('dash-host-ads')
-export default class DashHostAds extends Polymer.MutableData(Polymer.Element) {
+export default class DashHostAdsElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Array})
 	content: IntermissionContentItem[];
 

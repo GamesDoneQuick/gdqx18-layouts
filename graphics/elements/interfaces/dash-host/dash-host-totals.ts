@@ -6,7 +6,7 @@ const cashTotal = nodecg.Replicant<Total>('total');
 const bitsTotal = nodecg.Replicant<Bits3Atotal>('bits:total');
 
 @customElement('dash-host-totals')
-export default class DashHostTotals extends Polymer.Element {
+export default class DashHostTotalsElement extends Polymer.Element {
 	@property({type: String})
 	cashTotal: string;
 

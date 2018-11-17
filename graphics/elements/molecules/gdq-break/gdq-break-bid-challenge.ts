@@ -1,5 +1,5 @@
 import {TimelineLite, TweenLite, Power2, Power4} from 'gsap';
-import AtomTweeningNumber from '../../atoms/atom-tweening-number/atom-tweening-number';
+import AtomTweeningNumberElement from '../../atoms/atom-tweening-number/atom-tweening-number';
 import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
 import {BidElement} from './gdq-break-bids';
 import {ParentBid} from '../../../../src/types/index';
@@ -11,14 +11,14 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-break-bid-challenge')
-export default class GdqBreakBidChallenge extends Polymer.Element implements BidElement {
+export default class GDQBreakBidChallengeElement extends Polymer.Element implements BidElement {
 	@property({type: Object})
 	bid: ParentBid;
 
 	ready() {
 		super.ready();
-		const amountElem = this.$.amount as AtomTweeningNumber;
-		const percentElem = this.$.percent as AtomTweeningNumber;
+		const amountElem = this.$.amount as AtomTweeningNumberElement;
+		const percentElem = this.$.percent as AtomTweeningNumberElement;
 
 		amountElem.ease = Power2.easeOut;
 		amountElem.displayValueTransform = (displayValue: number) => {
@@ -88,8 +88,8 @@ export default class GdqBreakBidChallenge extends Polymer.Element implements Bid
 			scaleX: 1,
 			ease: Power2.easeOut,
 			onStart: () => {
-				(this.$.amount as AtomTweeningNumber).tween(this.bid.rawTotal, meterDuration);
-				(this.$.percent as AtomTweeningNumber).tween(Math.floor(meterPercent * 100), meterDuration);
+				(this.$.amount as AtomTweeningNumberElement).tween(this.bid.rawTotal, meterDuration);
+				(this.$.percent as AtomTweeningNumberElement).tween(Math.floor(meterPercent * 100), meterDuration);
 			}
 		});
 

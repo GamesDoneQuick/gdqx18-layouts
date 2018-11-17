@@ -13,7 +13,7 @@ const prizePlaylistSortMapRep = nodecg.Replicant<string[]>('interview:prizePlayl
  * @appliesMixin window.MapSortMixin
  */
 @customElement('dash-interview-monitor-prizes')
-export default class DashInterviewMonitorPrizes extends MapSortMixin(Polymer.MutableData(Polymer.Element)) {
+export default class DashInterviewMonitorPrizesElement extends MapSortMixin(Polymer.MutableData(Polymer.Element)) {
 	@property({type: Array})
 	allPrizes: Prize[];
 

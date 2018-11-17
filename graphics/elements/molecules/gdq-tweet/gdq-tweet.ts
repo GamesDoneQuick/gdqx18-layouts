@@ -14,7 +14,7 @@ const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
  * @polymer
  */
 @customElement('gdq-tweet')
-export default class GdqTweet extends InterruptMixin(Polymer.Element) {
+export default class GDQTweetElement extends InterruptMixin(Polymer.Element) {
 	@property({type: String})
 	label: string = '';
 

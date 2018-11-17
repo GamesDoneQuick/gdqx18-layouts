@@ -12,7 +12,7 @@ const tweets = nodecg.Replicant<Tweets>('tweets');
  * @appliesMixin Polymer.MutableData
  */
 @customElement('gdq-twitter-controls')
-export default class GdqTwitterControls extends Polymer.MutableData(Polymer.Element) {
+export default class GDQTwitterControlsElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Array})
 	tweets: Tweets;
 

@@ -10,7 +10,7 @@ const questionSortMapRep = nodecg.Replicant<Interview3AquestionSortMap>('intervi
  * @appliesMixin Polymer.MutableData
  */
 @customElement('dash-interview-lightning-round-tweet')
-export default class DashInterviewLightningRoundTweet extends Polymer.MutableData(Polymer.Element) {
+export default class DashInterviewLightningRoundTweetElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Object})
 	tweet: Tweet;
 

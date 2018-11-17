@@ -4,7 +4,7 @@ const {customElement, property} = Polymer.decorators;
 const checklist = nodecg.Replicant<Checklist>('checklist');
 
 @customElement('gdq-checklist')
-export default class GdqChecklist extends Polymer.MutableData(Polymer.Element) {
+export default class GDQChecklistElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Array})
 	stageTechDuties: ChecklistGroup;
 

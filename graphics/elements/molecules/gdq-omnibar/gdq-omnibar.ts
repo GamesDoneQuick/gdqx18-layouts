@@ -1,16 +1,16 @@
 import {TimelineLite} from 'gsap';
-import GdqOmnibarLabel from './gdq-omnibar-label';
-import GdqOmnibarCta from './gdq-omnibar-cta';
+import GDQOmnibarLabelElement from './gdq-omnibar-label';
+import GDQOmnibarCtaElement from './gdq-omnibar-cta';
 import {ParentBid, Prize, Run, ScheduleItem} from '../../../../src/types';
 import {Gdq3AcurrentLayout} from '../../../../src/types/schemas/gdq%3AcurrentLayout';
 import {RecordTrackerEnabled} from '../../../../src/types/schemas/recordTrackerEnabled';
 import {Total} from '../../../../src/types/schemas/total';
-import GdqOmnibarRun from './gdq-omnibar-run';
-import GdqOmnibarList from './gdq-omnibar-list';
-import GdqOmnibarChallenges from './gdq-omnibar-challenges';
-import GdqOmnibarBidwars from './gdq-omnibar-bidwars';
-import GdqOmnibarPrize from './gdq-omnibar-prize';
-import GdqOmnibarMilestoneTracker from './gdq-omnibar-milestone-tracker';
+import GDQOmnibarRunElement from './gdq-omnibar-run';
+import GDQOmnibarListElement from './gdq-omnibar-list';
+import GDQOmnibarChallengesElement from './gdq-omnibar-challenges';
+import GDQOmnibarBidwarsElement from './gdq-omnibar-bidwars';
+import GDQOmnibarPrizeElement from './gdq-omnibar-prize';
+import GDQOmnibarMilestoneTrackerElement from './gdq-omnibar-milestone-tracker';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -56,7 +56,7 @@ const schedule = nodecg.Replicant<ScheduleItem[]>('schedule');
 const total = nodecg.Replicant<Total>('total');
 
 @customElement('gdq-omnibar')
-export default class GdqOmnibar extends Polymer.Element {
+export default class GDQOmnibarElement extends Polymer.Element {
 	@property({type: Array})
 	readonly milestones = MILESTONES;
 
@@ -140,7 +140,7 @@ export default class GdqOmnibar extends Polymer.Element {
 	 */
 	showLabel(text: string, options: {avatarIconName: string; ringColor: string; flagColor: string}) {
 		const tl = new TimelineLite();
-		const labelElem = this.$.label as GdqOmnibarLabel;
+		const labelElem = this.$.label as GDQOmnibarLabelElement;
 		const fullOptions = {
 			...options,
 			flagHoldDuration: Math.max(DISPLAY_DURATION / 2, 5)
@@ -165,7 +165,7 @@ export default class GdqOmnibar extends Polymer.Element {
 	 * @returns An animation timeline.
 	 */
 	hideLabel() {
-		const hideAnim = (this.$.label as GdqOmnibarLabel).hide();
+		const hideAnim = (this.$.label as GDQOmnibarLabelElement).hide();
 
 		if (this.skipLabelAnims) {
 			hideAnim.progress(1);
@@ -215,7 +215,7 @@ export default class GdqOmnibar extends Polymer.Element {
 		tl.call(() => {
 			this.$.content.innerHTML = '';
 		});
-		tl.add((this.$.cta as GdqOmnibarCta).show(DISPLAY_DURATION));
+		tl.add((this.$.cta as GDQOmnibarCtaElement).show(DISPLAY_DURATION));
 		return tl;
 	}
 
@@ -246,9 +246,9 @@ export default class GdqOmnibar extends Polymer.Element {
 			return upcomingRuns.length >= 4;
 		});
 
-		const listElement = document.createElement('gdq-omnibar-list') as GdqOmnibarList;
+		const listElement = document.createElement('gdq-omnibar-list') as GDQOmnibarListElement;
 		upcomingRuns.forEach((run, index) => {
-			const element = document.createElement('gdq-omnibar-run') as GdqOmnibarRun;
+			const element = document.createElement('gdq-omnibar-run') as GDQOmnibarRunElement;
 			element.run = run;
 			if (index === 0) {
 				element.first = true;
@@ -307,7 +307,7 @@ export default class GdqOmnibar extends Polymer.Element {
 			return tl;
 		}
 
-		const containerElement = document.createElement('gdq-omnibar-challenges') as GdqOmnibarChallenges;
+		const containerElement = document.createElement('gdq-omnibar-challenges') as GDQOmnibarChallengesElement;
 		containerElement.challenges = bidsToDisplay;
 
 		this.setContent(tl, containerElement);
@@ -362,7 +362,7 @@ export default class GdqOmnibar extends Polymer.Element {
 			return tl;
 		}
 
-		const containerElement = document.createElement('gdq-omnibar-bidwars') as GdqOmnibarBidwars;
+		const containerElement = document.createElement('gdq-omnibar-bidwars') as GDQOmnibarBidwarsElement;
 		containerElement.bidWars = bidsToDisplay;
 
 		this.setContent(tl, containerElement);
@@ -398,9 +398,9 @@ export default class GdqOmnibar extends Polymer.Element {
 			return true;
 		}).concat(specialPrizesToDisplayLast);
 
-		const listElement = document.createElement('gdq-omnibar-list') as GdqOmnibarList;
+		const listElement = document.createElement('gdq-omnibar-list') as GDQOmnibarListElement;
 		prizesToDisplay.forEach(prize => {
-			const element = document.createElement('gdq-omnibar-prize') as GdqOmnibarPrize;
+			const element = document.createElement('gdq-omnibar-prize') as GDQOmnibarPrizeElement;
 			element.prize = prize;
 			listElement.appendChild(element);
 		});
@@ -441,7 +441,7 @@ export default class GdqOmnibar extends Polymer.Element {
 			return tl;
 		}
 
-		const milestoneTrackerElement = document.createElement('gdq-omnibar-milestone-tracker') as GdqOmnibarMilestoneTracker;
+		const milestoneTrackerElement = document.createElement('gdq-omnibar-milestone-tracker') as GDQOmnibarMilestoneTrackerElement;
 		milestoneTrackerElement.milestone = currentMilestone;
 		milestoneTrackerElement.currentTotal = total.value.raw;
 

@@ -9,7 +9,7 @@ const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
  * @polymer
  */
 @customElement('atom-gridmask-image')
-export default class AtomGridmaskImage extends Polymer.Element {
+export default class AtomGridmaskImageElement extends Polymer.Element {
 	@property({type: Number})
 	strokeSize = 0;
 

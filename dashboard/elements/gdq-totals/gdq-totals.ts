@@ -6,7 +6,7 @@ const cashTotal = nodecg.Replicant<Total>('total');
 const autoUpdateTotal = nodecg.Replicant<boolean>('autoUpdateTotal');
 
 @customElement('gdq-totals')
-export default class GdqTotals extends Polymer.Element {
+export default class GDQTotalsElement extends Polymer.Element {
 	@property({type: String})
 	cashTotal = '?';
 

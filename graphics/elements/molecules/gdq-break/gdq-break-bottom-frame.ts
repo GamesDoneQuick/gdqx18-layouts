@@ -21,7 +21,7 @@ const LOGO_FADE_IN_EASE = Power1.easeOut;
  * @polymer
  */
 @customElement('gdq-break-bottom-frame')
-export default class GdqBreakBottomFrame extends Polymer.Element {
+export default class GDQBreakBottomFrameElement extends Polymer.Element {
 	ready() {
 		super.ready();
 

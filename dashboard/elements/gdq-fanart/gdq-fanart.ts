@@ -1,7 +1,7 @@
 import {Tweet} from '../../../src/types/Twitter';
 import {Gdq3AcurrentLayout} from '../../../src/types/schemas/gdq%3AcurrentLayout';
 import {FanartTweets} from '../../../src/types/schemas/fanartTweets';
-import GdqFanartPreview from './gdq-fanart-preview';
+import GDQFanartPreviewElement from './gdq-fanart-preview';
 
 const {customElement, property} = Polymer.decorators;
 const currentLayout = nodecg.Replicant<Gdq3AcurrentLayout>('gdq:currentLayout');
@@ -13,7 +13,7 @@ const fanartTweetsRep = nodecg.Replicant<FanartTweets>('fanartTweets');
  * @appliesMixin Polymer.MutableData
  */
 @customElement('gdq-fanart')
-export default class GdqFanart extends Polymer.MutableData(Polymer.Element) {
+export default class GDQFanartElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Array})
 	tweets: FanartTweets;
 
@@ -47,7 +47,7 @@ export default class GdqFanart extends Polymer.MutableData(Polymer.Element) {
 	}
 
 	_handlePreviewEvent(event: Event) {
-		const previewDialog = this.$.previewDialog as GdqFanartPreview;
+		const previewDialog = this.$.previewDialog as GDQFanartPreviewElement;
 		previewDialog.open((event as any).model.tweet);
 	}
 }

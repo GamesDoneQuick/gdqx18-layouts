@@ -20,7 +20,7 @@ const currentBids = nodecg.Replicant<ParentBid[]>('currentBids');
  * @polymer
  */
 @customElement('gdq-break-bids')
-export default class GdqBreakBids extends GDQBreakLoopMixin(Polymer.Element)<ParentBid> {
+export default class GDQBreakBidsElement extends GDQBreakLoopMixin(Polymer.Element)<ParentBid> {
 	_previousBidElement?: BidElement;
 
 	ready() {

@@ -9,8 +9,8 @@ const DISPALY_DURATION = nodecg.bundleConfig.displayDuration;
  * @polymer
  */
 @customElement('gdq-break-schedule-run')
-export default class GdqBreakScheduleRun extends Polymer.MutableData(Polymer.Element) {
-	@property({type: Object, observer: GdqBreakScheduleRun.prototype._runChanged})
+export default class GDQBreakScheduleRunElement extends Polymer.MutableData(Polymer.Element) {
+	@property({type: Object, observer: GDQBreakScheduleRunElement.prototype._runChanged})
 	run: Run;
 
 	@property({type: Boolean, reflectToAttribute: true})

@@ -1,7 +1,7 @@
 import {ParentBid} from '../../../../src/types';
 import {TimelineLite} from 'gsap';
-import GdqOmnibarContentLabel from './gdq-omnibar-content-label';
-import GdqOmnibarChallenge from './gdq-omnibar-challenge';
+import GDQOmnibarContentLabelElement from './gdq-omnibar-content-label';
+import GDQOmnibarChallengeElement from './gdq-omnibar-challenge';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -10,7 +10,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-omnibar-challenges')
-export default class GdqOmnibarChallenges extends Polymer.Element {
+export default class GDQOmnibarChallengesElement extends Polymer.Element {
 	@property({type: Array})
 	challenges: ParentBid[];
 
@@ -18,7 +18,7 @@ export default class GdqOmnibarChallenges extends Polymer.Element {
 		const tl = new TimelineLite();
 
 		this.challenges.forEach((challenge, index) => {
-			const challengeElement = document.createElement('gdq-omnibar-challenge') as GdqOmnibarChallenge;
+			const challengeElement = document.createElement('gdq-omnibar-challenge') as GDQOmnibarChallengeElement;
 			challengeElement.classList.add('challenge');
 			challengeElement.bid = challenge;
 			this.$.challenges.appendChild(challengeElement);
@@ -28,9 +28,9 @@ export default class GdqOmnibarChallenges extends Polymer.Element {
 			}, undefined, null, '+=0.03');
 
 			if (index === 0) {
-				tl.add((this.$.label as GdqOmnibarContentLabel).enter(challenge.description));
+				tl.add((this.$.label as GDQOmnibarContentLabelElement).enter(challenge.description));
 			} else {
-				tl.add((this.$.label as GdqOmnibarContentLabel).change(challenge.description));
+				tl.add((this.$.label as GDQOmnibarContentLabelElement).change(challenge.description));
 			}
 
 			tl.call(() => {
@@ -52,7 +52,7 @@ export default class GdqOmnibarChallenges extends Polymer.Element {
 
 	exit() {
 		const tl = new TimelineLite();
-		tl.add((this.$.label as GdqOmnibarContentLabel).exit());
+		tl.add((this.$.label as GDQOmnibarContentLabelElement).exit());
 		return tl;
 	}
 }

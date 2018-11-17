@@ -5,7 +5,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-break-header')
-export default class GdqBreakHeader extends Polymer.Element {
+export default class GDQBreakHeaderElement extends Polymer.Element {
 	@property({type: String})
 	text: string;
 }

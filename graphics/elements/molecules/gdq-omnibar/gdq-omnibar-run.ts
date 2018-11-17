@@ -1,5 +1,5 @@
 import {Run} from '../../../../src/types';
-import GdqOmnibarListItem from './gdq-omnibar-list-item';
+import GDQOmnibarListItemElement from './gdq-omnibar-list-item';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -8,7 +8,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-omnibar-run')
-export default class GdqOmnibarRun extends Polymer.Element {
+export default class GDQOmnibarRunElement extends Polymer.Element {
 	@property({type: Object})
 	run: Run;
 
@@ -16,11 +16,11 @@ export default class GdqOmnibarRun extends Polymer.Element {
 	first: boolean;
 
 	enter() {
-		return (this.$.listItem as GdqOmnibarListItem).enter();
+		return (this.$.listItem as GDQOmnibarListItemElement).enter();
 	}
 
 	exit() {
-		return (this.$.listItem as GdqOmnibarListItem).exit();
+		return (this.$.listItem as GDQOmnibarListItemElement).exit();
 	}
 
 	formatName(name: string) {

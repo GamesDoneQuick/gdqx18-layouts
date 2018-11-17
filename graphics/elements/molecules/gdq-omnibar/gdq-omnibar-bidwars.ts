@@ -1,8 +1,8 @@
 import {TimelineLite} from 'gsap';
 import {ParentBid, ChildBid} from '../../../../src/types';
-import GdqOmnibarBidwarOption from './gdq-omnibar-bidwar-option';
-import GdqOmnibarList from './gdq-omnibar-list';
-import GdqOmnibarContentLabel from './gdq-omnibar-content-label';
+import GDQOmnibarBidwarOptionElement from './gdq-omnibar-bidwar-option';
+import GDQOmnibarListElement from './gdq-omnibar-list';
+import GDQOmnibarContentLabelElement from './gdq-omnibar-content-label';
 
 const {customElement, property} = Polymer.decorators;
 const MAX_OPTIONS = 4;
@@ -12,31 +12,31 @@ const MAX_OPTIONS = 4;
  * @polymer
  */
 @customElement('gdq-omnibar-bidwars')
-export default class GdqOmnibarBidwars extends Polymer.Element {
+export default class GDQOmnibarBidwarsElement extends Polymer.Element {
 	@property({type: Array})
 	bidWars: ParentBid[];
 
 	enter(displayDuration: number, scrollHoldDuration: number) {
 		const tl = new TimelineLite();
-		const labelElem = this.$.label as GdqOmnibarContentLabel;
+		const labelElem = this.$.label as GDQOmnibarContentLabelElement;
 
 		this.bidWars.forEach((bidWar, bidIndex) => {
 			// Show at most MAX_OPTIONS options.
 			const bidElements = bidWar.options.slice(0, MAX_OPTIONS).map((option, index) => {
-				const element = document.createElement('gdq-omnibar-bidwar-option') as GdqOmnibarBidwarOption;
+				const element = document.createElement('gdq-omnibar-bidwar-option') as GDQOmnibarBidwarOptionElement;
 				element.bid = option;
 				element.winning = index === 0;
 				return element;
 			});
 
 			if (bidElements.length <= 0) {
-				const placeholder = document.createElement('gdq-omnibar-bidwar-option') as GdqOmnibarBidwarOption;
+				const placeholder = document.createElement('gdq-omnibar-bidwar-option') as GDQOmnibarBidwarOptionElement;
 				placeholder.bid = {} as ChildBid;
 				placeholder.placeholder = true;
 				bidElements.push(placeholder);
 			}
 
-			const listElement = document.createElement('gdq-omnibar-list') as GdqOmnibarList;
+			const listElement = document.createElement('gdq-omnibar-list') as GDQOmnibarListElement;
 			listElement.classList.add('list');
 			listElement.marginSize = -8;
 			bidElements.forEach(element => {
@@ -73,7 +73,7 @@ export default class GdqOmnibarBidwars extends Polymer.Element {
 
 	exit() {
 		const tl = new TimelineLite();
-		tl.add((this.$.label as GdqOmnibarContentLabel).exit());
+		tl.add((this.$.label as GDQOmnibarContentLabelElement).exit());
 		return tl;
 	}
 }

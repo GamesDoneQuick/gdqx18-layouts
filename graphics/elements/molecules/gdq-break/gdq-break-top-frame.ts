@@ -1,5 +1,5 @@
-import AtomTweeningNumber from '../../atoms/atom-tweening-number/atom-tweening-number';
-import AtomTinyAlerts from '../../atoms/atom-tiny-alerts/atom-tiny-alerts';
+import AtomTweeningNumberElement from '../../atoms/atom-tweening-number/atom-tweening-number';
+import AtomTinyAlertsElement from '../../atoms/atom-tiny-alerts/atom-tiny-alerts';
 import {Total} from '../../../../src/types/schemas/total';
 
 const {customElement} = Polymer.decorators;
@@ -9,10 +9,10 @@ const {customElement} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-break-top-frame')
-export default class GdqBreakTopFrame extends Polymer.Element {
+export default class GDQBreakTopFrameElement extends Polymer.Element {
 	ready() {
 		super.ready();
-		const totalTextAmountElem = this.$.totalTextAmount as AtomTweeningNumber;
+		const totalTextAmountElem = this.$.totalTextAmount as AtomTweeningNumberElement;
 		totalTextAmountElem.displayValueTransform = this._totalDisplayValueTransform.bind(this);
 
 		nodecg.readReplicant('total', (totalVal: Total) => {
@@ -35,7 +35,7 @@ export default class GdqBreakTopFrame extends Polymer.Element {
 			backgroundColor = '#00ffff';
 		}
 
-		(this.$.donationAlerts as AtomTinyAlerts).addAlert({
+		(this.$.donationAlerts as AtomTinyAlertsElement).addAlert({
 			text: formattedAmount,
 			backgroundColor,
 			holdDuration: rawAmount >= 500 ? 1 : 0.067
@@ -46,7 +46,7 @@ export default class GdqBreakTopFrame extends Polymer.Element {
 		{amount, rawAmount, rawNewTotal}: { amount: string; rawAmount: number; rawNewTotal: number }
 	) {
 		this.addDonationAlert(amount, rawAmount);
-		(this.$.totalTextAmount as AtomTweeningNumber).value = rawNewTotal;
+		(this.$.totalTextAmount as AtomTweeningNumberElement).value = rawNewTotal;
 	}
 
 	_totalDisplayValueTransform(displayValue: number) {

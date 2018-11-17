@@ -1,12 +1,12 @@
 import {Run} from '../../../../src/types';
-import GdqRuninfoCategory from './gdq-runinfo-category';
-import GdqRuninfoMisc from './gdq-runinfo-misc';
+import GDQRuninfoCategoryElement from './gdq-runinfo-category';
+import GDQRuninfoMiscElement from './gdq-runinfo-misc';
 
 const {customElement, property} = Polymer.decorators;
 const currentRun = nodecg.Replicant<Run>('currentRun');
 
 @customElement('gdq-runinfo')
-export default class GdqRuninfo extends Polymer.Element {
+export default class GDQRuninfoElement extends Polymer.Element {
 	@property({type: Number})
 	maxNameSize: number = 45;
 
@@ -57,8 +57,8 @@ export default class GdqRuninfo extends Polymer.Element {
 	fitText() {
 		Polymer.flush();
 		(window as any).textFit(this.$.name, {maxFontSize: this.maxNameSize});
-		(this.$.category as GdqRuninfoCategory).maxTextWidth = this.clientWidth - 76;
-		(this.$.misc as GdqRuninfoMisc).maxTextWidth = (this.clientWidth - 124) / 3;
+		(this.$.category as GDQRuninfoCategoryElement).maxTextWidth = this.clientWidth - 76;
+		(this.$.misc as GDQRuninfoMiscElement).maxTextWidth = (this.clientWidth - 124) / 3;
 	}
 
 	_processName(name?: string) {

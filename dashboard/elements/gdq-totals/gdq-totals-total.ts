@@ -1,7 +1,7 @@
 const {customElement, property} = Polymer.decorators;
 
 @customElement('gdq-totals-total')
-export default class GdqTotalsTotal extends Polymer.Element {
+export default class GDQTotalsTotalElement extends Polymer.Element {
 	@property({type: String})
 	value = '?';
 

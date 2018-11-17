@@ -3,7 +3,7 @@ import {ChildBid, ParentBid} from '../../../../src/types';
 const {customElement, property} = Polymer.decorators;
 
 @customElement('dash-host-bid')
-export default class DashHostBid extends Polymer.MutableData(Polymer.Element) {
+export default class DashHostBidElement extends Polymer.MutableData(Polymer.Element) {
 	@property({
 		type: String,
 		reflectToAttribute: true,

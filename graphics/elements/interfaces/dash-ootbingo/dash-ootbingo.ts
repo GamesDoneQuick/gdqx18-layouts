@@ -10,7 +10,7 @@ const boardRep = nodecg.Replicant<OotBingo3Aboard>('ootBingo:board');
  * @appliesMixin Polymer.MutableData
  */
 @customElement('dash-ootbingo')
-export default class DashOotbingo extends Polymer.MutableData(Polymer.Element) {
+export default class DashOotbingoElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: String})
 	socket: OotBingo3Asocket;
 

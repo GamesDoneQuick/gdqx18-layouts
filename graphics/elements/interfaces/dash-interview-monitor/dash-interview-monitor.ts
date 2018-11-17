@@ -1,4 +1,4 @@
-import AtomTweeningNumber from '../../atoms/atom-tweening-number/atom-tweening-number';
+import AtomTweeningNumberElement from '../../atoms/atom-tweening-number/atom-tweening-number';
 import {Interview3Astopwatch} from '../../../../src/types/schemas/interview%3Astopwatch';
 import {Gdq3AcurrentLayout} from '../../../../src/types/schemas/gdq%3AcurrentLayout';
 import {Run} from '../../../../src/types';
@@ -15,7 +15,7 @@ const checklistComplete = nodecg.Replicant<boolean>('checklistComplete');
 const prizeModeRep = nodecg.Replicant<boolean>('interview:showPrizesOnMonitor');
 
 @customElement('dash-interview-monitor')
-export default class DashInterviewMonitor extends Polymer.MutableData(Polymer.Element) {
+export default class DashInterviewMonitorElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Boolean, reflectToAttribute: true})
 	throwIncoming: boolean = false;
 
@@ -30,7 +30,7 @@ export default class DashInterviewMonitor extends Polymer.MutableData(Polymer.El
 
 	ready() {
 		super.ready();
-		const totalAmountElem = this.$['total-amount'] as AtomTweeningNumber;
+		const totalAmountElem = this.$['total-amount'] as AtomTweeningNumberElement;
 
 		totalAmountElem.displayValueTransform = displayValue => {
 			return displayValue.toLocaleString('en-US', {

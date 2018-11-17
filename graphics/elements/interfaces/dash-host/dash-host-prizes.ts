@@ -1,11 +1,11 @@
 import {Prize} from '../../../../src/types';
-import AtomRefreshIndicator from '../../atoms/atom-refresh-indicator/atom-refresh-indicator';
+import AtomRefreshIndicatorElement from '../../atoms/atom-refresh-indicator/atom-refresh-indicator';
 
 const {customElement, property} = Polymer.decorators;
 const currentPrizes = nodecg.Replicant<Prize[]>('currentPrizes');
 
 @customElement('dash-host-prizes')
-export default class DashHostPrizes extends Polymer.MutableData(Polymer.Element) {
+export default class DashHostPrizesElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Array})
 	prizes: Prize[];
 
@@ -19,11 +19,11 @@ export default class DashHostPrizes extends Polymer.MutableData(Polymer.Element)
 		});
 
 		nodecg.listenFor('prizes:updating', () => {
-			(this.$.cooldown as AtomRefreshIndicator).indeterminate = true;
+			(this.$.cooldown as AtomRefreshIndicatorElement).indeterminate = true;
 		});
 
 		nodecg.listenFor('prizes:updated', () => {
-			(this.$.cooldown as AtomRefreshIndicator).startCountdown(60);
+			(this.$.cooldown as AtomRefreshIndicatorElement).startCountdown(60);
 		});
 	}
 

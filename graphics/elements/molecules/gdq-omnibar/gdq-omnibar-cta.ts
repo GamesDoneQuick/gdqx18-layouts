@@ -1,4 +1,4 @@
-import AtomChevron from '../../atoms/atom-chevron/atom-chevron';
+import AtomChevronElement from '../../atoms/atom-chevron/atom-chevron';
 import {Power3, TweenLite, TimelineLite, Sine, Ease} from 'gsap';
 const SVG = (window as any).SVG as svgjs.Library;
 
@@ -17,15 +17,15 @@ const CONTRACT_EASE = Power3.easeIn;
  * @polymer
  */
 @customElement('gdq-omnibar-cta')
-export default class GdqOmnibarCta extends Polymer.Element {
-	private _$chevrons: NodeListOf<AtomChevron>;
+export default class GDQOmnibarCtaElement extends Polymer.Element {
+	private _$chevrons: NodeListOf<AtomChevronElement>;
 
 	ready() {
 		super.ready();
 
 		Polymer.RenderStatus.beforeNextRender(this, () => {
-			const chevrons = this.shadowRoot!.querySelectorAll('.chevron') as NodeListOf<AtomChevron>;
-			const bgChevrons = this.shadowRoot!.querySelectorAll('.chevron--bg') as NodeListOf<AtomChevron>;
+			const chevrons = this.shadowRoot!.querySelectorAll('.chevron') as NodeListOf<AtomChevronElement>;
+			const bgChevrons = this.shadowRoot!.querySelectorAll('.chevron--bg') as NodeListOf<AtomChevronElement>;
 
 			// The chevrons get confused by our `width: 0px` trick on their parents, so
 			// we have to manually re-render them at the correct size here.
@@ -56,7 +56,7 @@ export default class GdqOmnibarCta extends Polymer.Element {
 		tl.set([this.$.leftChevrons, this.$.rightChevrons], {x: 0});
 		tl.call(() => {
 			this._$chevrons.forEach(chevronElement => {
-				const pointArray = AtomChevron.createChevronPointArray({
+				const pointArray = AtomChevronElement.createChevronPointArray({
 					width: CHEVRON_THICKNESS,
 					height: CHEVRON_HEIGHT, // Doesn't change the height.
 					thickness: CHEVRON_THICKNESS // Doesn't change the thickness.
@@ -173,7 +173,7 @@ export default class GdqOmnibarCta extends Polymer.Element {
 		return tl;
 	}
 
-	straightenChevron(chevronElement: AtomChevron, duration = 1) {
+	straightenChevron(chevronElement: AtomChevronElement, duration = 1) {
 		const tl = new TimelineLite();
 		const proxy = {width: CHEVRON_WIDTH};
 		tl.to(proxy, duration, {
@@ -181,7 +181,7 @@ export default class GdqOmnibarCta extends Polymer.Element {
 			ease: Sine.easeInOut,
 			autoRound: false,
 			onUpdate: () => {
-				const pointArray = AtomChevron.createChevronPointArray({
+				const pointArray = AtomChevronElement.createChevronPointArray({
 					width: proxy.width,
 					height: CHEVRON_HEIGHT, // Doesn't change the height.
 					thickness: CHEVRON_THICKNESS // Doesn't change the thickness.
@@ -192,7 +192,7 @@ export default class GdqOmnibarCta extends Polymer.Element {
 		return tl;
 	}
 
-	bendChevron(chevronElement: AtomChevron, duration = 1) {
+	bendChevron(chevronElement: AtomChevronElement, duration = 1) {
 		const tl = this.straightenChevron(chevronElement, duration);
 		tl.reverse(0);
 		return tl;

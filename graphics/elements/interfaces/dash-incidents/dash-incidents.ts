@@ -5,4 +5,4 @@ const {customElement} = Polymer.decorators;
  * @polymer
  */
 @customElement('dash-incidents')
-export default class DashIncidents extends Polymer.Element {}
+export default class DashIncidentsElement extends Polymer.Element {}

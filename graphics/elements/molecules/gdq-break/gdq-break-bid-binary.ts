@@ -13,7 +13,7 @@ const ROTATION_FACTOR = 0.65;
  * @polymer
  */
 @customElement('gdq-break-bid-binary')
-export default class GdqBreakBidBinary extends Polymer.Element implements BidElement {
+export default class GDQBreakBidBinaryElement extends Polymer.Element implements BidElement {
 	@property({type: Object})
 	bid: ParentBid;
 

@@ -7,7 +7,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-fanart-preview')
-export default class GdqFanartPreview extends Polymer.Element {
+export default class GDQFanartPreviewElement extends Polymer.Element {
 	@property({type: Boolean, reflectToAttribute: true})
 	opened = false;
 

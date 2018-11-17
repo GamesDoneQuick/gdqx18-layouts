@@ -7,7 +7,7 @@ const timeLeft = nodecg.Replicant<TimeStruct>('twitch:timeLeftInAd');
 const timeSince = nodecg.Replicant<TimeStruct>('twitch:timeSinceLastAd');
 
 @customElement('dash-host-twitch-ads')
-export default class DashHostTwitchAds extends Polymer.Element {
+export default class DashHostTwitchAdsElement extends Polymer.Element {
 	@property({type: Boolean})
 	canPlay: boolean = false;
 

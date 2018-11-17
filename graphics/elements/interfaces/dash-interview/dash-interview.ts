@@ -1,8 +1,8 @@
 import {Stopwatch} from '../../../../src/types/schemas/stopwatch';
 import {Interview3AquestionSortMap} from '../../../../src/types/schemas/interview%3AquestionSortMap';
 import {Scene, WebsocketStatus} from '../../../../src/types/nodecg-obs';
-import UiToast from '../../../../shared/elements/interfaces/ui-toast/ui-toast';
-import DashInterviewLowerthird from './dash-interview-lowerthird';
+import UiToastElement from '../../../../shared/elements/interfaces/ui-toast/ui-toast';
+import DashInterviewLowerthirdElement from './dash-interview-lowerthird';
 
 const {customElement, property} = Polymer.decorators;
 const compositingOBSStatus = nodecg.Replicant<WebsocketStatus>('compositingOBS:websocket');
@@ -23,7 +23,7 @@ const baseClass = (Polymer as any).SCDataBindingHelpers(Polymer.MutableData(Poly
  * @appliesMixin Polymer.SCDataBindingHelpers
  */
 @customElement('dash-interview')
-export default class DashInterview extends baseClass {
+export default class DashInterviewElement extends baseClass {
 	@property({type: Boolean, reflectToAttribute: true})
 	lowerthirdShowing: boolean;
 
@@ -101,16 +101,16 @@ export default class DashInterview extends baseClass {
 		});
 
 		this.addEventListener('error-toast', (event: any) => {
-			(this.$.toast as UiToast).showErrorToast(event.detail.text);
+			(this.$.toast as UiToastElement).showErrorToast(event.detail.text);
 		});
 	}
 
 	showLowerthird() {
-		(this.$.lowerthirdControls as DashInterviewLowerthird).autoLowerthird();
+		(this.$.lowerthirdControls as DashInterviewLowerthirdElement).autoLowerthird();
 	}
 
 	hideLowerthird() {
-		(this.$.lowerthirdControls as DashInterviewLowerthird).hideLowerthird();
+		(this.$.lowerthirdControls as DashInterviewLowerthirdElement).hideLowerthird();
 	}
 
 	showQuestion() {
@@ -122,7 +122,7 @@ export default class DashInterview extends baseClass {
 		nodecg.sendMessage('pulseInterviewQuestion', questionSortMap.value[0], error => {
 			this._markingTopQuestionAsDone = false;
 			if (error) {
-				(this.$.toast as UiToast).showErrorToast('Failed to load next interview question.');
+				(this.$.toast as UiToastElement).showErrorToast('Failed to load next interview question.');
 				nodecg.log.error(error);
 			}
 		});
@@ -146,7 +146,7 @@ export default class DashInterview extends baseClass {
 	}
 
 	async transitionToScene(sceneName: string, transitionName = 'Blank Stinger') {
-		const toastElem = this.$.toast as UiToast;
+		const toastElem = this.$.toast as UiToastElement;
 		this._sendingTransitionCommand = true;
 
 		try {

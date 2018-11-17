@@ -15,7 +15,7 @@ const {customElement} = Polymer.decorators;
  * @polymer
  */
 @customElement('atom-tiny-alerts')
-export default class AtomTinyAlerts extends Polymer.Element {
+export default class AtomTinyAlertsElement extends Polymer.Element {
 	addAlert({text, textColor = 'black', backgroundColor = 'white', holdDuration = 0.067}: Alert) {
 		const div = document.createElement('div');
 		div.classList.add('alert');
@@ -51,9 +51,6 @@ export default class AtomTinyAlerts extends Polymer.Element {
 		return tl;
 	}
 }
-
-// This assignment to window is unnecessary, but tsc complains that the class is unused without it.
-(window as any).AtomTinyAlerts = AtomTinyAlerts;
 
 /**
  * Generates a random integer.

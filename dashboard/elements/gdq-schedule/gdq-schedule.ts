@@ -1,8 +1,8 @@
 import {NextRun} from '../../../src/types/schemas/nextRun';
 import {ScheduleItem} from '../../../src/types/Schedule';
 import {Run} from '../../../src/types/Run';
-import GdqScheduleRuninfo from './gdq-schedule-runinfo';
-import GdqRunEditor from '../gdq-run-editor/gdq-run-editor';
+import GDQScheduleRuninfoElement from './gdq-schedule-runinfo';
+import GDQRunEditorElement from '../gdq-run-editor/gdq-run-editor';
 import {CurrentRun} from '../../../src/types/schemas/currentRun';
 
 const {customElement, property} = Polymer.decorators;
@@ -16,7 +16,7 @@ const schedule = nodecg.Replicant<ScheduleItem[]>('schedule');
  * @polymer
  */
 @customElement('gdq-schedule')
-export default class GdqSchedule extends Polymer.Element {
+export default class GDQScheduleElement extends Polymer.Element {
 	@property({type: Boolean})
 	_pendingSetCurrentRunByOrderMessageResponse: boolean;
 
@@ -51,7 +51,7 @@ export default class GdqSchedule extends Polymer.Element {
 			}
 
 			// Disable "next" button if at end of schedule
-			const nextRunEl = this.$.nextRun as GdqScheduleRuninfo;
+			const nextRunEl = this.$.nextRun as GDQScheduleRuninfoElement;
 			if (newVal) {
 				nextRunEl.setRun(newVal as Run);
 				this.$.editNext.removeAttribute('disabled');
@@ -70,7 +70,7 @@ export default class GdqSchedule extends Polymer.Element {
 					return;
 				}
 
-				const currentRunEl = this.$.currentRun as GdqScheduleRuninfo;
+				const currentRunEl = this.$.currentRun as GDQScheduleRuninfoElement;
 				currentRunEl.setRun(newVal as Run);
 				this._checkButtons();
 			});
@@ -161,7 +161,7 @@ export default class GdqSchedule extends Polymer.Element {
 			return;
 		}
 
-		const editor = this.$.editor as GdqRunEditor;
+		const editor = this.$.editor as GDQRunEditorElement;
 		const editDialog = this.$.editDialog as PaperDialogElement;
 		editor.title = `Edit Current Run (#${currentRun.value.order})`;
 		editor.loadRun(currentRun.value as Run);
@@ -173,7 +173,7 @@ export default class GdqSchedule extends Polymer.Element {
 			return;
 		}
 
-		const editor = this.$.editor as GdqRunEditor;
+		const editor = this.$.editor as GDQRunEditorElement;
 		const editDialog = this.$.editDialog as PaperDialogElement;
 		editor.title = `Edit Next Run (#${nextRun.value.order})`;
 		editor.loadRun(nextRun.value as Run);

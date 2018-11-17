@@ -125,7 +125,7 @@ interface ITEMS {
  * @polymer
  */
 @customElement('gdq-lttp-tracker')
-export default class GdqLttpTracker extends Polymer.Element {
+export default class GDQLttpTrackerElement extends Polymer.Element {
 	@property({type: Array})
 	items: ITEMS;
 

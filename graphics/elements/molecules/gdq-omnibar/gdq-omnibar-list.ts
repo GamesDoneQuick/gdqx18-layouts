@@ -1,5 +1,5 @@
 import {TimelineLite, TweenLite, Sine, Power2} from 'gsap';
-import GdqOmnibarListItem from './gdq-omnibar-list-item';
+import GDQOmnibarListItemElement from './gdq-omnibar-list-item';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -20,11 +20,11 @@ const OCCLUDED_OPACITY = 0.25;
  * @polymer
  */
 @customElement('gdq-omnibar-list')
-export default class GdqOmnibarList extends Polymer.Element {
+export default class GDQOmnibarListElement extends Polymer.Element {
 	/**
 	 * How much space, in pixels, to put between items in the list.
 	 */
-	@property({type: Number, observer: GdqOmnibarList.prototype._marginSizeChanged})
+	@property({type: Number, observer: GDQOmnibarListElement.prototype._marginSizeChanged})
 	marginSize: number = 6;
 
 	enter(displayDuration: number, scrollHoldDuration: number) {
@@ -78,7 +78,7 @@ export default class GdqOmnibarList extends Polymer.Element {
 			let recoveredWidth = 0;
 			const leadingElementsToExit = [];
 			while (recoveredWidth < (contentOverflowWidth - MIN_CONTENT_SCROLL_DISTANCE)) {
-				const leadingElement: GdqOmnibarListItem = elements[leadingElementsToExit.length];
+				const leadingElement: GDQOmnibarListItemElement = elements[leadingElementsToExit.length];
 				leadingElementsToExit.push(leadingElement);
 				recoveredWidth += this.getPreciseElementWidth(leadingElement);
 			}
@@ -118,7 +118,7 @@ export default class GdqOmnibarList extends Polymer.Element {
 	}
 
 	getListItems() {
-		return Array.from((this.$.contentSlot as HTMLSlotElement).assignedElements()) as GdqOmnibarListItem[];
+		return Array.from((this.$.contentSlot as HTMLSlotElement).assignedElements()) as GDQOmnibarListItemElement[];
 	}
 
 	getPreciseElementWidth(element: HTMLElement) {

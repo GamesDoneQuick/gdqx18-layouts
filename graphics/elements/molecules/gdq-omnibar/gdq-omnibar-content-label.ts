@@ -12,7 +12,7 @@ const BODY_TWEEN_DURATION_PER_PX = 0.002;
  * @polymer
  */
 @customElement('gdq-omnibar-content-label')
-export default class GdqOmnibarContentLabel extends Polymer.Element {
+export default class GDQOmnibarContentLabelElement extends Polymer.Element {
 	enter(labelHtml: string) {
 		labelHtml = this.processLabelHtml(labelHtml); // tslint:disable-line:no-parameter-reassignment
 

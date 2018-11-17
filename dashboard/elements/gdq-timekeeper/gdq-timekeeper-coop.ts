@@ -4,7 +4,7 @@ import {StopwatchResult} from '../../../src/types/Timekeeping';
 const {customElement, property} = Polymer.decorators;
 
 @customElement('gdq-timekeeper-coop')
-export default class GdqTimekeeperCoop extends Polymer.Element {
+export default class GDQTimekeeperCoopElement extends Polymer.Element {
 	@property({type: String})
 	importPath: string; // https://github.com/Polymer/polymer-linter/issues/71
 

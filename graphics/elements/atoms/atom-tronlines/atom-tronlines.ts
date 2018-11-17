@@ -11,7 +11,7 @@ type DIRECTION = 'up' | 'down' | 'left' | 'right';
  * @polymer
  */
 @customElement('atom-tronlines')
-export default class AtomTronlines extends Polymer.Element {
+export default class AtomTronlinesElement extends Polymer.Element {
 	static BLOCK_SIZE = 50;
 	static WARNING_THRESHOLD = 500;
 	static getRandomUniform(min = 0, max = 1) {
@@ -36,7 +36,7 @@ export default class AtomTronlines extends Polymer.Element {
 	/**
 	 * The solid background color of the canvas.
 	 */
-	@property({type: String, observer: AtomTronlines.prototype._backgroundColorChanged})
+	@property({type: String, observer: AtomTronlinesElement.prototype._backgroundColorChanged})
 	backgroundColor: string = '#050505';
 
 	/**
@@ -55,7 +55,7 @@ export default class AtomTronlines extends Polymer.Element {
 	/**
 	 * Nodes created per second.
 	 */
-	@property({type: Number, observer: AtomTronlines.prototype._creationRateChanged})
+	@property({type: Number, observer: AtomTronlinesElement.prototype._creationRateChanged})
 	creationRate: number = 20;
 
 	/**
@@ -176,11 +176,11 @@ export default class AtomTronlines extends Polymer.Element {
 			if (frameCounter > 60) {
 				frameCounter = 0;
 
-				if (this._allocatedNodes.size > AtomTronlines.WARNING_THRESHOLD) {
+				if (this._allocatedNodes.size > AtomTronlinesElement.WARNING_THRESHOLD) {
 					if (!warnedLeak) {
 						console.warn(
 							'More than %d nodes are active, this is probably a leak!',
-							AtomTronlines.WARNING_THRESHOLD,
+							AtomTronlinesElement.WARNING_THRESHOLD,
 							this
 						);
 						warnedLeak = true;
@@ -248,7 +248,7 @@ export default class AtomTronlines extends Polymer.Element {
 
 		this._creationInterval = window.setInterval(() => {
 			if (this._freeNodes.size <= 0) {
-				this._createBlockOfFreeNodes(AtomTronlines.BLOCK_SIZE);
+				this._createBlockOfFreeNodes(AtomTronlinesElement.BLOCK_SIZE);
 			}
 			const node = this._freeNodes.values().next().value;
 			this._allocateNode(node);
@@ -317,7 +317,7 @@ export default class AtomTronlines extends Polymer.Element {
 		node.updateCache();
 		node.alpha = this.opacityStart;
 		node.y = this._invertDimensions ? this.width : this.height;
-		node.x = AtomTronlines.getRandomUniform(0, this._invertDimensions ? this.height : this.width);
+		node.x = AtomTronlinesElement.getRandomUniform(0, this._invertDimensions ? this.height : this.width);
 
 		this.stage.addChild(node);
 		this._freeNodes.delete(node);
@@ -349,18 +349,18 @@ export default class AtomTronlines extends Polymer.Element {
 	 * or after lowering the node creation rate.
 	 */
 	_sweepExcessFreeNodes() {
-		if (this._freeNodes.size > AtomTronlines.BLOCK_SIZE * 2) {
-			const freeNodesToKeep = Array.from(this._freeNodes).slice(0, AtomTronlines.BLOCK_SIZE);
+		if (this._freeNodes.size > AtomTronlinesElement.BLOCK_SIZE * 2) {
+			const freeNodesToKeep = Array.from(this._freeNodes).slice(0, AtomTronlinesElement.BLOCK_SIZE);
 			this._freeNodes = new Set(freeNodesToKeep);
 		}
 	}
 
 	_computeRandomSpeedFunc(speed: number, speedRandomness: number) {
-		return d3.randomNormal.source(AtomTronlines.getRandomUniform)(speed, speedRandomness);
+		return d3.randomNormal.source(AtomTronlinesElement.getRandomUniform)(speed, speedRandomness);
 	}
 
 	_computeRandomTailLengthFunc(tailLength: number, tailLengthRandomness: number) {
-		return d3.randomNormal.source(AtomTronlines.getRandomUniform)(tailLength, tailLengthRandomness);
+		return d3.randomNormal.source(AtomTronlinesElement.getRandomUniform)(tailLength, tailLengthRandomness);
 	}
 
 	@observe('width', 'height', 'direction')

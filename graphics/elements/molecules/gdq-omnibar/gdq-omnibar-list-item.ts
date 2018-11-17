@@ -8,7 +8,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-omnibar-list-item')
-export default class GdqOmnibarListItem extends Polymer.Element {
+export default class GDQOmnibarListItemElement extends Polymer.Element {
 	@property({type: String})
 	firstLine: string;
 

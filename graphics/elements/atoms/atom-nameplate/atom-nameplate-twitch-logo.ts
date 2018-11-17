@@ -5,4 +5,4 @@ const {customElement} = Polymer.decorators;
  * @polymer
  */
 @customElement('atom-nameplate-twitch-logo')
-export default class AtomNameplateTwitchLogo extends Polymer.Element {}
+export default class AtomNameplateTwitchLogoElement extends Polymer.Element {}

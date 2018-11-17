@@ -1,14 +1,14 @@
-import AtomTweeningNumber from '../../atoms/atom-tweening-number/atom-tweening-number';
+import AtomTweeningNumberElement from '../../atoms/atom-tweening-number/atom-tweening-number';
 import {Total} from '../../../../src/types/schemas/total';
 
 const {customElement} = Polymer.decorators;
 const total = nodecg.Replicant<Total>('total');
 
 @customElement('gdq-omnibar-total')
-export default class GdqOmnibarTotal extends Polymer.Element {
+export default class GDQOmnibarTotalElement extends Polymer.Element {
 	ready() {
 		super.ready();
-		const totalTextAmountElem = this.$.totalTextAmount as AtomTweeningNumber;
+		const totalTextAmountElem = this.$.totalTextAmount as AtomTweeningNumberElement;
 		totalTextAmountElem.displayValueTransform = this._totalDisplayValueTransform.bind(this);
 		total.on('change', newVal => {
 			totalTextAmountElem.value = newVal.raw;

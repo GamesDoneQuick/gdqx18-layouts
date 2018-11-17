@@ -1,4 +1,4 @@
-import AtomTinyAlerts from '../atom-tiny-alerts/atom-tiny-alerts';
+import AtomTinyAlertsElement from '../atom-tiny-alerts/atom-tiny-alerts';
 
 export interface TwitchSubscription {
 	user_name: string;
@@ -24,7 +24,7 @@ const {customElement} = Polymer.decorators;
  * @polymer
  */
 @customElement('atom-sub-alerts')
-export default class AtomSubAlerts extends AtomTinyAlerts {
+export default class AtomSubAlertsElement extends AtomTinyAlertsElement {
 	ready() {
 		super.ready();
 		nodecg.listenFor('subscription', this._handleSubscription.bind(this));

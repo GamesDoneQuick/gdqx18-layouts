@@ -1,5 +1,5 @@
 import {ParentBid, Run} from '../../../../src/types';
-import AtomRefreshIndicator from '../../atoms/atom-refresh-indicator/atom-refresh-indicator';
+import AtomRefreshIndicatorElement from '../../atoms/atom-refresh-indicator/atom-refresh-indicator';
 
 const {customElement, property} = Polymer.decorators;
 const allBids = nodecg.Replicant<ParentBid[]>('allBids');
@@ -7,7 +7,7 @@ const currentRun = nodecg.Replicant<Run>('currentRun');
 const runOrderMap = nodecg.Replicant<string[]>('runOrderMap');
 
 @customElement('dash-host-bids')
-export default class DashHostBids extends Polymer.MutableData(Polymer.Element) {
+export default class DashHostBidsElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Array})
 	relevantBids: ParentBid[];
 
@@ -35,11 +35,11 @@ export default class DashHostBids extends Polymer.MutableData(Polymer.Element) {
 		});
 
 		nodecg.listenFor('bids:updating', () => {
-			(this.$.cooldown as AtomRefreshIndicator).indeterminate = true;
+			(this.$.cooldown as AtomRefreshIndicatorElement).indeterminate = true;
 		});
 
 		nodecg.listenFor('bids:updated', () => {
-			(this.$.cooldown as AtomRefreshIndicator).startCountdown(60);
+			(this.$.cooldown as AtomRefreshIndicatorElement).startCountdown(60);
 		});
 	}
 

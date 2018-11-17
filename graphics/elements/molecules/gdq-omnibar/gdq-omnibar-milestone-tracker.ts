@@ -1,5 +1,5 @@
 import {TweenLite, TimelineLite, Power2, Power1} from 'gsap';
-import GdqOmnibarMilestoneTrackerPoint from './gdq-omnibar-milestone-tracker-point';
+import GDQOmnibarMilestoneTrackerPointElement from './gdq-omnibar-milestone-tracker-point';
 import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
 
 const {customElement, property} = Polymer.decorators;
@@ -12,7 +12,7 @@ export interface Milestone {
 }
 
 @customElement('gdq-omnibar-milestone-tracker')
-export default class GdqOmnibarMilestoneTracker extends Polymer.Element {
+export default class GDQOmnibarMilestoneTrackerElement extends Polymer.Element {
 	@property({type: Number})
 	currentTotal: number;
 
@@ -22,9 +22,9 @@ export default class GdqOmnibarMilestoneTracker extends Polymer.Element {
 	ready() {
 		super.ready();
 
-		const startElem = this.$.start as GdqOmnibarMilestoneTrackerPoint;
-		const currentElem = this.$.current as GdqOmnibarMilestoneTrackerPoint;
-		const endElem = this.$.end as GdqOmnibarMilestoneTrackerPoint;
+		const startElem = this.$.start as GDQOmnibarMilestoneTrackerPointElement;
+		const currentElem = this.$.current as GDQOmnibarMilestoneTrackerPointElement;
+		const endElem = this.$.end as GDQOmnibarMilestoneTrackerPointElement;
 
 		TweenLite.set([
 			startElem.$.line,
@@ -43,9 +43,9 @@ export default class GdqOmnibarMilestoneTracker extends Polymer.Element {
 
 	enter(displayDuration: number) {
 		const tl = new TimelineLite();
-		const startElem = this.$.start as GdqOmnibarMilestoneTrackerPoint;
-		const currentElem = this.$.current as GdqOmnibarMilestoneTrackerPoint;
-		const endElem = this.$.end as GdqOmnibarMilestoneTrackerPoint;
+		const startElem = this.$.start as GDQOmnibarMilestoneTrackerPointElement;
+		const currentElem = this.$.current as GDQOmnibarMilestoneTrackerPointElement;
+		const endElem = this.$.end as GDQOmnibarMilestoneTrackerPointElement;
 		const milestoneStart = this.milestone.precedingMilestone.total;
 		const percentCompleted = (this.currentTotal - milestoneStart) / (this.milestone.total - milestoneStart);
 		const availableSpace =
@@ -127,7 +127,7 @@ export default class GdqOmnibarMilestoneTracker extends Polymer.Element {
 		{percent = 0, startValue = 0, endValue = 0, availableSpace, currentPointBodyRect}:
 		{percent?: number; startValue?: number; endValue?: number; availableSpace: number; currentPointBodyRect: ClientRect | DOMRect}
 	) {
-		const currentElem = this.$.current as GdqOmnibarMilestoneTrackerPoint;
+		const currentElem = this.$.current as GDQOmnibarMilestoneTrackerPointElement;
 		const availableLeftSpace = (currentElem as any)._gsTransform.x;
 		const availableRightSpace = availableSpace - (currentElem as any)._gsTransform.x;
 		const centeredOverhang = (currentPointBodyRect.width / 2) - 1.5;

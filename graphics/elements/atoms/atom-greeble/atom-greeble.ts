@@ -5,7 +5,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('atom-greeble')
-export default class AtomGreeble extends Polymer.Element {
+export default class AtomGreebleElement extends Polymer.Element {
 	@property({type: String, reflectToAttribute: true})
 	align: 'left' | 'right' = 'left';
 }

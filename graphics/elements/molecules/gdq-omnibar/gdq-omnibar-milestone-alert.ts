@@ -9,7 +9,7 @@ const recordTrackerEnabled = nodecg.Replicant<RecordTrackerEnabled>('recordTrack
 const total = nodecg.Replicant<Total>('total');
 
 @customElement('gdq-omnibar-milestone-alert')
-export default class GdqOmnibarMilestoneAlert extends Polymer.Element {
+export default class GDQOmnibarMilestoneAlertElement extends Polymer.Element {
 	@property({type: Array})
 	milestones: Milestone[];
 

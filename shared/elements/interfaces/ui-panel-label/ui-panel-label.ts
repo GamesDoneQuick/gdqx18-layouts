@@ -5,4 +5,4 @@ const {customElement} = Polymer.decorators;
  * @polymer
  */
 @customElement('ui-panel-label')
-export default class UiPanelLabel extends Polymer.Element {}
+export default class UiPanelLabelElement extends Polymer.Element {}

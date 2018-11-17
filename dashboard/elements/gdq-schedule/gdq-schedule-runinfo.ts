@@ -3,8 +3,8 @@ import {Run, Runner} from '../../../src/types/Run';
 const {customElement, property} = Polymer.decorators;
 
 @customElement('gdq-schedule-runinfo')
-export default class GdqScheduleRuninfo extends Polymer.Element {
-	@property({type: String, observer: GdqScheduleRuninfo.prototype._notesChanged})
+export default class GDQScheduleRuninfoElement extends Polymer.Element {
+	@property({type: String, observer: GDQScheduleRuninfoElement.prototype._notesChanged})
 	notes: string;
 
 	@property({type: String, reflectToAttribute: true})

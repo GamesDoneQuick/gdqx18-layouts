@@ -11,7 +11,7 @@ const currentRun = nodecg.Replicant<Run>('currentRun');
 const stopwatch = nodecg.Replicant<Stopwatch>('stopwatch');
 
 @customElement('dash-audio')
-export default class DashAudio extends Polymer.MutableData(Polymer.Element) {
+export default class DashAudioElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Array})
 	audioEngineerDuties: ChecklistGroup;
 

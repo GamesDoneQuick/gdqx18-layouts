@@ -12,7 +12,7 @@ const currentRun = nodecg.Replicant<Run>('currentRun');
  * @polymer
  */
 @customElement('dash-host-currentrun')
-export default class DashHostCurrentrun extends Polymer.MutableData(Polymer.Element) {
+export default class DashHostCurrentrunElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Boolean, reflectToAttribute: true})
 	checklistComplete: boolean = false;
 

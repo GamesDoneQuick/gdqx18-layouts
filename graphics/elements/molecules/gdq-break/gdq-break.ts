@@ -9,7 +9,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-break')
-export default class GdqBreak extends Polymer.Element {
+export default class GDQBreakElement extends Polymer.Element {
 	@property({type: Object})
 	_queue: PQueue = new PQueue({concurrency: 1});
 

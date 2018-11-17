@@ -1,7 +1,7 @@
 const {customElement, property} = Polymer.decorators;
 
 @customElement('dash-producer')
-export default class DashProducer extends Polymer.MutableData(Polymer.Element) {
+export default class DashProducerElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: String})
 	currentTime: string;
 

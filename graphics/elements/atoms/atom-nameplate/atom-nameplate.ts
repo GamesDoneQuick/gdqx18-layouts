@@ -5,7 +5,7 @@ const NAME_FADE_IN_EASE = Power1.easeOut;
 const NAME_FADE_OUT_EASE = Power1.easeIn;
 
 @customElement('atom-nameplate')
-export default class AtomNameplate extends Polymer.Element {
+export default class AtomNameplateElement extends Polymer.Element {
 	@property({type: Boolean, reflectToAttribute: true})
 	noLeftCap: boolean = false;
 

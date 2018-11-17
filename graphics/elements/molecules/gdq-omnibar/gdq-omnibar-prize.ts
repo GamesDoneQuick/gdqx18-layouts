@@ -1,5 +1,5 @@
 import {Prize} from '../../../../src/types';
-import GdqOmnibarListItem from './gdq-omnibar-list-item';
+import GDQOmnibarListItemElement from './gdq-omnibar-list-item';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -8,16 +8,16 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-omnibar-prize')
-export default class GdqOmnibarPrize extends Polymer.Element {
+export default class GDQOmnibarPrizeElement extends Polymer.Element {
 	@property({type: Object})
 	prize: Prize;
 
 	enter() {
-		return (this.$.listItem as GdqOmnibarListItem).enter();
+		return (this.$.listItem as GDQOmnibarListItemElement).enter();
 	}
 
 	exit() {
-		return (this.$.listItem as GdqOmnibarListItem).exit();
+		return (this.$.listItem as GDQOmnibarListItemElement).exit();
 	}
 
 	calcBidAmountText(prize: Prize) {

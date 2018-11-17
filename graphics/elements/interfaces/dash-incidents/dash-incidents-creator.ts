@@ -7,11 +7,11 @@ const log = new nodecg.Logger(`${nodecg.bundleName}:victorOps`);
  * @appliesMixin Polymer.MutableData
  */
 @customElement('dash-incidents-creator')
-export default class DashIncidentsCreator extends Polymer.MutableData(Polymer.Element) {
+export default class DashIncidentsCreatorElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Boolean, reflectToAttribute: true, computed: '_computeSending(_requestStatus)'})
 	sending: boolean;
 
-	@property({type: String, observer: DashIncidentsCreator.prototype._requestStatusChanged})
+	@property({type: String, observer: DashIncidentsCreatorElement.prototype._requestStatusChanged})
 	_requestStatus: string = 'ready';
 
 	private _routingKey: string;

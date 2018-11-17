@@ -8,7 +8,7 @@ const currentHost = nodecg.Replicant<CurrentHost>('currentHost');
  * @polymer
  */
 @customElement('dash-host-name')
-export default class DashHostName extends Polymer.Element {
+export default class DashHostNameElement extends Polymer.Element {
 	@property({type: String})
 	currentHost: string;
 

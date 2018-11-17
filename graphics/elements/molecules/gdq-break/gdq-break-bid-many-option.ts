@@ -1,6 +1,6 @@
 import {ChildBid, ParentBid} from '../../../../src/types/index';
 import {TimelineLite, Power2} from 'gsap';
-import AtomTweeningNumber from '../../atoms/atom-tweening-number/atom-tweening-number';
+import AtomTweeningNumberElement from '../../atoms/atom-tweening-number/atom-tweening-number';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -9,7 +9,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-break-bid-many-option')
-export default class GdqBreakBidManyOption extends Polymer.Element {
+export default class GDQBreakBidManyOptionElement extends Polymer.Element {
 	@property({type: Object})
 	bid: ParentBid;
 
@@ -18,7 +18,7 @@ export default class GdqBreakBidManyOption extends Polymer.Element {
 
 	ready() {
 		super.ready();
-		const amountElem = this.$.amount as AtomTweeningNumber;
+		const amountElem = this.$.amount as AtomTweeningNumberElement;
 		amountElem.ease = Power2.easeOut;
 		amountElem.displayValueTransform = displayValue => {
 			return '$' + displayValue.toLocaleString('en-US', {
@@ -45,7 +45,7 @@ export default class GdqBreakBidManyOption extends Polymer.Element {
 			scaleX: meterPercent,
 			ease: Power2.easeOut,
 			onStart: () => {
-				(this.$.amount as AtomTweeningNumber).tween(this.option.rawTotal, duration);
+				(this.$.amount as AtomTweeningNumberElement).tween(this.option.rawTotal, duration);
 			}
 		});
 

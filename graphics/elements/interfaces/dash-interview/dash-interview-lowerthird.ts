@@ -1,9 +1,9 @@
 import {CurrentIntermission} from '../../../../src/types/schemas/currentIntermission';
 import {Interview, Run, Runner, ScheduleItem} from '../../../../src/types';
 import {Interview3Anames} from '../../../../src/types/schemas/interview%3Anames';
-import DashLowerthirdNameInput from './dash-lowerthird-name-input';
-import GdqLowerthird from '../../molecules/gdq-lowerthird/gdq-lowerthird';
-import DashInterviewLowerthirdRefillOption from './dash-interview-lowerthird-refill-option';
+import DashLowerthirdNameInputElement from './dash-lowerthird-name-input';
+import GDQLowerthirdElement from '../../molecules/gdq-lowerthird/gdq-lowerthird';
+import DashInterviewLowerthirdRefillOptionElement from './dash-interview-lowerthird-refill-option';
 
 const {customElement, property} = Polymer.decorators;
 const currentIntermissionRep = nodecg.Replicant<CurrentIntermission>('currentIntermission');
@@ -18,7 +18,7 @@ const scheduleRep = nodecg.Replicant<ScheduleItem[]>('schedule');
  * @polymer
  */
 @customElement('dash-interview-lowerthird')
-export default class DashInterviewLowerthird extends Polymer.Element {
+export default class DashInterviewLowerthirdElement extends Polymer.Element {
 	@property({type: Boolean, notify: true})
 	lowerthirdShowing: boolean = false;
 
@@ -50,7 +50,7 @@ export default class DashInterviewLowerthird extends Polymer.Element {
 	}
 
 	openPreview() {
-		(this.$.lowerthirdPreview as GdqLowerthird).updatePreview(this.getNames());
+		(this.$.lowerthirdPreview as GDQLowerthirdElement).updatePreview(this.getNames());
 		(this.$.lowerthirdPreviewDialog as PaperDialogElement).open();
 	}
 
@@ -113,7 +113,7 @@ export default class DashInterviewLowerthird extends Polymer.Element {
 	 */
 	getInputs() {
 		return Array.from(this.$.nameInputs.shadowRoot!.querySelectorAll('ui-sortable-list-item'))
-			.map(uiSortableListItem => uiSortableListItem.shadowRoot!.querySelector('dash-lowerthird-name-input')) as DashLowerthirdNameInput[];
+			.map(uiSortableListItem => uiSortableListItem.shadowRoot!.querySelector('dash-lowerthird-name-input')) as DashLowerthirdNameInputElement[];
 	}
 
 	any(...args: any[]) {
@@ -163,8 +163,8 @@ export default class DashInterviewLowerthird extends Polymer.Element {
 			nextInterviewNames.push('(none)');
 		}
 
-		(this.$.currentLowerthirdRefillOption as DashInterviewLowerthirdRefillOption).names = currentInterviewNames;
-		(this.$.nextLowerthirdRefillOption as DashInterviewLowerthirdRefillOption).names = nextInterviewNames;
+		(this.$.currentLowerthirdRefillOption as DashInterviewLowerthirdRefillOptionElement).names = currentInterviewNames;
+		(this.$.nextLowerthirdRefillOption as DashInterviewLowerthirdRefillOptionElement).names = nextInterviewNames;
 		(this.$.lowerthirdRefillDialog as PaperDialogElement).open();
 
 		nodecg.log.info('currentInterview:', currentInterview);

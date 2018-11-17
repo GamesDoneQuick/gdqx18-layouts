@@ -1,10 +1,10 @@
 import {ParentBid} from '../../../../src/types';
 import {TweenLite, TimelineLite, Sine, Linear, Power2, Power4} from 'gsap';
 import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
-import AtomArrowBlock from '../../atoms/atom-arrow-block/atom-arrow-block';
-import AtomChevron from '../../atoms/atom-chevron/atom-chevron';
-import AtomInnerGlowText from '../../atoms/atom-inner-glow-text/atom-inner-glow-text';
-import AtomGradientText from '../../atoms/atom-gradient-text/atom-gradient-text';
+import AtomArrowBlockElement from '../../atoms/atom-arrow-block/atom-arrow-block';
+import AtomChevronElement from '../../atoms/atom-chevron/atom-chevron';
+import AtomInnerGlowTextElement from '../../atoms/atom-inner-glow-text/atom-inner-glow-text';
+import AtomGradientTextElement from '../../atoms/atom-gradient-text/atom-gradient-text';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -19,7 +19,7 @@ const DIRECTION_CHANGE_DELAY = 0.1167;
  * @polymer
  */
 @customElement('gdq-omnibar-challenge')
-export default class GdqOmnibarChallenge extends Polymer.Element {
+export default class GDQOmnibarChallengeElement extends Polymer.Element {
 	@property({type: Object})
 	bid: ParentBid;
 
@@ -35,11 +35,11 @@ export default class GdqOmnibarChallenge extends Polymer.Element {
 	}
 
 	enter() {
-		const progressFillElem = this.$.progressFill as AtomArrowBlock;
-		const progressBlockElem = this.$.progressBlock as AtomArrowBlock;
-		const goalBlockElem = this.$.goalBlock as AtomArrowBlock;
-		const tailChevronElem = this.$.tailChevron as AtomChevron;
-		const totalElem = this.$.total as AtomGradientText;
+		const progressFillElem = this.$.progressFill as AtomArrowBlockElement;
+		const progressBlockElem = this.$.progressBlock as AtomArrowBlockElement;
+		const goalBlockElem = this.$.goalBlock as AtomArrowBlockElement;
+		const tailChevronElem = this.$.tailChevron as AtomChevronElement;
+		const totalElem = this.$.total as AtomGradientTextElement;
 		let progressPercentage = this.bid.rawTotal / this.bid.rawGoal;
 		progressPercentage = Math.min(progressPercentage, 1); // Clamp to 1 max.
 		progressPercentage = Math.max(progressPercentage, 0); // Clamp to 0 min.
@@ -105,8 +105,8 @@ export default class GdqOmnibarChallenge extends Polymer.Element {
 						start: {probability: 1, normalValue: 0},
 						end: {probability: 0, normalValue: 1},
 						onUpdate: randomValue => {
-							(this.$.goal as AtomInnerGlowText).style.opacity = String(randomValue);
-							(this.$.goalBlock as AtomArrowBlock).arrowBlock.attr({'fill-opacity': randomValue});
+							(this.$.goal as AtomInnerGlowTextElement).style.opacity = String(randomValue);
+							(this.$.goalBlock as AtomArrowBlockElement).arrowBlock.attr({'fill-opacity': randomValue});
 						}
 					});
 				}
@@ -174,7 +174,7 @@ export default class GdqOmnibarChallenge extends Polymer.Element {
 			ease: Power2.easeInOut,
 			onUpdate: () => {
 				if ((this.$.tailChevron as any)._gsTransform.x >= PROGRESS_FILL_OFFSET) {
-					TweenLite.set((this.$.progressFill as AtomArrowBlock).arrowBlock.node, {
+					TweenLite.set((this.$.progressFill as AtomArrowBlockElement).arrowBlock.node, {
 						x: (this.$.tailChevron as any)._gsTransform.x + PROGRESS_FILL_OFFSET
 					});
 				}
@@ -207,13 +207,13 @@ export default class GdqOmnibarChallenge extends Polymer.Element {
 	}
 
 	render() {
-		const progressFillElem = this.$.progressFill as AtomArrowBlock;
-		const progressBlockElem = this.$.progressBlock as AtomArrowBlock;
+		const progressFillElem = this.$.progressFill as AtomArrowBlockElement;
+		const progressBlockElem = this.$.progressBlock as AtomArrowBlockElement;
 
-		(this.$.goalBlock as AtomArrowBlock).render(); // Must be rendered before #progressBlock.
-		(this.$.tailChevron as AtomChevron).render();
+		(this.$.goalBlock as AtomArrowBlockElement).render(); // Must be rendered before #progressBlock.
+		(this.$.tailChevron as AtomChevronElement).render();
 		progressBlockElem.render({useContentWidth: false});
-		(this.$.separatorChevron as AtomChevron).render();
+		(this.$.separatorChevron as AtomChevronElement).render();
 
 		progressFillElem.render({useContentWidth: false}); // Must be rendered after #progressBlock.
 

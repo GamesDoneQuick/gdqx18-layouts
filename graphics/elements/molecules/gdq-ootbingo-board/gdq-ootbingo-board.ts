@@ -21,14 +21,14 @@ if (embiggenUrlParam === 'true') {
  * @polymer
  */
 @customElement('gdq-ootbingo-board')
-export default class GdqOotbingoBoard extends Polymer.Element {
+export default class GDQOotbingoBoardElement extends Polymer.Element {
 	@property({type: Boolean, reflectToAttribute: true})
 	embiggened: boolean = Boolean(EMBIGGEN);
 
-	@property({type: Boolean, observer: GdqOotbingoBoard.prototype._embiggenStateChanged})
+	@property({type: Boolean, observer: GDQOotbingoBoardElement.prototype._embiggenStateChanged})
 	_embiggenState: boolean = false;
 
-	@property({type: Boolean, observer: GdqOotbingoBoard.prototype._hiddenStateChanged})
+	@property({type: Boolean, observer: GDQOotbingoBoardElement.prototype._hiddenStateChanged})
 	_hiddenState: boolean = false;
 
 	ready() {

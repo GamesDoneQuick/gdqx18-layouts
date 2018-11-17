@@ -2,9 +2,9 @@ import {CustomEase} from '../../../../shared/lib/vendor/CustomEase';
 import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
 import {TimelineLite, Sine, TweenLite, Linear, Power4} from 'gsap';
 import {ChildBid} from '../../../../src/types';
-import AtomChevron from '../../atoms/atom-chevron/atom-chevron';
-import AtomArrowBlock from '../../atoms/atom-arrow-block/atom-arrow-block';
-import AtomInnerGlowText from '../../atoms/atom-inner-glow-text/atom-inner-glow-text';
+import AtomChevronElement from '../../atoms/atom-chevron/atom-chevron';
+import AtomArrowBlockElement from '../../atoms/atom-arrow-block/atom-arrow-block';
+import AtomInnerGlowTextElement from '../../atoms/atom-inner-glow-text/atom-inner-glow-text';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -19,7 +19,7 @@ CustomEase.create('BidwarOptionReveal', 'M0,0 C0.166,0.166 0.234,1 1,1');
  * @polymer
  */
 @customElement('gdq-omnibar-bidwar-option')
-export default class GdqOmnibarBidwarOption extends Polymer.Element {
+export default class GDQOmnibarBidwarOptionElement extends Polymer.Element {
 	@property({type: Object})
 	bid: ChildBid;
 
@@ -39,8 +39,8 @@ export default class GdqOmnibarBidwarOption extends Polymer.Element {
 	}
 
 	enter() {
-		const tailChevronElem = this.$.tailChevron as AtomChevron;
-		const totalBlockElem = this.$.totalBlock as AtomArrowBlock;
+		const tailChevronElem = this.$.tailChevron as AtomChevronElement;
+		const totalBlockElem = this.$.totalBlock as AtomArrowBlockElement;
 		const tl = new TimelineLite();
 		const revealTweenWidth = this.$.body.clientWidth - tailChevronElem.clientWidth + TAIL_CHEVRON_WIDTH;
 		this._revealTweenWidth = revealTweenWidth;
@@ -91,7 +91,7 @@ export default class GdqOmnibarBidwarOption extends Polymer.Element {
 			start: {probability: 1, normalValue: 0},
 			end: {probability: 0, normalValue: 1},
 			onUpdate: randomValue => {
-				(this.$.total as AtomInnerGlowText).style.opacity = String(randomValue);
+				(this.$.total as AtomInnerGlowTextElement).style.opacity = String(randomValue);
 				totalBlockElem.arrowBlock.attr({'fill-opacity': randomValue});
 			}
 		}), 'flickerTotal');
@@ -127,9 +127,9 @@ export default class GdqOmnibarBidwarOption extends Polymer.Element {
 	}
 
 	render() {
-		(this.$.tailChevron as AtomChevron).render();
-		(this.$.labelBlock as AtomArrowBlock).render();
-		(this.$.totalBlock as AtomArrowBlock).render();
+		(this.$.tailChevron as AtomChevronElement).render();
+		(this.$.labelBlock as AtomArrowBlockElement).render();
+		(this.$.totalBlock as AtomArrowBlockElement).render();
 	}
 
 	formatOptionDescription(bid: ChildBid) {

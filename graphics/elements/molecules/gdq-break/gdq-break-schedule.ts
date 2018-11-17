@@ -1,6 +1,6 @@
 import {TimelineLite, Sine} from 'gsap';
 import {Run, ScheduleItem} from '../../../../src/types/index';
-import GdqBreakScheduleRun from './gdq-break-schedule-run';
+import GDQBreakScheduleRunElement from './gdq-break-schedule-run';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -12,14 +12,14 @@ const schedule = nodecg.Replicant<ScheduleItem[]>('schedule');
  * @polymer
  */
 @customElement('gdq-break-schedule')
-export default class GdqBreakSchedule extends Polymer.MutableData(Polymer.Element) {
+export default class GDQBreakScheduleElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Object})
 	upNext: Run;
 
 	@property({type: Array})
 	onDeck: Run[];
 
-	_$runs: NodeListOf<GdqBreakScheduleRun>;
+	_$runs: NodeListOf<GDQBreakScheduleRunElement>;
 	_updateDebouncer: Polymer.Debouncer;
 
 	ready() {
@@ -33,7 +33,7 @@ export default class GdqBreakSchedule extends Polymer.MutableData(Polymer.Elemen
 			this.update();
 		});
 
-		this._$runs = this.shadowRoot!.querySelectorAll('gdq-break-schedule-run') as NodeListOf<GdqBreakScheduleRun>;
+		this._$runs = this.shadowRoot!.querySelectorAll('gdq-break-schedule-run') as NodeListOf<GDQBreakScheduleRunElement>;
 	}
 
 	update() {

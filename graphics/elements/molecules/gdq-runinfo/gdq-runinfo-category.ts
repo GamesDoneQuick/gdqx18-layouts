@@ -5,7 +5,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-runinfo-category')
-export default class GdqRuninfoCategory extends Polymer.Element {
+export default class GDQRuninfoCategoryElement extends Polymer.Element {
 	@property({type: Number})
 	maxTextWidth: number;
 

@@ -1,5 +1,5 @@
 import {Power2, TimelineLite, TweenLite} from 'gsap';
-import AtomNameplate from '../../atoms/atom-nameplate/atom-nameplate';
+import AtomNameplateElement from '../../atoms/atom-nameplate/atom-nameplate';
 
 const ENTRANCE_ANIM_DURATION = 0.5;
 const ENTRANCE_ANIM_EASE = Power2.easeInOut;
@@ -10,11 +10,11 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-lowerthird-nameplate')
-export default class GdqLowerthirdNameplate extends Polymer.Element {
+export default class GDQLowerthirdNameplateElement extends Polymer.Element {
 	@property({type: Boolean, reflectToAttribute: true})
 	header: boolean = false;
 
-	@property({type: String, observer: GdqLowerthirdNameplate.prototype._nameChanged})
+	@property({type: String, observer: GDQLowerthirdNameplateElement.prototype._nameChanged})
 	name: string;
 
 	@property({type: String})
@@ -55,7 +55,7 @@ export default class GdqLowerthirdNameplate extends Polymer.Element {
 	}
 
 	_nameChanged(newVal: string) {
-		return (this.$.nameplate as AtomNameplate).updateName({alias: newVal, rotate: false});
+		return (this.$.nameplate as AtomNameplateElement).updateName({alias: newVal, rotate: false});
 	}
 
 	_computeHasTitle(title: string) {

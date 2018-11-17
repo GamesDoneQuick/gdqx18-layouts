@@ -8,7 +8,7 @@ const checklist = nodecg.Replicant<Checklist>('checklist');
  * @polymer
  */
 @customElement('dash-producer-checklist')
-export default class DashProducerChecklist extends Polymer.MutableData(Polymer.Element) {
+export default class DashProducerChecklistElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Array})
 	stageTechDuties: ChecklistGroup;
 

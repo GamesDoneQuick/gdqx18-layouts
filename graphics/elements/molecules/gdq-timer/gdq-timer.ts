@@ -6,14 +6,14 @@ const {customElement, property} = Polymer.decorators;
 const stopwatch = nodecg.Replicant<Stopwatch>('stopwatch');
 
 @customElement('gdq-timer')
-export default class GdqTimer extends Polymer.Element {
+export default class GDQTimerElement extends Polymer.Element {
 	@property({type: Boolean, reflectToAttribute: true})
 	notStarted: boolean;
 
-	@property({type: Boolean, reflectToAttribute: true, observer: GdqTimer.prototype.pausedChanged})
+	@property({type: Boolean, reflectToAttribute: true, observer: GDQTimerElement.prototype.pausedChanged})
 	paused: boolean;
 
-	@property({type: Boolean, reflectToAttribute: true, observer: GdqTimer.prototype.finishedChanged})
+	@property({type: Boolean, reflectToAttribute: true, observer: GDQTimerElement.prototype.finishedChanged})
 	finished: boolean;
 
 	@property({type: Number})

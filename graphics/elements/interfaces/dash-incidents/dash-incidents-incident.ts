@@ -7,7 +7,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('dash-incidents-incident')
-export default class DashIncidentsIncident extends Polymer.Element {
+export default class DashIncidentsIncidentElement extends Polymer.Element {
 	@property({type: Object})
 	incident: Incident;
 

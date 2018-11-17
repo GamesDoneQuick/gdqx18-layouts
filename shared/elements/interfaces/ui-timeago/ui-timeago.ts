@@ -22,11 +22,11 @@ moment.updateLocale('en', {
 });
 
 @customElement('ui-timeago')
-export default class UiTimeago extends Polymer.Element {
+export default class UiTimeagoElement extends Polymer.Element {
 	@property({type: String, notify: true})
 	timeago: string = '';
 
-	@property({type: String, observer: UiTimeago.prototype._datetimeChanged})
+	@property({type: String, observer: UiTimeagoElement.prototype._datetimeChanged})
 	datetime: string = '0000-00-00T00:00:00.000Z';
 
 	private interval?: number;

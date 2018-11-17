@@ -1,7 +1,7 @@
 const {customElement, property, observe} = Polymer.decorators;
 
 @customElement('time-input')
-export default class TimeInput extends Polymer.mixinBehaviors([Polymer.IronValidatableBehavior], Polymer.Element) {
+export default class TimeInputElement extends Polymer.mixinBehaviors([Polymer.IronValidatableBehavior], Polymer.Element) {
 	@property({type: Boolean, reflectToAttribute: true})
 	invalid: boolean = false;
 

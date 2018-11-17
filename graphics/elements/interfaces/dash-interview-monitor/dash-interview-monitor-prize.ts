@@ -8,7 +8,7 @@ const currentRunRep = nodecg.Replicant<Run>('currentRun');
  * @polymer
  */
 @customElement('dash-interview-monitor-prize')
-export default class DashInterviewMonitorPrize extends Polymer.MutableData(Polymer.Element) {
+export default class DashInterviewMonitorPrizeElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Object})
 	prize: Prize;
 

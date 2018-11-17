@@ -5,7 +5,7 @@ const {customElement} = Polymer.decorators;
  * @polymer
  */
 @customElement('ui-element-tester')
-export default class UiElementTester extends Polymer.Element {
+export default class UiElementTesterElement extends Polymer.Element {
 	protected _elementSlotObserver: Polymer.FlattenedNodesObserver;
 
 	static calcPropertyInputType(propertyType: any) {
@@ -43,7 +43,7 @@ export default class UiElementTester extends Polymer.Element {
 			input.appendChild(listBox);
 		} else {
 			input = document.createElement('paper-input') as PaperInputElement;
-			input.type = UiElementTester.calcPropertyInputType(property.type);
+			input.type = UiElementTesterElement.calcPropertyInputType(property.type);
 
 			if (elementTesterOpts.type) {
 				input.type = property.elementTester.type;
@@ -120,7 +120,7 @@ export default class UiElementTester extends Polymer.Element {
 					typeof propDecl.value !== 'function';
 			});
 		props.forEach(([propName, propDecl]) => {
-			const input = UiElementTester.createPropertyInput(element, propName, propDecl);
+			const input = UiElementTesterElement.createPropertyInput(element, propName, propDecl);
 			this.$.controls.appendChild(input);
 		});
 	}

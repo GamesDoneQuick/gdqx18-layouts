@@ -28,7 +28,7 @@ CustomEase.create('ModifiedPower2EaseInOut', 'M0,0 C0.66,0 0.339,1 1,1');
  * @polymer
  */
 @customElement('gdq-transition')
-export default class GdqTransition extends Polymer.Element {
+export default class GDQTransitionElement extends Polymer.Element {
 	private readonly masterTimeline = new TimelineLite({autoRemoveChildren: true});
 	private _initialized: boolean = false;
 	private _$videos: HTMLVideoElement[];

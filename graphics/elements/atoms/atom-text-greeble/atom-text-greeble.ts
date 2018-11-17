@@ -7,7 +7,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('atom-text-greeble')
-export default class AtomTextGreeble extends Polymer.Element {
+export default class AtomTextGreebleElement extends Polymer.Element {
 	/**
 	 * The number of characters this greeble should be in length.
 	 */
@@ -17,7 +17,7 @@ export default class AtomTextGreeble extends Polymer.Element {
 	/**
 	 * How many times per second to update the text.
 	 */
-	@property({type: Number, observer: AtomTextGreeble.prototype._tickRateChanged})
+	@property({type: Number, observer: AtomTextGreebleElement.prototype._tickRateChanged})
 	tickRate: number = 5;
 
 	/**

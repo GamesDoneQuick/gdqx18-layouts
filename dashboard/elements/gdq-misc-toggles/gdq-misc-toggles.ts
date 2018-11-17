@@ -7,7 +7,7 @@ const recordTrackerEnabled = nodecg.Replicant<boolean>('recordTrackerEnabled');
  * @polymer
  */
 @customElement('gdq-misc-toggles')
-export default class GdqMiscToggles extends Polymer.Element {
+export default class GDQMiscTogglesElement extends Polymer.Element {
 	ready() {
 		super.ready();
 		Polymer.RenderStatus.beforeNextRender(this, () => {

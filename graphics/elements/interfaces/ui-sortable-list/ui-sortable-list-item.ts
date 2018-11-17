@@ -1,4 +1,4 @@
-import UiSortableList from './ui-sortable-list';
+import UiSortableListElement from './ui-sortable-list';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -7,7 +7,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('ui-sortable-list-item')
-export default class UiSortableListItem extends Polymer.MutableData(Polymer.Element) {
+export default class UiSortableListItemElement extends Polymer.MutableData(Polymer.Element) {
 	/**
 	 * The index of the item
 	 */
@@ -41,7 +41,7 @@ export default class UiSortableListItem extends Polymer.MutableData(Polymer.Elem
 	connectedCallback() {
 		super.connectedCallback();
 		if (!this._itemTemplateInstance) {
-			const sortableList = (this.parentNode as any).host as UiSortableList;
+			const sortableList = (this.parentNode as any).host as UiSortableListElement;
 			sortableList._ensureTemplatized();
 			if (sortableList._itemTemplateClass) {
 				this._itemTemplateInstance = new sortableList._itemTemplateClass();

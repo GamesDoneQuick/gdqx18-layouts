@@ -8,23 +8,23 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('atom-binary-clock')
-export default class AtomBinaryClock extends Polymer.Element {
-	@property({type: Number, observer: AtomBinaryClock.prototype._updateHours})
+export default class AtomBinaryClockElement extends Polymer.Element {
+	@property({type: Number, observer: AtomBinaryClockElement.prototype._updateHours})
 	hours: number;
 
-	@property({type: Number, observer: AtomBinaryClock.prototype._updateMinutes})
+	@property({type: Number, observer: AtomBinaryClockElement.prototype._updateMinutes})
 	minutes: number;
 
-	@property({type: Number, observer: AtomBinaryClock.prototype._updateSeconds})
+	@property({type: Number, observer: AtomBinaryClockElement.prototype._updateSeconds})
 	seconds: number;
 
-	@property({type: Number, observer: AtomBinaryClock.prototype._updateMilliseconds})
+	@property({type: Number, observer: AtomBinaryClockElement.prototype._updateMilliseconds})
 	milliseconds: number;
 
 	@property({type: Boolean, reflectToAttribute: true})
 	pulsating = false;
 
-	@property({type: Boolean, reflectToAttribute: true, observer: AtomBinaryClock.prototype._randomizedChanged})
+	@property({type: Boolean, reflectToAttribute: true, observer: AtomBinaryClockElement.prototype._randomizedChanged})
 	randomized = false;
 
 	_randomFlashingInterval: number | undefined;

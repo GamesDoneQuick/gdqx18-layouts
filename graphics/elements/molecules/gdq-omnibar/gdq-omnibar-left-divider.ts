@@ -5,4 +5,4 @@ const {customElement} = Polymer.decorators;
  * @polymer
  */
 @customElement('gdq-omnibar-left-divider')
-export default class GdqOmnibarLeftDivider extends Polymer.Element {}
+export default class GDQOmnibarLeftDividerElement extends Polymer.Element {}

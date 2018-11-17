@@ -1,7 +1,7 @@
 const {customElement, property} = Polymer.decorators;
 
 @customElement('dash-lowerthird-name-input')
-export default class DashLowerthirdNameInput extends Polymer.Element {
+export default class DashLowerthirdNameInputElement extends Polymer.Element {
 	@property({type: String, notify: true})
 	selectedItem: string;
 

@@ -5,7 +5,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('ui-toast')
-export default class UiToast extends Polymer.Element {
+export default class UiToastElement extends Polymer.Element {
 	@property({type: String})
 	_successToastText: string;
 

@@ -5,7 +5,7 @@ const {customElement, property} = Polymer.decorators;
  * @polymer
  */
 @customElement('atom-inner-glow-text')
-export default class AtomInnerGlowText extends Polymer.Element {
+export default class AtomInnerGlowTextElement extends Polymer.Element {
 	@property({type: String})
 	text: string;
 }

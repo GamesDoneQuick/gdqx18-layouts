@@ -1,4 +1,4 @@
-import TimeInput from '../time-input/time-input';
+import TimeInputElement from '../time-input/time-input';
 import {Countdown} from '../../../src/types/schemas/countdown';
 import {CountdownRunning} from '../../../src/types/schemas/countdownRunning';
 
@@ -7,13 +7,13 @@ const countdownRunning = nodecg.Replicant<CountdownRunning>('countdownRunning');
 const countdown = nodecg.Replicant<Countdown>('countdown');
 
 @customElement('gdq-countdown')
-export default class GdqCountdown extends Polymer.Element {
+export default class GDQCountdownElement extends Polymer.Element {
 	ready() {
 		super.ready();
 
 		countdown.on('change', newVal => {
 			if (newVal) {
-				const timeInput = this.$.timeInput as TimeInput;
+				const timeInput = this.$.timeInput as TimeInputElement;
 				timeInput.setMS(newVal.minutes, newVal.seconds);
 			}
 		});
@@ -34,7 +34,7 @@ export default class GdqCountdown extends Polymer.Element {
 	}
 
 	start() {
-		nodecg.sendMessage('startCountdown', (this.$.timeInput as TimeInput).value);
+		nodecg.sendMessage('startCountdown', (this.$.timeInput as TimeInputElement).value);
 	}
 
 	stop() {

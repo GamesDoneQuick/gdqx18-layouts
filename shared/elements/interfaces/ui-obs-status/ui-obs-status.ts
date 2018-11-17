@@ -6,7 +6,7 @@ const {customElement, property} = Polymer.decorators;
  * @appliesMixin Polymer.MutableData
  */
 @customElement('ui-obs-status')
-export default class UiObsStatus extends Polymer.MutableData(Polymer.Element) {
+export default class UiObsStatusElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Array})
 	_namespaces: string[];
 }

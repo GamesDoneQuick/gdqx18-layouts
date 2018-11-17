@@ -20,7 +20,7 @@ export interface LabelShowAndChangeOptions {
 const FLAG_ENTRANCE_DURATION = 0.334;
 
 @customElement('gdq-omnibar-label')
-export default class GdqOmnibarLabel extends Polymer.Element {
+export default class GDQOmnibarLabelElement extends Polymer.Element {
 	_showing: boolean;
 
 	ready() {

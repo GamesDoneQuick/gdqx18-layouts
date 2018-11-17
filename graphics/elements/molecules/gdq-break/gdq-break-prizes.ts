@@ -2,7 +2,7 @@ import GDQBreakLoopMixin from '../../../mixins/GDQBreakLoopMixin';
 import {Prize} from '../../../../src/types/index';
 import {TimelineLite, Power2, Sine, TweenLite} from 'gsap';
 import {typeAnim} from '../../../../shared/lib/TypeAnims';
-import AtomGridmaskImage from '../../atoms/atom-gridmask-image/atom-gridmask-image';
+import AtomGridmaskImageElement from '../../atoms/atom-gridmask-image/atom-gridmask-image';
 import {preloadImage} from '../../../../shared/lib/gdq-utils';
 
 const {customElement} = Polymer.decorators;
@@ -17,7 +17,7 @@ const currentPrizes = nodecg.Replicant<Prize[]>('currentPrizes');
  * @polymer
  */
 @customElement('gdq-break-prizes')
-export default class GdqBreakPrizes extends GDQBreakLoopMixin(Polymer.Element)<Prize> {
+export default class GDQBreakPrizesElement extends GDQBreakLoopMixin(Polymer.Element)<Prize> {
 	ready() {
 		super.ready();
 
@@ -33,7 +33,7 @@ export default class GdqBreakPrizes extends GDQBreakLoopMixin(Polymer.Element)<P
 	 */
 	show() {
 		const tl = new TimelineLite();
-		const photoElem = this.$['photo-actual'] as AtomGridmaskImage;
+		const photoElem = this.$['photo-actual'] as AtomGridmaskImageElement;
 
 		tl.call(() => {
 			// Clear all content.
@@ -82,7 +82,7 @@ export default class GdqBreakPrizes extends GDQBreakLoopMixin(Polymer.Element)<P
 	 */
 	hide() {
 		const tl = new TimelineLite();
-		const photoElem = this.$['photo-actual'] as AtomGridmaskImage;
+		const photoElem = this.$['photo-actual'] as AtomGridmaskImageElement;
 
 		let handledCall = false; // GSAP likes to run .calls again when you .resume
 		tl.call(() => {
@@ -151,7 +151,7 @@ export default class GdqBreakPrizes extends GDQBreakLoopMixin(Polymer.Element)<P
 		let changingProvider = true;
 		let changingMinimumBid = true;
 		const tl = new TimelineLite();
-		const photoElem = this.$['photo-actual'] as AtomGridmaskImage;
+		const photoElem = this.$['photo-actual'] as AtomGridmaskImageElement;
 		const providerTextElem = this.$.provider as HTMLDivElement;
 		const descriptionTextElem = this.$['info-description-text'] as HTMLDivElement;
 		const minimumBidTextElem = this.$['info-minimumBid-text'] as HTMLDivElement;
@@ -249,6 +249,6 @@ export default class GdqBreakPrizes extends GDQBreakLoopMixin(Polymer.Element)<P
 	}
 
 	_resetState() {
-		(this.$['photo-actual'] as AtomGridmaskImage).exiting = false;
+		(this.$['photo-actual'] as AtomGridmaskImageElement).exiting = false;
 	}
 }

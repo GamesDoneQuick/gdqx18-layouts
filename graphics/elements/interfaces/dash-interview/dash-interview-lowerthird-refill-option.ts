@@ -1,7 +1,7 @@
 const {customElement, property} = Polymer.decorators;
 
 @customElement('dash-interview-lowerthird-refill-option')
-export default class DashInterviewLowerthirdRefillOption extends Polymer.Element {
+export default class DashInterviewLowerthirdRefillOptionElement extends Polymer.Element {
 	@property({type: String, reflectToAttribute: true})
 	type: string;
 

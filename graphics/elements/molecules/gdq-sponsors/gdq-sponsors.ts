@@ -1,6 +1,6 @@
 import GDQBreakLoopMixin from '../../../mixins/GDQBreakLoopMixin';
 import {TimelineLite, Power1, TweenLite} from 'gsap';
-import AtomGridmaskImage from '../../atoms/atom-gridmask-image/atom-gridmask-image';
+import AtomGridmaskImageElement from '../../atoms/atom-gridmask-image/atom-gridmask-image';
 
 const {customElement} = Polymer.decorators;
 interface Asset {
@@ -17,7 +17,7 @@ const DISPLAY_DURATION = 20;
 const EMPTY_OBJ = {};
 
 @customElement('gdq-sponsors')
-export default class GdqSponsors extends GDQBreakLoopMixin(Polymer.Element)<Asset> {
+export default class GDQSponsorsElement extends GDQBreakLoopMixin(Polymer.Element)<Asset> {
 	ready() {
 		this.itemIdField = 'sum';
 		this.noAutoLoop = true;
@@ -41,7 +41,7 @@ export default class GdqSponsors extends GDQBreakLoopMixin(Polymer.Element)<Asse
 				// If no sponsor is showing yet, show the first sponsor immediately
 				if (!this.currentItem && newVal.length > 0) {
 					this.currentItem = newVal[0];
-					(this.$.image as AtomGridmaskImage).$svg.image.load(newVal[0].url);
+					(this.$.image as AtomGridmaskImageElement).$svg.image.load(newVal[0].url);
 				}
 			});
 
@@ -54,7 +54,7 @@ export default class GdqSponsors extends GDQBreakLoopMixin(Polymer.Element)<Asse
 
 		tl.call(() => {
 			// Clear all content.
-			(this.$.image as AtomGridmaskImage).$svg.image.load('');
+			(this.$.image as AtomGridmaskImageElement).$svg.image.load('');
 		}, undefined, null, '+=0.03');
 
 		tl.to(this, 0.334, {
@@ -72,7 +72,7 @@ export default class GdqSponsors extends GDQBreakLoopMixin(Polymer.Element)<Asse
 
 	hide() {
 		const tl = new TimelineLite();
-		const imageElem = this.$.image as AtomGridmaskImage;
+		const imageElem = this.$.image as AtomGridmaskImageElement;
 
 		tl.call(() => {
 			tl.pause();
@@ -109,12 +109,12 @@ export default class GdqSponsors extends GDQBreakLoopMixin(Polymer.Element)<Asse
 	}
 
 	resize() {
-		(this.$.image as AtomGridmaskImage).resize();
+		(this.$.image as AtomGridmaskImageElement).resize();
 	}
 
 	_showItem(sponsorAsset: Asset) {
 		const tl = new TimelineLite();
-		const imageElem = this.$.image as AtomGridmaskImage;
+		const imageElem = this.$.image as AtomGridmaskImageElement;
 
 		tl.addLabel('exit', '+=0');
 

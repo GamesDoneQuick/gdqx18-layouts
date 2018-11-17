@@ -8,7 +8,7 @@ const SCORE_FADE_OUT_EASE = Power1.easeIn;
 const scoresRep = nodecg.Replicant<Scores>('scores');
 
 @customElement('atom-score-display')
-export default class AtomScoreDisplay extends Polymer.Element {
+export default class AtomScoreDisplayElement extends Polymer.Element {
 	@property({type: Number})
 	score: number;
 

@@ -3,7 +3,7 @@ import {Ad, AdBreak} from '../../../../src/types';
 const {customElement, property} = Polymer.decorators;
 
 @customElement('dash-host-adbreak-ad')
-export default class DashHostAdbreakAd extends Polymer.MutableData(Polymer.Element) {
+export default class DashHostAdbreakAdElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Object})
 	adBreak: AdBreak;
 

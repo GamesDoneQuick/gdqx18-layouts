@@ -16,7 +16,7 @@ const nowPlaying = nodecg.Replicant<NowPlaying>('nowPlaying');
  * @polymer
  */
 @customElement('gdq-countdown')
-export default class GdqCountdown extends Polymer.Element {
+export default class GDQCountdownElement extends Polymer.Element {
 	@property({type: Object})
 	private readonly countdownTimeline: TimelineLite = new TimelineLite({autoRemoveChildren: true});
 
