@@ -68,11 +68,17 @@ export default class GDQRunnerNameplateElement extends Polymer.Element {
 		this.currentRunChanged = this.currentRunChanged.bind(this);
 		this.stopwatchChanged = this.stopwatchChanged.bind(this);
 		this.gameAudioChannelsChanged = this.gameAudioChannelsChanged.bind(this);
+	}
 
-		// Attach replicant change listeners.
-		currentRun.on('change', this.currentRunChanged);
-		stopwatch.on('change', this.stopwatchChanged);
-		gameAudioChannels.on('change', this.gameAudioChannelsChanged);
+	connectedCallback() {
+		super.connectedCallback();
+
+		Polymer.RenderStatus.beforeNextRender(this, () => {
+			// Attach replicant change listeners.
+			currentRun.on('change', this.currentRunChanged);
+			stopwatch.on('change', this.stopwatchChanged);
+			gameAudioChannels.on('change', this.gameAudioChannelsChanged);
+		});
 	}
 
 	/*
