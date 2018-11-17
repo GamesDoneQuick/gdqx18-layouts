@@ -155,4 +155,8 @@ export default class GDQRunnerNameplateElement extends Polymer.Element {
 	_computeLastPlace(place: number, numRunners: number) {
 		return place === numRunners;
 	}
+
+	_calcResultHidden(resultSide: string) {
+		return !resultSide;
+	}
 }
