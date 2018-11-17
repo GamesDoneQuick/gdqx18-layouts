@@ -399,7 +399,7 @@
     "pretest": "npm run static",
     "test": "ava test",
     "prebuild": "npm run test && npm run schema-types",
-    "build": "npm run build:extension && npm run build:shared && npm run build:graphics && npm run build:dashboard",
+    "build": "npm run build:extension && npm run build:browser",
     "build:extension": "trash dist && tsc -b tsconfig.node.json",
     "build:browser": "tsc -p tsconfig.browser.json",
     "build:fast": "npm run build:extension && npm run build:browser",
