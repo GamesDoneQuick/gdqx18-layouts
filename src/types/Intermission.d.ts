@@ -25,13 +25,15 @@ export interface AdBreak {
 	id: number;
 	type: 'adBreak';
 	ads: Ad[];
-	state: {
-		canStart: boolean;
-		cantStartReason: string;
-		started: boolean;
-		canComplete: boolean;
-		completed: boolean;
-	};
+	state: AdBreakState;
+}
+
+export interface AdBreakState {
+	canStart: boolean;
+	cantStartReason: string;
+	started: boolean;
+	canComplete: boolean;
+	completed: boolean;
 }
 
 export interface Interview {

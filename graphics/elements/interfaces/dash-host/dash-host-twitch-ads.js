@@ -1,86 +1,77 @@
-(function () {
-	'use strict';
-
-	const canPlayTwitchAd = nodecg.Replicant('twitch:canPlayAd');
-	const timeLeft = nodecg.Replicant('twitch:timeLeftInAd');
-	const timeSince = nodecg.Replicant('twitch:timeSinceLastAd');
-
-	class DashHostTwitchAds extends Polymer.Element {
-		static get is() {
-			return 'dash-host-twitch-ads';
-		}
-
-		static get properties() {
-			return {
-				canPlay: {
-					type: Boolean,
-					value: false
-				},
-				cantPlayReason: {
-					type: String,
-					value: ''
-				},
-				timeLeft: {
-					type: String,
-					value: '8:88'
-				},
-				timeSince: {
-					type: String,
-					value: '8:88:88'
-				},
-				hideControls: {
-					type: Boolean,
-					value: false,
-					reflectToAttribute: true
-				}
-			};
-		}
-
-		ready() {
-			super.ready();
-
-			canPlayTwitchAd.on('change', newVal => {
-				if (!newVal) {
-					return;
-				}
-				this.canPlay = newVal.canPlay;
-				this.cantPlayReason = newVal.reason;
-			});
-
-			timeLeft.on('change', newVal => {
-				if (!newVal) {
-					return;
-				}
-				this.timeLeft = newVal.formatted.split('.')[0];
-			});
-
-			timeSince.on('change', newVal => {
-				if (!newVal) {
-					return;
-				}
-				this.timeSince = newVal.formatted.split('.')[0];
-			});
-		}
-
-		play() {
-			this.$.confirmDialog.open();
-		}
-
-		_handleConfirmDialogClosed(e) {
-			if (e.detail.confirmed === true) {
-				const duration = parseInt(this.$.listbox.selectedItem.getAttribute('data-value'), 10);
-				nodecg.sendMessage('twitch:playAd', duration);
-			}
-		}
-
-		_calcPlayButtonLabel(canPlay, cantPlayReason) {
-			if (canPlay) {
-				return 'Play Twitch Ad';
-			}
-
-			return cantPlayReason;
-		}
-	}
-
-	customElements.define(DashHostTwitchAds.is, DashHostTwitchAds);
-})();
+import * as tslib_1 from "tslib";
+const { customElement, property } = Polymer.decorators;
+const canPlayTwitchAd = nodecg.Replicant('twitch:canPlayAd');
+const timeLeft = nodecg.Replicant('twitch:timeLeftInAd');
+const timeSince = nodecg.Replicant('twitch:timeSinceLastAd');
+let DashHostTwitchAds = class DashHostTwitchAds extends Polymer.Element {
+    constructor() {
+        super(...arguments);
+        this.canPlay = false;
+        this.cantPlayReason = '';
+        this.timeLeft = '8:88';
+        this.timeSince = '8:88:88';
+        this.hideControls = false;
+    }
+    ready() {
+        super.ready();
+        canPlayTwitchAd.on('change', newVal => {
+            if (!newVal) {
+                return;
+            }
+            this.canPlay = newVal.canPlay;
+            this.cantPlayReason = newVal.reason;
+        });
+        timeLeft.on('change', newVal => {
+            if (!newVal) {
+                return;
+            }
+            this.timeLeft = newVal.formatted.split('.')[0];
+        });
+        timeSince.on('change', newVal => {
+            if (!newVal) {
+                return;
+            }
+            this.timeSince = newVal.formatted.split('.')[0];
+        });
+    }
+    play() {
+        this.$.confirmDialog.open();
+    }
+    _handleConfirmDialogClosed(e) {
+        if (e.detail.confirmed === true) {
+            const listbox = this.$.listbox;
+            const selectedItem = listbox.selectedItem;
+            if (!selectedItem) {
+                return;
+            }
+            const duration = parseInt(selectedItem.getAttribute('data-value'), 10);
+            nodecg.sendMessage('twitch:playAd', duration);
+        }
+    }
+    _calcPlayButtonLabel(canPlay, cantPlayReason) {
+        if (canPlay) {
+            return 'Play Twitch Ad';
+        }
+        return cantPlayReason;
+    }
+};
+tslib_1.__decorate([
+    property({ type: Boolean })
+], DashHostTwitchAds.prototype, "canPlay", void 0);
+tslib_1.__decorate([
+    property({ type: String })
+], DashHostTwitchAds.prototype, "cantPlayReason", void 0);
+tslib_1.__decorate([
+    property({ type: String })
+], DashHostTwitchAds.prototype, "timeLeft", void 0);
+tslib_1.__decorate([
+    property({ type: String })
+], DashHostTwitchAds.prototype, "timeSince", void 0);
+tslib_1.__decorate([
+    property({ type: Boolean, reflectToAttribute: true })
+], DashHostTwitchAds.prototype, "hideControls", void 0);
+DashHostTwitchAds = tslib_1.__decorate([
+    customElement('dash-host-twitch-ads')
+], DashHostTwitchAds);
+export default DashHostTwitchAds;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGFzaC1ob3N0LXR3aXRjaC1hZHMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJkYXNoLWhvc3QtdHdpdGNoLWFkcy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBR0EsTUFBTSxFQUFDLGFBQWEsRUFBRSxRQUFRLEVBQUMsR0FBRyxPQUFPLENBQUMsVUFBVSxDQUFDO0FBQ3JELE1BQU0sZUFBZSxHQUFHLE1BQU0sQ0FBQyxTQUFTLENBQW9CLGtCQUFrQixDQUFDLENBQUM7QUFDaEYsTUFBTSxRQUFRLEdBQUcsTUFBTSxDQUFDLFNBQVMsQ0FBYSxxQkFBcUIsQ0FBQyxDQUFDO0FBQ3JFLE1BQU0sU0FBUyxHQUFHLE1BQU0sQ0FBQyxTQUFTLENBQWEsd0JBQXdCLENBQUMsQ0FBQztBQUd6RSxJQUFxQixpQkFBaUIsR0FBdEMsTUFBcUIsaUJBQWtCLFNBQVEsT0FBTyxDQUFDLE9BQU87SUFEOUQ7O1FBR0MsWUFBTyxHQUFZLEtBQUssQ0FBQztRQUd6QixtQkFBYyxHQUFXLEVBQUUsQ0FBQztRQUc1QixhQUFRLEdBQVcsTUFBTSxDQUFDO1FBRzFCLGNBQVMsR0FBVyxTQUFTLENBQUM7UUFHOUIsaUJBQVksR0FBWSxLQUFLLENBQUM7SUFtRC9CLENBQUM7SUFqREEsS0FBSztRQUNKLEtBQUssQ0FBQyxLQUFLLEVBQUUsQ0FBQztRQUVkLGVBQWUsQ0FBQyxFQUFFLENBQUMsUUFBUSxFQUFFLE1BQU0sQ0FBQyxFQUFFO1lBQ3JDLElBQUksQ0FBQyxNQUFNLEVBQUU7Z0JBQ1osT0FBTzthQUNQO1lBQ0QsSUFBSSxDQUFDLE9BQU8sR0FBRyxNQUFNLENBQUMsT0FBTyxDQUFDO1lBQzlCLElBQUksQ0FBQyxjQUFjLEdBQUcsTUFBTSxDQUFDLE1BQU0sQ0FBQztRQUNyQyxDQUFDLENBQUMsQ0FBQztRQUVILFFBQVEsQ0FBQyxFQUFFLENBQUMsUUFBUSxFQUFFLE1BQU0sQ0FBQyxFQUFFO1lBQzlCLElBQUksQ0FBQyxNQUFNLEVBQUU7Z0JBQ1osT0FBTzthQUNQO1lBQ0QsSUFBSSxDQUFDLFFBQVEsR0FBRyxNQUFNLENBQUMsU0FBUyxDQUFDLEtBQUssQ0FBQyxHQUFHLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQztRQUNoRCxDQUFDLENBQUMsQ0FBQztRQUVILFNBQVMsQ0FBQyxFQUFFLENBQUMsUUFBUSxFQUFFLE1BQU0sQ0FBQyxFQUFFO1lBQy9CLElBQUksQ0FBQyxNQUFNLEVBQUU7Z0JBQ1osT0FBTzthQUNQO1lBQ0QsSUFBSSxDQUFDLFNBQVMsR0FBRyxNQUFNLENBQUMsU0FBUyxDQUFDLEtBQUssQ0FBQyxHQUFHLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQztRQUNqRCxDQUFDLENBQUMsQ0FBQztJQUNKLENBQUM7SUFFRCxJQUFJO1FBQ0YsSUFBSSxDQUFDLENBQUMsQ0FBQyxhQUFvQyxDQUFDLElBQUksRUFBRSxDQUFDO0lBQ3JELENBQUM7SUFFRCwwQkFBMEIsQ0FBQyxDQUFNO1FBQ2hDLElBQUksQ0FBQyxDQUFDLE1BQU0sQ0FBQyxTQUFTLEtBQUssSUFBSSxFQUFFO1lBQ2hDLE1BQU0sT0FBTyxHQUFHLElBQUksQ0FBQyxDQUFDLENBQUMsT0FBOEIsQ0FBQztZQUN0RCxNQUFNLFlBQVksR0FBRyxPQUFPLENBQUMsWUFBMkIsQ0FBQztZQUN6RCxJQUFJLENBQUMsWUFBWSxFQUFFO2dCQUNsQixPQUFPO2FBQ1A7WUFDRCxNQUFNLFFBQVEsR0FBRyxRQUFRLENBQUMsWUFBWSxDQUFDLFlBQVksQ0FBQyxZQUFZLENBQVcsRUFBRSxFQUFFLENBQUMsQ0FBQztZQUNqRixNQUFNLENBQUMsV0FBVyxDQUFDLGVBQWUsRUFBRSxRQUFRLENBQUMsQ0FBQztTQUM5QztJQUNGLENBQUM7SUFFRCxvQkFBb0IsQ0FBQyxPQUFnQixFQUFFLGNBQXNCO1FBQzVELElBQUksT0FBTyxFQUFFO1lBQ1osT0FBTyxnQkFBZ0IsQ0FBQztTQUN4QjtRQUVELE9BQU8sY0FBYyxDQUFDO0lBQ3ZCLENBQUM7Q0FDRCxDQUFBO0FBL0RBO0lBREMsUUFBUSxDQUFDLEVBQUMsSUFBSSxFQUFFLE9BQU8sRUFBQyxDQUFDO2tEQUNEO0FBR3pCO0lBREMsUUFBUSxDQUFDLEVBQUMsSUFBSSxFQUFFLE1BQU0sRUFBQyxDQUFDO3lEQUNHO0FBRzVCO0lBREMsUUFBUSxDQUFDLEVBQUMsSUFBSSxFQUFFLE1BQU0sRUFBQyxDQUFDO21EQUNDO0FBRzFCO0lBREMsUUFBUSxDQUFDLEVBQUMsSUFBSSxFQUFFLE1BQU0sRUFBQyxDQUFDO29EQUNLO0FBRzlCO0lBREMsUUFBUSxDQUFDLEVBQUMsSUFBSSxFQUFFLE9BQU8sRUFBRSxrQkFBa0IsRUFBRSxJQUFJLEVBQUMsQ0FBQzt1REFDdEI7QUFkVixpQkFBaUI7SUFEckMsYUFBYSxDQUFDLHNCQUFzQixDQUFDO0dBQ2pCLGlCQUFpQixDQWlFckM7ZUFqRW9CLGlCQUFpQiJ9
