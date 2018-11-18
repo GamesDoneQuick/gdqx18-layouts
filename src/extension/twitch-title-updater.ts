@@ -4,12 +4,11 @@ import * as request from 'request-promise';
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
 import * as GDQTypes from '../types';
-import {Replicant} from '../types/nodecg';
 import {CurrentRun} from '../types/schemas/currentRun';
 
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);
-const currentRun: Replicant<CurrentRun> = nodecg.Replicant('currentRun');
+const currentRun = nodecg.Replicant<CurrentRun>('currentRun');
 let lastLongName: string;
 
 currentRun.on('change', (newVal: GDQTypes.Run) => {

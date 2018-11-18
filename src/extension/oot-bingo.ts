@@ -8,7 +8,6 @@ import equal = require('deep-equal');
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
-import {Replicant} from '../types/nodecg';
 import {OotBingo3Aboard} from '../types/schemas/ootBingo%3Aboard';
 import {OotBingo3Asocket} from '../types/schemas/ootBingo%3Asocket';
 
@@ -17,8 +16,8 @@ const SOCKET_KEY_REGEX = /temporarySocketKey\s+=\s+"(\S+)"/;
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:oot-bingo`);
 const request = RequestPromise.defaults({jar: true}); // <= Automatically saves and re-uses cookies.
-const boardRep: Replicant<OotBingo3Aboard> = nodecg.Replicant('ootBingo:board');
-const socketRep: Replicant<OotBingo3Asocket> = nodecg.Replicant('ootBingo:socket');
+const boardRep = nodecg.Replicant<OotBingo3Aboard>('ootBingo:board');
+const socketRep = nodecg.Replicant<OotBingo3Asocket>('ootBingo:socket');
 let fullUpdateInterval: NodeJS.Timer;
 let websocket: WebSocket | null = null;
 

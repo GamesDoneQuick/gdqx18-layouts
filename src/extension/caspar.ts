@@ -13,7 +13,6 @@ import debounce = require('lodash.debounce');
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
-import {Replicant} from '../types/nodecg';
 import {CurrentRun} from '../types/schemas/currentRun';
 import {Caspar3Afiles} from '../types/schemas/caspar%3Afiles';
 import {Caspar3Aconnected} from '../types/schemas/caspar%3Aconnected';
@@ -27,9 +26,9 @@ let ignoreForegroundUntilNextPlay = false;
 
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:caspar`);
-const currentRun: Replicant<CurrentRun> = nodecg.Replicant('currentRun');
-const files: Replicant<Caspar3Afiles> = nodecg.Replicant('caspar:files', {persistent: false});
-const connected: Replicant<Caspar3Aconnected> = nodecg.Replicant('caspar:connected');
+const currentRun = nodecg.Replicant<CurrentRun>('currentRun');
+const files = nodecg.Replicant<Caspar3Afiles>('caspar:files', {persistent: false});
+const connected = nodecg.Replicant<Caspar3Aconnected>('caspar:connected');
 const connection = new CasparCG.CasparCG({
 	host: nodecg.bundleConfig.casparcg.host,
 	port: nodecg.bundleConfig.casparcg.port,

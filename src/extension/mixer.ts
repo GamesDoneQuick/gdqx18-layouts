@@ -10,7 +10,6 @@ import osc = require('osc');
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
-import {Replicant} from '../types/nodecg';
 import {GameAudioChannels} from '../types/schemas/gameAudioChannels';
 
 interface GameAudioChannelConfig {
@@ -27,7 +26,7 @@ interface ChannelObject {
 	fadedBelowThreshold: boolean;
 }
 
-const gameAudioChannels: Replicant<GameAudioChannels> = nodecg.Replicant('gameAudioChannels', {persistent: false});
+const gameAudioChannels = nodecg.Replicant<GameAudioChannels>('gameAudioChannels', {persistent: false});
 
 const channelToReplicantMap: {[key: number]: ChannelObject} = {};
 nodecg.bundleConfig.osc.gameAudioChannels.forEach((item: GameAudioChannelConfig, index: number) => {

@@ -12,19 +12,19 @@ import * as nodecgApiContext from './util/nodecg-api-context';
 import * as timer from './timekeeping';
 import * as checklist from './checklist';
 import * as GDQTypes from '../types';
-import {Replicant, ListenForCb} from '../types/nodecg';
+import {ListenForCb} from '../types/nodecg';
 import {GDQUrls} from './urls';
 import {calcOriginalValues, mergeChangesFromTracker} from './lib/diff-run';
 import {CanSeekSchedule} from '../types/schemas/canSeekSchedule';
 
 const nodecg = nodecgApiContext.get();
 const request = RequestPromise.defaults({jar: true}); // <= Automatically saves and re-uses cookies.
-const canSeekScheduleRep: Replicant<CanSeekSchedule> = nodecg.Replicant('canSeekSchedule');
-const currentRunRep: Replicant<GDQTypes.Run | null> = nodecg.Replicant('currentRun');
-const nextRunRep: Replicant<GDQTypes.Run | null> = nodecg.Replicant('nextRun');
-const runnersRep: Replicant<GDQTypes.Runner[]> = nodecg.Replicant('runners', {defaultValue: [], persistent: false});
-const runOrderMap: Replicant<{[k: string]: number}> = nodecg.Replicant('runOrderMap', {defaultValue: {}, persistent: false});
-const scheduleRep: Replicant<GDQTypes.ScheduleItem[]> = nodecg.Replicant('schedule');
+const canSeekScheduleRep = nodecg.Replicant<CanSeekSchedule>('canSeekSchedule');
+const currentRunRep = nodecg.Replicant<GDQTypes.Run | null>('currentRun');
+const nextRunRep = nodecg.Replicant<GDQTypes.Run | null>('nextRun');
+const runnersRep = nodecg.Replicant<GDQTypes.Runner[]>('runners', {defaultValue: [], persistent: false});
+const runOrderMap = nodecg.Replicant<{[k: string]: number}>('runOrderMap', {defaultValue: {}, persistent: false});
+const scheduleRep = nodecg.Replicant<GDQTypes.ScheduleItem[]>('schedule');
 const emitter = new EventEmitter();
 module.exports = emitter;
 module.exports.update = update;
