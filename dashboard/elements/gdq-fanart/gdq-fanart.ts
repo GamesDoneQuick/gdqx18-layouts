@@ -17,27 +17,29 @@ export default class GDQFanartElement extends Polymer.MutableData(Polymer.Elemen
 	@property({type: Array})
 	tweets: FanartTweets;
 
-	ready() {
-		super.ready();
+	connectedCallback() {
+		super.connectedCallback();
 
-		currentLayout.on('change', newVal => {
-			const cover = this.$.cover as HTMLElement;
-			switch (newVal) {
-				case 'break':
-					cover.style.display = 'none';
-					break;
-				default:
-					cover.style.display = 'flex';
-			}
-		});
+		Polymer.RenderStatus.beforeNextRender(this, () => {
+			currentLayout.on('change', newVal => {
+				const cover = this.$.cover as HTMLElement;
+				switch (newVal) {
+					case 'break':
+						cover.style.display = 'none';
+						break;
+					default:
+						cover.style.display = 'flex';
+				}
+			});
 
-		fanartTweetsRep.on('change', newVal => {
-			if (!newVal) {
-				return;
-			}
+			fanartTweetsRep.on('change', newVal => {
+				if (!newVal) {
+					return;
+				}
 
-			(this.$.empty as HTMLElement).style.display = newVal.length > 0 ? 'none' : 'flex';
-			this.tweets = newVal;
+				(this.$.empty as HTMLElement).style.display = newVal.length > 0 ? 'none' : 'flex';
+				this.tweets = newVal;
+			});
 		});
 	}
 

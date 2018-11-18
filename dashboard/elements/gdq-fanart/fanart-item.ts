@@ -23,7 +23,15 @@ export default class FanartItemElement extends Polymer.MutableData(Polymer.Eleme
 		nodecg.sendMessage('rejectTweet', this.value.id_str);
 	}
 
-	_calcIndicatorHidden(tweetMedia: TweetMedia | undefined) {
+	_calcIndicatorHidden(tweetMedia?: TweetMedia) {
 		return !tweetMedia || !Array.isArray(tweetMedia) || tweetMedia.length <= 1;
+	}
+
+	_computeImageUrl(tweetMedia?: TweetMedia) {
+		if (tweetMedia && tweetMedia[0]) {
+			return tweetMedia[0].media_url_https;
+		}
+
+		return '';
 	}
 }
