@@ -30,4 +30,3 @@ export default class GDQMarioScoresElement extends Polymer.Element {
 		}
 	}
 }
-

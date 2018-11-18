@@ -394,8 +394,10 @@
     "url": "git://github.com/GamesDoneQuick/gdqx18-layouts.git"
   },
   "scripts": {
-    "static": "npm run static:ts",
-    "static:ts": "tslint -c tslint.json 'src/**/*.ts'",
+    "static": "npm run static:node && npm run static:browser && npm run static:shared",
+    "static:node": "tslint -p tsconfig.node.json -t stylish",
+    "static:browser": "tslint -p tsconfig.browser.json -t stylish",
+    "static:shared": "tslint -p shared/tsconfig.node.json -t stylish",
     "pretest": "npm run static",
     "test": "ava test",
     "build": "npm run schema-types && npm run build:extension && npm run build:browser",

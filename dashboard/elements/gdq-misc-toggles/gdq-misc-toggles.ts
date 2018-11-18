@@ -47,4 +47,3 @@ export default class GDQMiscTogglesElement extends Polymer.Element {
 		autoUploadRecordings.value = Boolean((e.target as PaperToggleButtonElement).checked);
 	}
 }
-

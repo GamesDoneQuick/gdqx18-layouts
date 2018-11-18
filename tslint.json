@@ -7,8 +7,16 @@
 		"no-non-null-assertion": false,
 		"no-require-imports": false,
 		"no-single-line-block-comment": false,
-		"no-unused-variable": [true, {"ignore-pattern": "^_"}],
-		"variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]
+		"no-unused-variable": false,
+		"variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+		"no-floating-promises": false,
+		"await-promise": false,
+		"strict-type-predicates": false,
+		"promise-function-async": false,
+		"no-unnecessary-type-assertion": false,
+		"restrict-plus-operands": false,
+		"deprecation": {"severity": "warn"},
+		"no-unnecessary-type-annotation": false
 	},
 	"linterOptions": {
 		"exclude": [

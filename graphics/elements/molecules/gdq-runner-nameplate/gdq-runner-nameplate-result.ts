@@ -29,7 +29,7 @@ export default class GDQNameplateResultElement extends Polymer.Element {
 	@property({type: Boolean, reflectToAttribute: true})
 	forfeit: boolean;
 
-	private _tl = new TimelineLite({autoRemoveChildren: true});
+	private readonly _tl = new TimelineLite({autoRemoveChildren: true});
 
 	ready() {
 		super.ready();

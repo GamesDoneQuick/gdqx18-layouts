@@ -21,7 +21,7 @@ export default class GDQNameplateAudioIndicatorElement extends Polymer.Element {
 	animationDuration: number = 0.25;
 
 	@property({type: Array})
-	private _maskProxy = [-10, -10, 0];
+	private readonly _maskProxy = [-10, -10, 0];
 
 	ready() {
 		super.ready();
