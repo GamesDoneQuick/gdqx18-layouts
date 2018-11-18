@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Packages
 const equal = require("deep-equal");
 const numeral = require("numeral");
-const request = require("request-promise");
+const request = require("request-promise-native");
 // Ours
 const nodecgApiContext = require("./util/nodecg-api-context");
 const urls_1 = require("./urls");
@@ -20,7 +20,7 @@ setInterval(() => {
 /**
  * Grabs the latest prizes from the tracker.
  */
-function update() {
+async function update() {
     nodecg.sendMessage('prizes:updating');
     const currentPromise = request({
         uri: urls_1.GDQUrls.currentPrizes,
@@ -40,14 +40,16 @@ function update() {
             allPrizesRep.value = formattedPrizes;
         }
     });
-    return Promise.all([
-        currentPromise,
-        allPromise
-    ]).then(() => {
-        nodecg.sendMessage('prizes:updated');
-    }).catch(() => {
-        nodecg.sendMessage('prizes:updated');
-    });
+    try {
+        await Promise.all([
+            currentPromise,
+            allPromise
+        ]);
+    }
+    catch (_error) { // tslint:disable-line:no-unused
+        // Disregard error.
+    }
+    nodecg.sendMessage('prizes:updated');
 }
 /**
  * Formats a raw prize object from the GDQ Tracker API into a slimmed-down version for our use.

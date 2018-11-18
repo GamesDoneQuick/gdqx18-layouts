@@ -7,3 +7,4 @@
 export declare function formatDollars(amount: number | string, { cents }?: {
     cents?: boolean | undefined;
 }): string;
+//# sourceMappingURL=format-dollars.d.ts.map

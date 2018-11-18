@@ -14,7 +14,6 @@ const usbDetect = require("usb-detection");
 // Ours
 const nodecgApiContext = require("./util/nodecg-api-context");
 const TimeUtils = require("./lib/time");
-const GDQTypes = require("../types");
 const lsRun = liveSplitCore.Run.new();
 const segment = liveSplitCore.Segment.new('finish');
 lsRun.pushSegment(segment);
@@ -27,7 +26,7 @@ const stopwatch = nodecg.Replicant('stopwatch');
 timer.start();
 timer.pause();
 initGameTime();
-if (stopwatch.value.state === GDQTypes.StopwatchStateEnum.RUNNING) {
+if (stopwatch.value.state === "running" /* RUNNING */) {
     const missedTime = Date.now() - stopwatch.value.time.timestamp;
     const previousTime = stopwatch.value.time.raw;
     const timeOffset = previousTime + missedTime;
@@ -77,7 +76,7 @@ if (nodecg.bundleConfig.footpedal.enabled) {
     gamepad.init();
     usbDetect.startMonitoring();
     // Poll for events
-    setInterval(gamepad.processEvents, 16);
+    setInterval(gamepad.processEvents, 16); // tslint:disable-line no-string-based-set-interval
     // Update the list of gamepads when usb-detection sees a change.
     usbDetect.on('change', () => {
         nodecg.log.info('USB devices changed, checking for new gamepads.');
@@ -91,7 +90,7 @@ if (nodecg.bundleConfig.footpedal.enabled) {
         if (!currentRun.value) {
             return;
         }
-        if (stopwatch.value.state === GDQTypes.StopwatchStateEnum.RUNNING) {
+        if (stopwatch.value.state === "running" /* RUNNING */) {
             // If this is a race, don't let the pedal finish the timer.
             if (currentRun.value.runners.length > 1 && !currentRun.value.coop) {
                 nodecg.log.warn('Footpedal was hit to finish the timer, but this is a race so no action will be taken.');
@@ -106,7 +105,7 @@ if (nodecg.bundleConfig.footpedal.enabled) {
                 completeRunner({ index, forfeit: false });
             });
         }
-        else if (stopwatch.value.state === GDQTypes.StopwatchStateEnum.NOT_STARTED) {
+        else if (stopwatch.value.state === "not_started" /* NOT_STARTED */) {
             if (!checklistComplete.value) {
                 nodecg.log.warn('Footpedal was hit to start the timer, but the checklist is not complete so no action will be taken.');
                 return;
@@ -132,10 +131,10 @@ setInterval(tick, 100); // 10 times per second.
  * @param force - Forces the timer to start again, even if already running.
  */
 function start(force = false) {
-    if (!force && stopwatch.value.state === GDQTypes.StopwatchStateEnum.RUNNING) {
+    if (!force && stopwatch.value.state === "running" /* RUNNING */) {
         return;
     }
-    stopwatch.value.state = GDQTypes.StopwatchStateEnum.RUNNING;
+    stopwatch.value.state = "running" /* RUNNING */;
     if (timer.currentPhase() === LS_TIMER_PHASE.NotRunning) {
         timer.start();
         initGameTime();
@@ -155,7 +154,7 @@ function initGameTime() {
  * Updates the stopwatch replicant.
  */
 function tick() {
-    if (stopwatch.value.state !== GDQTypes.StopwatchStateEnum.RUNNING) {
+    if (stopwatch.value.state !== "running" /* RUNNING */) {
         return;
     }
     const time = timer.currentTime();
@@ -170,7 +169,7 @@ function tick() {
  */
 function pause() {
     timer.pause();
-    stopwatch.value.state = GDQTypes.StopwatchStateEnum.PAUSED;
+    stopwatch.value.state = "paused" /* PAUSED */;
 }
 exports.pause = pause;
 /**
@@ -181,7 +180,7 @@ function reset() {
     timer.reset(true);
     stopwatch.value.time = TimeUtils.createTimeStruct();
     stopwatch.value.results = [null, null, null, null];
-    stopwatch.value.state = GDQTypes.StopwatchStateEnum.NOT_STARTED;
+    stopwatch.value.state = "not_started" /* NOT_STARTED */;
 }
 exports.reset = reset;
 /**
@@ -207,7 +206,7 @@ function completeRunner({ index, forfeit }) {
 function resumeRunner(index) {
     stopwatch.value.results[index] = null;
     recalcPlaces();
-    if (stopwatch.value.state === GDQTypes.StopwatchStateEnum.FINISHED) {
+    if (stopwatch.value.state === "finished" /* FINISHED */) {
         const missedMilliseconds = Date.now() - stopwatch.value.time.timestamp;
         const newMilliseconds = stopwatch.value.time.raw + missedMilliseconds;
         stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
@@ -274,7 +273,7 @@ function recalcPlaces() {
     }
     if (allRunnersFinished) {
         pause();
-        stopwatch.value.state = GDQTypes.StopwatchStateEnum.FINISHED;
+        stopwatch.value.state = "finished" /* FINISHED */;
     }
 }
 //# sourceMappingURL=timekeeping.js.map

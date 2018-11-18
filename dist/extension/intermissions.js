@@ -12,7 +12,6 @@ const caspar = require("./caspar");
 const nodecgApiContext = require("./util/nodecg-api-context");
 const obs = require("./obs");
 const TimeUtils = require("./lib/time");
-const GDQTypes = require("../types");
 const AD_LOG_PATH = 'logs/ad_log.csv';
 let currentAdBreak = null;
 let currentlyPlayingAd = null;
@@ -34,6 +33,9 @@ const debounceWarnForMissingFiles = debounce(_warnForMissingFiles, 33);
 const clearableTimeouts = new Set();
 const clearableIntervals = new Set();
 currentRun.on('change', (newVal, oldVal) => {
+    if (!newVal) {
+        return;
+    }
     if (!oldVal || newVal.order !== oldVal.order) {
         debouncedUpdateCurrentIntermissionContent();
     }
@@ -76,7 +78,7 @@ nodecg.listenFor('intermissions:startAdBreak', async (adBreakId) => {
         await sleep(2000);
         await playAd(adBreak.ads[0]);
         adBreak.state.canStart = false;
-        adBreak.state.cantStartReason = GDQTypes.CantStartReasonsEnum.ALREADY_STARTED;
+        adBreak.state.cantStartReason = "already started" /* ALREADY_STARTED */;
         adBreak.state.started = true;
     }
     catch (error) {
@@ -252,7 +254,7 @@ function finishAd(ad) {
 function finishAdBreak(adBreak) {
     adBreak.state.started = true;
     adBreak.state.canStart = false;
-    adBreak.state.cantStartReason = GDQTypes.CantStartReasonsEnum.ALREADY_COMPLETED;
+    adBreak.state.cantStartReason = "already completed" /* ALREADY_COMPLETED */;
     adBreak.state.completed = true;
     adBreak.state.canComplete = false;
 }
@@ -320,23 +322,23 @@ function _updateCurrentIntermissionState() {
         item.state.cantStartReason = '';
         if (item.state.started) {
             item.state.canStart = false;
-            item.state.cantStartReason = GDQTypes.CantStartReasonsEnum.ALREADY_STARTED;
+            item.state.cantStartReason = "already started" /* ALREADY_STARTED */;
         }
         if (item.state.completed) {
             item.state.canStart = false;
-            item.state.cantStartReason = GDQTypes.CantStartReasonsEnum.ALREADY_COMPLETED;
+            item.state.cantStartReason = "already completed" /* ALREADY_COMPLETED */;
         }
         if (!allPriorAdBreaksAreComplete) {
             item.state.canStart = false;
-            item.state.cantStartReason = GDQTypes.CantStartReasonsEnum.PRIOR_BREAK_INCOMPLETE;
+            item.state.cantStartReason = "a prior ad break is not complete" /* PRIOR_BREAK_INCOMPLETE */;
         }
         if (hasRunFinished()) {
             item.state.canStart = false;
-            item.state.cantStartReason = GDQTypes.CantStartReasonsEnum.MUST_ADVANCE_SCHEDULE;
+            item.state.cantStartReason = "stream tech must go to next run" /* MUST_ADVANCE_SCHEDULE */;
         }
         else if (hasRunStarted()) {
             item.state.canStart = false;
-            item.state.cantStartReason = GDQTypes.CantStartReasonsEnum.RUN_ACTIVE;
+            item.state.cantStartReason = "run in progress" /* RUN_ACTIVE */;
         }
         if (!item.state.completed) {
             allPriorAdBreaksAreComplete = false;
@@ -366,7 +368,7 @@ function _updateCurrentIntermissionState() {
         });
         if (oneOrMoreAdsMissingFile) {
             item.state.canStart = false;
-            item.state.cantStartReason = GDQTypes.CantStartReasonsEnum.MISSING_FILES;
+            item.state.cantStartReason = "one or more ad files are missing" /* MISSING_FILES */;
         }
     });
 }
@@ -481,7 +483,7 @@ function _warnForMissingFiles() {
         });
     });
 }
-function sleep(milliseconds) {
+async function sleep(milliseconds) {
     return new Promise(resolve => {
         setTimeout(() => {
             resolve();

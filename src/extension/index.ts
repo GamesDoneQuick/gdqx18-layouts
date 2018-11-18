@@ -2,7 +2,7 @@
 
 // Packages
 import * as cheerio from 'cheerio';
-import * as RequestPromise from 'request-promise';
+import * as RequestPromise from 'request-promise-native';
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
@@ -112,7 +112,7 @@ async function init() {
 // Fetch the login page, and run the response body through cheerio
 // so we can extract the CSRF token from the hidden input field.
 // Then, POST with our username, password, and the csrfmiddlewaretoken.
-function loginToTracker() {
+async function loginToTracker() {
 	const nodecg = nodecgApiContext.get();
 	const loginLog = new nodecg.Logger(`${nodecg.bundleName}:tracker`);
 

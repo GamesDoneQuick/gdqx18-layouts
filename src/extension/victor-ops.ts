@@ -1,19 +1,18 @@
 'use strict';
 
 // Packages
-import * as request from 'request-promise';
+import * as request from 'request-promise-native';
 import equals = require('deep-equal');
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
-import {Replicant} from '../types/nodecg';
 import {VictorOps3Aincidents} from '../types/schemas/victorOps%3Aincidents';
 import {VictorOps3AroutingKeys} from '../types/schemas/victorOps%3AroutingKeys';
 
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:victorOps`);
-const incidentsReplicant: Replicant<VictorOps3Aincidents> = nodecg.Replicant('victorOps:incidents');
-const routingKeysReplicant: Replicant<VictorOps3AroutingKeys> = nodecg.Replicant('victorOps:routingKeys');
+const incidentsReplicant = nodecg.Replicant<VictorOps3Aincidents>('victorOps:incidents');
+const routingKeysReplicant = nodecg.Replicant<VictorOps3AroutingKeys>('victorOps:routingKeys');
 
 log.info('VictorOps integration enabled.');
 

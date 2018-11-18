@@ -16,7 +16,18 @@ export interface Stopwatch {
 		raw: number;
 		timestamp: number;
 	};
-	results: ({
-		[k: string]: any;
-	} | null)[];
+	results: (null | {
+		time: {
+			days: number;
+			hours: number;
+			minutes: number;
+			seconds: number;
+			milliseconds: number;
+			formatted: string;
+			raw: number;
+			timestamp: number;
+		};
+		place: number;
+		forfeit: boolean;
+	})[];
 }

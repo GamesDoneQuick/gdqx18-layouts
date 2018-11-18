@@ -14,3 +14,4 @@ export declare function calcOriginalValues(run: GDQTypes.Run, original: GDQTypes
  * @returns The merged run.
  */
 export declare function mergeChangesFromTracker(run: GDQTypes.Run, unmodifiedRun: GDQTypes.Run): GDQTypes.Run;
+//# sourceMappingURL=diff-run.d.ts.map

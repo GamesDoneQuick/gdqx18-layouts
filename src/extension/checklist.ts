@@ -7,14 +7,13 @@ import * as clone from 'clone';
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
 import * as obs from './obs';
-import {Replicant} from '../types/nodecg';
 import {Checklist, ChecklistGroup} from '../types/schemas/checklist';
 
 const nodecg = nodecgApiContext.get();
 
 // To edit the list of checklist items, edit the "default" value of schemas/checklist.json.
 // Any changes you make will be fully picked up and integrated next time NodeCG starts.
-const checklist: Replicant<Checklist> = nodecg.Replicant('checklist');
+const checklist = nodecg.Replicant<Checklist>('checklist');
 const checklistDefault = checklist.schema.default as Checklist;
 
 // Reconcile differences between persisted value and what we expect the checklistDefault to be.

@@ -10,3 +10,4 @@ export interface IGDQUrls {
     readonly total: string;
 }
 export declare const GDQUrls: IGDQUrls;
+//# sourceMappingURL=urls.d.ts.map

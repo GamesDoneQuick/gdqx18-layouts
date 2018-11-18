@@ -19,7 +19,6 @@ import * as usbDetect from 'usb-detection';
 import * as nodecgApiContext from './util/nodecg-api-context';
 import * as TimeUtils from './lib/time';
 import * as GDQTypes from '../types';
-import {Replicant} from '../types/nodecg';
 import {Stopwatch} from '../types/schemas/stopwatch';
 
 const lsRun = liveSplitCore.Run.new();
@@ -28,9 +27,9 @@ lsRun.pushSegment(segment);
 const timer = liveSplitCore.Timer.new(lsRun);
 
 const nodecg = nodecgApiContext.get();
-const checklistComplete: Replicant<boolean> = nodecg.Replicant('checklistComplete');
-const currentRun: Replicant<CurrentRun> = nodecg.Replicant('currentRun');
-const stopwatch: Replicant<Stopwatch> = nodecg.Replicant('stopwatch');
+const checklistComplete = nodecg.Replicant<boolean>('checklistComplete');
+const currentRun = nodecg.Replicant<CurrentRun>('currentRun');
+const stopwatch = nodecg.Replicant<Stopwatch>('stopwatch');
 
 // Load the existing time and start the stopwatch at that.
 timer.start();
@@ -91,7 +90,7 @@ if (nodecg.bundleConfig.footpedal.enabled) {
 	usbDetect.startMonitoring();
 
 	// Poll for events
-	setInterval(gamepad.processEvents, 16);
+	setInterval(gamepad.processEvents, 16); // tslint:disable-line no-string-based-set-interval
 
 	// Update the list of gamepads when usb-detection sees a change.
 	usbDetect.on('change', () => {

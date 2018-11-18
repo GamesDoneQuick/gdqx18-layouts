@@ -1,0 +1,18 @@
+{
+	"plugins": [
+		["bare-import-rewrite", {
+			"modulesDir": "/bundles/gdqx18-layouts/node_modules"
+		}]
+	],
+	"only": [
+		"./dashboard",
+		"./graphics",
+		"./shared"
+	],
+	"ignore": [
+		"./graphics/app",
+		"./bower_components",
+		"./node_modules"
+	],
+	"sourceMaps": "inline"
+}

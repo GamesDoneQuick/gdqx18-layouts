@@ -1,25 +1,6 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 /**
- * An object representing the individual dimensions of an amount of time.
- */
-export interface ParsedTime {
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
-    milliseconds: number;
-}
-/**
- * An object representing the individual dimensions of an amount of time,
- * plus some alternate representations of that time and a timestamp of when this struct was created.
- */
-export interface TimeStruct extends ParsedTime {
-    formatted: string;
-    raw: number;
-    timestamp: number;
-}
-/**
  * Constructs a new TimeStruct with the provided number of milliseconds.
  * @param milliseconds - The value to instantiate this TimeObject with, in milliseconds.
  * @returns A populated TimeStruct object.
@@ -71,3 +52,4 @@ export declare class CountupTimer extends EventEmitter {
     });
     stop(): void;
 }
+//# sourceMappingURL=time.d.ts.map

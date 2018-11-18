@@ -1,21 +1,21 @@
 'use strict';
 
 // Packages
-import * as request from 'request-promise';
+import * as request from 'request-promise-native';
 
 // Ours
 import {formatDollars} from './util';
 import * as nodecgApiContext from './util/nodecg-api-context';
 import {GDQUrls} from './urls';
-import {Replicant, ListenForCb} from '../types/nodecg';
+import {ListenForCb} from '../types/nodecg';
 import {Bits3Atotal} from '../types/schemas/bits%3Atotal';
 import {Total} from '../types/schemas/total';
 
 const nodecg = nodecgApiContext.get();
-const autoUpdateTotal: Replicant<boolean> = nodecg.Replicant('autoUpdateTotal');
-const bitsTotal: Replicant<Bits3Atotal> = nodecg.Replicant('bits:total');
-const recordTrackerEnabled: Replicant<boolean> = nodecg.Replicant('recordTrackerEnabled');
-const total: Replicant<Total> = nodecg.Replicant('total');
+const autoUpdateTotal = nodecg.Replicant<boolean>('autoUpdateTotal');
+const bitsTotal = nodecg.Replicant<Bits3Atotal>('bits:total');
+const recordTrackerEnabled = nodecg.Replicant<boolean>('recordTrackerEnabled');
+const total = nodecg.Replicant<Total>('total');
 
 autoUpdateTotal.on('change', (newVal: boolean) => {
 	if (newVal) {

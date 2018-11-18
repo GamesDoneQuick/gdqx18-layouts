@@ -1,9 +1,0 @@
-{
-	"env": {
-		"browser": true
-	},
-	"globals": {
-		"nodecg": true,
-		"Polymer": true
-	}
-}

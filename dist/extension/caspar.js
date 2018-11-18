@@ -61,11 +61,11 @@ function play(filename) {
     });
 }
 exports.play = play;
-function info() {
+async function info() {
     return connection.info(1);
 }
 exports.info = info;
-function loadbgAuto(filename) {
+async function loadbgAuto(filename) {
     return connection.loadbgAuto(1, undefined, filename, false, CasparCG.Enum.Transition.CUT);
 }
 exports.loadbgAuto = loadbgAuto;
@@ -76,7 +76,7 @@ async function clear(doResetState = true) {
     }
 }
 exports.clear = clear;
-function stop() {
+async function stop() {
     return connection.stop(1).then(resetState);
 }
 exports.stop = stop;
@@ -102,7 +102,7 @@ const emitForegroundChanged = debounce(() => {
     log.info('Media began playing: %s, %s, %s', new Date().toISOString(), foregroundFileName, currentRun.value ? currentRun.value.name : 'Unknown Run');
     exports.oscEvents.emit('foregroundChanged', foregroundFileName);
 }, 250);
-udpPort.on('message', (message) => {
+udpPort.on('message', message => {
     const args = message.args;
     if (message.address === '/channel/1/stage/layer/0/file/frame') {
         const newCurrentFrame = args[0].value.low;
@@ -127,7 +127,7 @@ udpPort.on('message', (message) => {
         fileMayHaveRestarted = false;
     }
 });
-udpPort.on('error', (error) => {
+udpPort.on('error', error => {
     log.warn('[osc] Error:', error.stack);
 });
 udpPort.on('open', () => {

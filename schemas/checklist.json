@@ -4,22 +4,26 @@
 	"definitions": {
 		"checklistGroup": {
 			"type": "array",
+			"additionalItems": false,
 			"items": {
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"shortName": {
-						"type": "string"
-					},
-					"complete": {
-						"type": "boolean"
-					}
-				},
-				"required": ["name", "complete"]
+				"$ref": "#/definitions/checklistTask"
 			}
+		},
+		"checklistTask": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"shortName": {
+					"type": "string"
+				},
+				"complete": {
+					"type": "boolean"
+				}
+			},
+			"required": ["name", "complete"]
 		}
 	},
 

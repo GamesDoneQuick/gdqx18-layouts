@@ -4,11 +4,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type ChecklistGroup = {
-	name: string;
-	shortName?: string;
-	complete: boolean;
-}[];
+export type ChecklistGroup = ChecklistTask[];
 
 export interface Checklist {
 	extraContent: ChecklistGroup;
@@ -16,4 +12,9 @@ export interface Checklist {
 	stageTechDuties: ChecklistGroup;
 	audioEngineerDuties: ChecklistGroup;
 	special: ChecklistGroup;
+}
+export interface ChecklistTask {
+	name: string;
+	shortName?: string;
+	complete: boolean;
 }

@@ -126,7 +126,7 @@
 			<img
 				id="image"
 				width="308"
-				src="[[value.gdqMedia.0.media_url_https]]">
+				src="[[_computeImageUrl(value.gdqMedia)]]">
 
 			<div id="controls">
 				<div class="button">
@@ -167,5 +167,5 @@
 		<ui-tweet id="tweet" tweet="[[value]]" no-avatar></ui-tweet>
 	</template>
 
-	<script src="fanart-item.js"></script>
+	<script src="fanart-item.js" type="module"></script>
 </dom-module>

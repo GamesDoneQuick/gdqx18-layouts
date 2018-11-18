@@ -8,8 +8,7 @@ const child_process_1 = require("child_process");
 const OBSUtility = require("nodecg-utility-obs");
 // Ours
 const nodecgApiContext = require("./util/nodecg-api-context");
-// @ts-ignore
-const gdqUtils = require("../../shared/lib/gdq-utils");
+const gdqUtils = require("../../dist/shared/lib/gdq-utils");
 const nodecg = nodecgApiContext.get();
 // We track what _layout_ is active, not necessarily what _scene_ is active.
 // A given layout can be on multiple scenes.
@@ -113,7 +112,7 @@ compositingOBS.on('SwitchScenes', (data) => {
         });
     }
 });
-function cycleRecording(obs) {
+async function cycleRecording(obs) {
     return new Promise((resolve, reject) => {
         let rejected = false;
         const timeout = setTimeout(() => {

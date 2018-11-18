@@ -29,7 +29,7 @@ nodecg.listenFor('acceptFanart', (tweet) => {
 });
 nodecg.listenFor('rejectTweet', removeTweetById);
 const socket = io.connect(nodecg.bundleConfig.twitter.websocketUrl);
-socket.on('connect', () => {
+socket.once('connect', () => {
     socket.on('authenticated', () => {
         log.info('Twitter socket authenticated.');
     });

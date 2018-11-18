@@ -1,11 +1,10 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 // Packages
-const request = require("request-promise");
+const request = require("request-promise-native");
 // Ours
 const nodecgApiContext = require("./util/nodecg-api-context");
 const TimeUtils = require("./lib/time");
-const GDQTypes = require("../types");
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);
 const timeSince = nodecg.Replicant('twitch:timeSinceLastAd', { defaultValue: TimeUtils.createTimeStruct() });
@@ -105,8 +104,8 @@ function updateCanPlay() {
         canPlayTwitchAd.value.reason = CANT_PLAY_REASONS.ON_COOLDOWN;
         return;
     }
-    if (stopwatch.value.state !== GDQTypes.StopwatchStateEnum.NOT_STARTED &&
-        stopwatch.value.state !== GDQTypes.StopwatchStateEnum.FINISHED) {
+    if (stopwatch.value.state !== "not_started" /* NOT_STARTED */ &&
+        stopwatch.value.state !== "finished" /* FINISHED */) {
         canPlayTwitchAd.value.canPlay = false;
         canPlayTwitchAd.value.reason = CANT_PLAY_REASONS.RUN_IN_PROGRESS;
         return;

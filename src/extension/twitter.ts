@@ -7,14 +7,13 @@ import * as io from 'socket.io-client';
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
 import * as GDQTypes from '../types';
-import {Replicant} from '../types/nodecg';
 import {Tweets} from '../types/schemas/tweets';
 import {FanartTweets} from '../types/schemas/fanartTweets';
 
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:twitter`);
-const tweets: Replicant<Tweets> = nodecg.Replicant('tweets');
-const fanartTweets: Replicant<FanartTweets> = nodecg.Replicant('fanartTweets');
+const tweets = nodecg.Replicant<Tweets>('tweets');
+const fanartTweets = nodecg.Replicant<FanartTweets>('fanartTweets');
 
 // Clear queue of tweets when currentRun changes
 nodecg.Replicant('currentRun').on('change', (newVal: GDQTypes.Run, oldVal: GDQTypes.Run | undefined) => {
@@ -42,7 +41,7 @@ nodecg.listenFor('acceptFanart', (tweet: GDQTypes.Tweet) => {
 nodecg.listenFor('rejectTweet', removeTweetById);
 
 const socket = io.connect(nodecg.bundleConfig.twitter.websocketUrl);
-socket.on('connect', () => {
+socket.once('connect', () => {
 	socket.on('authenticated', () => {
 		log.info('Twitter socket authenticated.');
 	});
@@ -156,14 +155,14 @@ function addTweet(tweet: GDQTypes.Tweet) {
  * @param idToRemove - The ID string of the Tweet to remove.
  * @returns The removed tweet. "Undefined" if tweet not found.
  */
-function removeTweetById(idToRemove: string) {
+function removeTweetById(idToRemove?: string) {
 	if (typeof idToRemove !== 'string') {
 		throw new Error(`[twitter] Must provide a string ID when removing a tweet. ID provided was: ${idToRemove}`);
 	}
 
 	let didRemoveTweet = false;
 	[tweets, fanartTweets].forEach(tweetReplicant => {
-		tweetReplicant.value.some((tweet: GDQTypes.Tweet, index: number) => {
+		tweetReplicant.value.some((tweet, index) => {
 			if (tweet.id_str === idToRemove || tweet.gdqRetweetId === idToRemove) {
 				tweetReplicant.value.splice(index, 1);
 				didRemoveTweet = true;

@@ -11,3 +11,4 @@ export declare function pause(): void;
  * Pauses and resets the timer, clearing the time and results.
  */
 export declare function reset(): void;
+//# sourceMappingURL=timekeeping.d.ts.map

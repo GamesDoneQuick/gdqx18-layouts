@@ -1,7 +1,6 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 import * as CasparCG from 'casparcg-connection';
-import { Replicant } from '../types/nodecg';
 export declare function play(filename: string): any;
 export declare function info(): Promise<CasparCG.Command.IAMCPCommand>;
 export declare function loadbgAuto(filename: string): Promise<CasparCG.Command.IAMCPCommand>;
@@ -9,7 +8,7 @@ export declare function clear(doResetState?: boolean): Promise<void>;
 export declare function stop(): Promise<void>;
 export declare function resetState(): void;
 export declare const replicants: {
-    files: Replicant<{
+    files: import("../../../../types/lib/replicant").ReplicantServer<{
         name: string;
         nameWithExt: string;
         type: string;
@@ -22,3 +21,4 @@ export declare const replicants: {
     }[]>;
 };
 export declare const oscEvents: EventEmitter;
+//# sourceMappingURL=caspar.d.ts.map

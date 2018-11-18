@@ -269,7 +269,7 @@ function updateQuestionSortMap() {
  * @param duration - The desired duration of the pulse in seconds.
  * @returns A promise which resolves when the pulse has completed.
  */
-function pulse(showingRep, pulseTimeRemainingRep, duration) {
+async function pulse(showingRep, pulseTimeRemainingRep, duration) {
     return new Promise(resolve => {
         // Don't stack pulses
         if (showingRep.value) {

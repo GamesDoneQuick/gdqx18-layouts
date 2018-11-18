@@ -3,7 +3,7 @@
 // Packages
 import equal = require('deep-equal');
 import * as numeral from 'numeral';
-import * as request from 'request-promise';
+import * as request from 'request-promise-native';
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
@@ -27,7 +27,7 @@ setInterval(() => {
 /**
  * Grabs the latest prizes from the tracker.
  */
-function update() {
+async function update() {
 	nodecg.sendMessage('prizes:updating');
 
 	const currentPromise = request({
@@ -50,14 +50,16 @@ function update() {
 		}
 	});
 
-	return Promise.all([
-		currentPromise,
-		allPromise
-	]).then(() => {
-		nodecg.sendMessage('prizes:updated');
-	}).catch(() => {
-		nodecg.sendMessage('prizes:updated');
-	});
+	try {
+		await Promise.all([
+			currentPromise,
+			allPromise
+		]);
+	} catch (_error) { // tslint:disable-line:no-unused
+		// Disregard error.
+	}
+
+	nodecg.sendMessage('prizes:updated');
 }
 
 /**

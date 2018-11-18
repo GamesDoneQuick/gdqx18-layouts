@@ -9,7 +9,7 @@ const nodecgApiContext = require("./util/nodecg-api-context");
 const app = express();
 const nodecg = nodecgApiContext.get();
 const pulsing = nodecg.Replicant('nowPlayingPulsing', { defaultValue: false, persistent: false });
-const nowPlaying = nodecg.Replicant('nowPlaying', { defaultValue: {}, persistent: false });
+const nowPlaying = nodecg.Replicant('nowPlaying', { persistent: false });
 let pulseTimeout;
 nodecg.listenFor('pulseNowPlaying', pulse);
 const changeSong = debounce(newSong => {

@@ -7,13 +7,12 @@ import * as path from 'path';
 
 // Packages
 import equals = require('deep-equal');
-import * as osc from 'osc';
+import osc = require('osc');
 import * as CasparCG from 'casparcg-connection';
 import debounce = require('lodash.debounce');
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
-import {Replicant} from '../types/nodecg';
 import {CurrentRun} from '../types/schemas/currentRun';
 import {Caspar3Afiles} from '../types/schemas/caspar%3Afiles';
 import {Caspar3Aconnected} from '../types/schemas/caspar%3Aconnected';
@@ -27,9 +26,9 @@ let ignoreForegroundUntilNextPlay = false;
 
 const nodecg = nodecgApiContext.get();
 const log = new nodecg.Logger(`${nodecg.bundleName}:caspar`);
-const currentRun: Replicant<CurrentRun> = nodecg.Replicant('currentRun');
-const files: Replicant<Caspar3Afiles> = nodecg.Replicant('caspar:files', {persistent: false});
-const connected: Replicant<Caspar3Aconnected> = nodecg.Replicant('caspar:connected');
+const currentRun = nodecg.Replicant<CurrentRun>('currentRun');
+const files = nodecg.Replicant<Caspar3Afiles>('caspar:files', {persistent: false});
+const connected = nodecg.Replicant<Caspar3Aconnected>('caspar:connected');
 const connection = new CasparCG.CasparCG({
 	host: nodecg.bundleConfig.casparcg.host,
 	port: nodecg.bundleConfig.casparcg.port,
@@ -72,11 +71,11 @@ export function play(filename: string) {
 	});
 }
 
-export function info() {
+export async function info() {
 	return connection.info(1);
 }
 
-export function loadbgAuto(filename: string) {
+export async function loadbgAuto(filename: string) {
 	return connection.loadbgAuto(1, undefined, filename, false, CasparCG.Enum.Transition.CUT);
 }
 
@@ -87,7 +86,7 @@ export async function clear(doResetState = true) {
 	}
 }
 
-export function stop() {
+export async function stop() {
 	return connection.stop(1).then(resetState);
 }
 
@@ -123,7 +122,7 @@ const emitForegroundChanged = debounce(() => {
 	oscEvents.emit('foregroundChanged', foregroundFileName);
 }, 250);
 
-udpPort.on('message', (message: osc.OscMessage) => {
+udpPort.on('message', message => {
 	const args = message.args as {[key: string]: any}[];
 
 	if (message.address === '/channel/1/stage/layer/0/file/frame') {
@@ -150,7 +149,7 @@ udpPort.on('message', (message: osc.OscMessage) => {
 	}
 });
 
-udpPort.on('error', (error: Error) => {
+udpPort.on('error', error => {
 	log.warn('[osc] Error:', error.stack);
 });
 
