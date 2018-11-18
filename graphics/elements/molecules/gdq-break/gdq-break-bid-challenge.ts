@@ -1,6 +1,6 @@
 import {TimelineLite, TweenLite, Power2, Power4} from 'gsap';
 import AtomTweeningNumberElement from '../../atoms/atom-tweening-number/atom-tweening-number';
-import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
+import {createMaybeRandomTween} from '../../../../shared/lib/maybe-random';
 import {BidElement} from './gdq-break-bids';
 import {ParentBid} from '../../../../src/types/index';
 
@@ -21,7 +21,7 @@ export default class GDQBreakBidChallengeElement extends Polymer.Element impleme
 		const percentElem = this.$.percent as AtomTweeningNumberElement;
 
 		amountElem.ease = Power2.easeOut;
-		amountElem.displayValueTransform = (displayValue: number) => {
+		amountElem.displayValueTransform = displayValue => {
 			return '$' + displayValue.toLocaleString('en-US', {
 				maximumFractionDigits: 0,
 				useGrouping: false
@@ -29,7 +29,7 @@ export default class GDQBreakBidChallengeElement extends Polymer.Element impleme
 		};
 
 		percentElem.ease = Power2.easeOut;
-		percentElem.displayValueTransform = (displayValue: number) => {
+		percentElem.displayValueTransform = displayValue => {
 			return displayValue.toLocaleString('en-US', {
 				maximumFractionDigits: 0,
 				useGrouping: false

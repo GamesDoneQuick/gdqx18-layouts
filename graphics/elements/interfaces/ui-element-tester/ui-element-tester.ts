@@ -73,7 +73,7 @@ export default class UiElementTesterElement extends Polymer.Element {
 		input.value = property.value;
 		input.classList.add('control');
 
-		input.addEventListener('value-changed', (e: Event) => {
+		input.addEventListener('value-changed', e => {
 			const detail = (e as any).detail;
 			const target = e.target! as any;
 			let newValue = detail.value;

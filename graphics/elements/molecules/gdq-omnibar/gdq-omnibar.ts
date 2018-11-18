@@ -61,10 +61,10 @@ export default class GDQOmnibarElement extends Polymer.Element {
 	readonly milestones = MILESTONES;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	noAutoLoop: boolean = false;
+	noAutoLoop = false;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	skipLabelAnims: boolean = false;
+	skipLabelAnims = false;
 
 	ready() {
 		super.ready();
@@ -123,7 +123,7 @@ export default class GDQOmnibarElement extends Polymer.Element {
 			}
 		}
 
-		function promisifyTimeline(tl: TimelineLite) {
+		async function promisifyTimeline(tl: TimelineLite) {
 			return new Promise(resolve => {
 				tl.call(resolve, undefined, null, '+=0.03');
 			});

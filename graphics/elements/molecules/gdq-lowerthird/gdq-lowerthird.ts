@@ -16,7 +16,7 @@ const lowerthirdShowing = nodecg.Replicant<boolean>('interview:lowerthirdShowing
 @customElement('gdq-lowerthird')
 export default class GDQLowerthirdElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Boolean, reflectToAttribute: true})
-	preview: boolean = false;
+	preview = false;
 
 	@property({type: Number, reflectToAttribute: true})
 	numNames: number;

@@ -33,6 +33,9 @@ const debounceWarnForMissingFiles = debounce(_warnForMissingFiles, 33);
 const clearableTimeouts = new Set();
 const clearableIntervals = new Set();
 currentRun.on('change', (newVal, oldVal) => {
+    if (!newVal) {
+        return;
+    }
     if (!oldVal || newVal.order !== oldVal.order) {
         debouncedUpdateCurrentIntermissionContent();
     }
@@ -480,7 +483,7 @@ function _warnForMissingFiles() {
         });
     });
 }
-function sleep(milliseconds) {
+async function sleep(milliseconds) {
     return new Promise(resolve => {
         setTimeout(() => {
             resolve();

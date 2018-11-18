@@ -6,10 +6,10 @@ export default class DashProducerElement extends Polymer.MutableData(Polymer.Ele
 	currentTime: string;
 
 	@property({type: Number})
-	selectedContentTab: number = 0;
+	selectedContentTab = 0;
 
 	@property({type: Number})
-	selectedBidsAndPrizesTab: number = 0;
+	selectedBidsAndPrizesTab = 0;
 
 	connectedCallback() {
 		super.connectedCallback();

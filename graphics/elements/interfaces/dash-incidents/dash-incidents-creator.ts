@@ -12,7 +12,7 @@ export default class DashIncidentsCreatorElement extends Polymer.MutableData(Pol
 	sending: boolean;
 
 	@property({type: String, observer: DashIncidentsCreatorElement.prototype._requestStatusChanged})
-	_requestStatus: string = 'ready';
+	_requestStatus = 'ready';
 
 	private _routingKey: string;
 	private _subject: string;

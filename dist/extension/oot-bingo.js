@@ -1,7 +1,7 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 // Packages
-const RequestPromise = require("request-promise");
+const RequestPromise = require("request-promise-native");
 const WebSocket = require("ws");
 const cheerio = require("cheerio");
 const equal = require("deep-equal");
@@ -199,7 +199,7 @@ async function joinRoom({ siteUrl = 'https://bingosync.com', socketUrl = 'wss://
         boardRep.value.cells = newBoardState;
     }
 }
-function createWebsocket(socketUrl, socketKey) {
+async function createWebsocket(socketUrl, socketKey) {
     return new Promise((resolve, reject) => {
         let settled = false;
         log.info('Opening socket...');
@@ -211,7 +211,7 @@ function createWebsocket(socketUrl, socketKey) {
                 websocket.send(JSON.stringify({ socket_key: socketKey }));
             }
         };
-        websocket.onmessage = (event) => {
+        websocket.onmessage = event => {
             let json;
             try {
                 json = JSON.parse(event.data);
@@ -240,7 +240,7 @@ function createWebsocket(socketUrl, socketKey) {
                 boardRep.value.cells[index] = json.square;
             }
         };
-        websocket.onclose = (event) => {
+        websocket.onclose = event => {
             socketRep.value.status = 'disconnected';
             log.info(`Socket closed (code: ${event.code}, reason: ${event.reason})`);
             destroyWebsocket();

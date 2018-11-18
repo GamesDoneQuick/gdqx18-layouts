@@ -12,7 +12,7 @@ const {customElement, property} = Polymer.decorators;
 @customElement('gdq-lowerthird-nameplate')
 export default class GDQLowerthirdNameplateElement extends Polymer.Element {
 	@property({type: Boolean, reflectToAttribute: true})
-	header: boolean = false;
+	header = false;
 
 	@property({type: String, observer: GDQLowerthirdNameplateElement.prototype._nameChanged})
 	name: string;

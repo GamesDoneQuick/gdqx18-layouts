@@ -1,22 +1,18 @@
 {
 	"extends": "tslint-xo",
 	"rules": {
+		"await-promise": [true, "RequestPromise"],
 		"comment-format": false,
 		"early-exit": false,
+		"no-floating-promises": false,
 		"no-inner-html": false,
 		"no-non-null-assertion": false,
 		"no-require-imports": false,
 		"no-single-line-block-comment": false,
-		"no-unused-variable": false,
-		"variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
-		"no-floating-promises": false,
-		"await-promise": false,
-		"strict-type-predicates": false,
-		"promise-function-async": false,
 		"no-unnecessary-type-assertion": false,
 		"restrict-plus-operands": false,
-		"deprecation": {"severity": "warn"},
-		"no-unnecessary-type-annotation": false
+		"strict-type-predicates": false,
+		"variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]
 	},
 	"linterOptions": {
 		"exclude": [

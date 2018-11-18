@@ -7,16 +7,16 @@ const NAME_FADE_OUT_EASE = Power1.easeIn;
 @customElement('atom-nameplate')
 export default class AtomNameplateElement extends Polymer.Element {
 	@property({type: Boolean, reflectToAttribute: true})
-	noLeftCap: boolean = false;
+	noLeftCap = false;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	noRightCap: boolean = false;
+	noRightCap = false;
 
 	@property({type: String})
-	name: string = '';
+	name = '';
 
 	@property({type: String})
-	twitch: string = '';
+	twitch = '';
 
 	/**
 	 * How long, in seconds, to fade names in/out.
@@ -25,7 +25,7 @@ export default class AtomNameplateElement extends Polymer.Element {
 	 * seconds, and then the subsequent fade in will take another 0.33 seconds.
 	 */
 	@property({type: Number})
-	nameFadeDuration: number = 0.33;
+	nameFadeDuration = 0.33;
 
 	@property({type: Object})
 	private readonly _nameTL = new TimelineMax({repeat: -1, paused: true});

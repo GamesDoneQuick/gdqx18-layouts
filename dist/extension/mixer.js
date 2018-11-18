@@ -64,7 +64,7 @@ udpPort.on('raw', (buf) => {
         }
     }
 });
-udpPort.on('error', (error) => {
+udpPort.on('error', error => {
     nodecg.log.warn('[osc] Error:', error.stack);
 });
 udpPort.on('open', () => {

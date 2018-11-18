@@ -1,8 +1,8 @@
 import {TimelineLite, Linear, Sine, Power2} from 'gsap';
-import InterruptMixin, {ICompanionElement} from '../../../mixins/InterruptMixin';
+import InterruptMixin, {ICompanionElement} from '../../../mixins/interrupt-mixin';
 import {Tweet} from '../../../../src/types/Twitter';
-import {typeAnim, untypeAnim} from '../../../../shared/lib/TypeAnims';
-import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
+import {typeAnim, untypeAnim} from '../../../../shared/lib/type-anims';
+import {createMaybeRandomTween} from '../../../../shared/lib/maybe-random';
 import * as DrawSVGPlugin from '../../../../shared/lib/vendor/DrawSVGPlugin';
 (window as any)._gsapPlugins = [DrawSVGPlugin]; // prevent tree shaking
 
@@ -16,16 +16,16 @@ const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
 @customElement('gdq-tweet')
 export default class GDQTweetElement extends InterruptMixin(Polymer.Element) {
 	@property({type: String})
-	label: string = '';
+	label = '';
 
 	@property({type: Object})
 	companionElement: (ICompanionElement | null) = document.querySelector('gdq-sponsors');
 
 	@property({type: String})
-	bindToMessage: string = 'showTweet';
+	bindToMessage = 'showTweet';
 
 	@property({type: Number})
-	backgroundOpacity: number = 0.25;
+	backgroundOpacity = 0.25;
 
 	_initialized: boolean;
 

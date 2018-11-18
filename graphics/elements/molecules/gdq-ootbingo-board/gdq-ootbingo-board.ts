@@ -26,10 +26,10 @@ export default class GDQOotbingoBoardElement extends Polymer.Element {
 	embiggened: boolean = Boolean(EMBIGGEN);
 
 	@property({type: Boolean, observer: GDQOotbingoBoardElement.prototype._embiggenStateChanged})
-	_embiggenState: boolean = false;
+	_embiggenState = false;
 
 	@property({type: Boolean, observer: GDQOotbingoBoardElement.prototype._hiddenStateChanged})
-	_hiddenState: boolean = false;
+	_hiddenState = false;
 
 	ready() {
 		super.ready();

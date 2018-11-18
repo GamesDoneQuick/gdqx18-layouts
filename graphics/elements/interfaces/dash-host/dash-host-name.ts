@@ -13,7 +13,7 @@ export default class DashHostNameElement extends Polymer.Element {
 	currentHost: string;
 
 	@property({type: String})
-	_enteredName: string = '';
+	_enteredName = '';
 
 	ready() {
 		super.ready();

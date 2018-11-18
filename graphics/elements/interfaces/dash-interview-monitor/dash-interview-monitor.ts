@@ -17,7 +17,7 @@ const prizeModeRep = nodecg.Replicant<boolean>('interview:showPrizesOnMonitor');
 @customElement('dash-interview-monitor')
 export default class DashInterviewMonitorElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Boolean, reflectToAttribute: true})
-	throwIncoming: boolean = false;
+	throwIncoming = false;
 
 	@property({type: String})
 	timeElapsed: string;
@@ -26,7 +26,7 @@ export default class DashInterviewMonitorElement extends Polymer.MutableData(Pol
 	upNextRunName: string;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	prizeMode: boolean = false;
+	prizeMode = false;
 
 	ready() {
 		super.ready();

@@ -46,7 +46,7 @@ function moveItem(data, direction) {
             }
             return item && item[data.itemIdField] === data.itemId;
         });
-        if (typeof actualItemIndex !== 'number' || actualItemIndex < 0 || isNaN(actualItemIndex)) {
+        if (actualItemIndex < 0 || isNaN(actualItemIndex)) {
             log.error('Item not found with these args:', data);
             return;
         }

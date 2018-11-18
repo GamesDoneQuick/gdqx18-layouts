@@ -31,13 +31,13 @@ function preloadImage(src) {
             load: null,
             error: null
         };
-        listeners.load = (event) => {
+        listeners.load = event => {
             event.target.removeEventListener('error', listeners.error);
             event.target.removeEventListener('load', listeners.load);
             preloadedImages.add(src);
             resolve();
         };
-        listeners.error = (event) => {
+        listeners.error = event => {
             event.target.removeEventListener('error', listeners.error);
             event.target.removeEventListener('load', listeners.load);
             reject(new Error(`Image failed to load: ${src}`));

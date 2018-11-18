@@ -1,7 +1,7 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 // Packages
-const request = require("request-promise");
+const request = require("request-promise-native");
 // Ours
 const nodecgApiContext = require("./util/nodecg-api-context");
 const TimeUtils = require("./lib/time");

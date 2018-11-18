@@ -15,10 +15,10 @@ const gameAudioChannels = nodecg.Replicant<GameAudioChannels>('gameAudioChannels
 @customElement('gdq-runner-nameplate')
 export default class GDQRunnerNameplateElement extends Polymer.Element {
 	@property({type: Boolean, reflectToAttribute: true})
-	noLeftCap: boolean = false;
+	noLeftCap = false;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	noRightCap: boolean = false;
+	noRightCap = false;
 
 	@property({type: Number})
 	index: number;
@@ -30,22 +30,22 @@ export default class GDQRunnerNameplateElement extends Polymer.Element {
 	audioHorizPos: string;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	audio: boolean = false;
+	audio = false;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	noAudio: boolean = false;
+	noAudio = false;
 
 	@property({type: String})
 	resultSide: string;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	coop: boolean = false;
+	coop = false;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	finished: boolean = false;
+	finished = false;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	forfeit: boolean = false;
+	forfeit = false;
 
 	@property({type: String})
 	time: string;
@@ -60,7 +60,7 @@ export default class GDQRunnerNameplateElement extends Polymer.Element {
 	lastPlace: boolean;
 
 	@property({type: Number})
-	_numRunners: number = 1;
+	_numRunners = 1;
 
 	ready() {
 		super.ready();

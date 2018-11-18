@@ -144,7 +144,7 @@ compositingOBS.on('SwitchScenes', (data: any) => {
 	}
 });
 
-function cycleRecording(obs: any) {
+async function cycleRecording(obs: any) {
 	return new Promise((resolve, reject) => {
 		let rejected = false;
 		const timeout = setTimeout(() => {

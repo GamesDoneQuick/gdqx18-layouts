@@ -1,7 +1,7 @@
 import {TimelineLite, Sine, Power2} from 'gsap';
-import GDQBreakLoopMixin from '../../../mixins/GDQBreakLoopMixin';
+import GDQBreakLoopMixin from '../../../mixins/gdq-break-loop-mixin';
 import {ParentBid} from '../../../../src/types/index';
-import {typeAnim} from '../../../../shared/lib/TypeAnims';
+import {typeAnim} from '../../../../shared/lib/type-anims';
 
 const {customElement} = Polymer.decorators;
 

@@ -42,7 +42,11 @@ const debounceWarnForMissingFiles = debounce(_warnForMissingFiles, 33);
 const clearableTimeouts = new Set();
 const clearableIntervals = new Set();
 
-currentRun.on('change', (newVal: GDQTypes.Run, oldVal: GDQTypes.Run | undefined) => {
+currentRun.on('change', (newVal, oldVal) => {
+	if (!newVal) {
+		return;
+	}
+
 	if (!oldVal || newVal.order !== oldVal.order) {
 		debouncedUpdateCurrentIntermissionContent();
 	}
@@ -53,7 +57,7 @@ schedule.on('change', () => {
 	debounceWarnForMissingFiles();
 });
 
-stopwatch.on('change', (newVal: GDQTypes.Stopwatch, oldVal: GDQTypes.Stopwatch | undefined) => {
+stopwatch.on('change', (newVal, oldVal) => {
 	checkCanSeek();
 
 	if (!oldVal || (hasRunStarted() ? 'post' : 'pre') !== currentIntermission.value.preOrPost) {
@@ -573,7 +577,7 @@ function _warnForMissingFiles() {
 	});
 }
 
-function sleep(milliseconds: number) {
+async function sleep(milliseconds: number) {
 	return new Promise(resolve => {
 		setTimeout(() => {
 			resolve();

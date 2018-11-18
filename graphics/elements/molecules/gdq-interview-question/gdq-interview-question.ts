@@ -19,7 +19,7 @@ export default class GDQInterviewQuestionElement extends Polymer.Element {
 	_timeline = new TimelineLite({autoRemoveChildren: true});
 	_questionsVal?: Interview3AquestionTweets;
 	_sortMapVal?: Interview3AquestionSortMap;
-	_initialized: boolean = false;
+	_initialized = false;
 
 	ready() {
 		super.ready();

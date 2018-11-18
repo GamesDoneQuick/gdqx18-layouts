@@ -30,7 +30,7 @@ CustomEase.create('ModifiedPower2EaseInOut', 'M0,0 C0.66,0 0.339,1 1,1');
 @customElement('gdq-transition')
 export default class GDQTransitionElement extends Polymer.Element {
 	private readonly masterTimeline = new TimelineLite({autoRemoveChildren: true});
-	private _initialized: boolean = false;
+	private _initialized = false;
 	private _$videos: HTMLVideoElement[];
 
 	ready() {
@@ -436,7 +436,7 @@ export default class GDQTransitionElement extends Polymer.Element {
 		return tl;
 	}
 
-	waitForInit() {
+	async waitForInit() {
 		return new Promise(resolve => {
 			if (this._initialized) {
 				return resolve();
@@ -448,7 +448,7 @@ export default class GDQTransitionElement extends Polymer.Element {
 		});
 	}
 
-	waitForVideoToLoad(videoElem: HTMLVideoElement) {
+	async waitForVideoToLoad(videoElem: HTMLVideoElement) {
 		return new Promise(resolve => {
 			if (videoElem.readyState >= MEDIA_READY_STATES.HAVE_ENOUGH_DATA) {
 				return resolve();

@@ -155,14 +155,14 @@ function addTweet(tweet: GDQTypes.Tweet) {
  * @param idToRemove - The ID string of the Tweet to remove.
  * @returns The removed tweet. "Undefined" if tweet not found.
  */
-function removeTweetById(idToRemove: string) {
+function removeTweetById(idToRemove?: string) {
 	if (typeof idToRemove !== 'string') {
 		throw new Error(`[twitter] Must provide a string ID when removing a tweet. ID provided was: ${idToRemove}`);
 	}
 
 	let didRemoveTweet = false;
 	[tweets, fanartTweets].forEach(tweetReplicant => {
-		tweetReplicant.value.some((tweet: GDQTypes.Tweet, index: number) => {
+		tweetReplicant.value.some((tweet, index) => {
 			if (tweet.id_str === idToRemove || tweet.gdqRetweetId === idToRemove) {
 				tweetReplicant.value.splice(index, 1);
 				didRemoveTweet = true;

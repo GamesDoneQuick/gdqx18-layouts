@@ -2,8 +2,8 @@ import {TimelineLite, TweenLite, Sine} from 'gsap';
 import {CountdownRunning} from '../../../../src/types/schemas/countdownRunning';
 import {Countdown} from '../../../../src/types/schemas/countdown';
 import {NowPlaying} from '../../../../src/types/schemas/nowPlaying';
-import {typeAnim} from '../../../../shared/lib/TypeAnims';
-import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
+import {typeAnim} from '../../../../shared/lib/type-anims';
+import {createMaybeRandomTween} from '../../../../shared/lib/maybe-random';
 
 const {customElement, property} = Polymer.decorators;
 
@@ -20,11 +20,11 @@ export default class GDQCountdownElement extends Polymer.Element {
 	@property({type: Object})
 	private readonly countdownTimeline: TimelineLite = new TimelineLite({autoRemoveChildren: true});
 
-	_initialized: boolean;
-	_didTweenRed: boolean;
-	_didTweenTeal: boolean;
-	_fooTimeout?: number;
-	_fooDebouncer: Polymer.Debouncer | null = null;
+	private _initialized: boolean;
+	private _didTweenRed: boolean;
+	private _didTweenTeal: boolean;
+	private _fooTimeout?: number;
+	private _fooDebouncer: Polymer.Debouncer | null = null;
 
 	ready() {
 		super.ready();

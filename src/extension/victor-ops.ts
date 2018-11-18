@@ -1,7 +1,7 @@
 'use strict';
 
 // Packages
-import * as request from 'request-promise';
+import * as request from 'request-promise-native';
 import equals = require('deep-equal');
 
 // Ours

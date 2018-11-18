@@ -21,10 +21,10 @@ export default class UiRundownElement extends Polymer.MutableData(Polymer.Elemen
 	currentItems: (ScheduleItem | IntermissionContentItem)[];
 
 	@property({type: Number, observer: UiRundownElement.prototype._maxRunsToShowChanged})
-	maxRunsToShow: number = 4;
+	maxRunsToShow = 4;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	allowScrollback: boolean = false;
+	allowScrollback = false;
 
 	private _futureStartIndex: number;
 	private _updateScheduleSliceDebouncer: Polymer.Debouncer;
@@ -96,7 +96,7 @@ export default class UiRundownElement extends Polymer.MutableData(Polymer.Elemen
 			return item.id === lastCurrentItem.id && item.type === lastCurrentItem.type;
 		}) + 1;
 		let numFoundRuns = 0;
-		let endIndex;
+		let endIndex = -1;
 		let lastRunOrder = currentRun.value.order;
 		schedule.value.slice(startIndex).some((item, index) => {
 			if (numFoundRuns < this.maxRunsToShow) {
@@ -125,7 +125,7 @@ export default class UiRundownElement extends Polymer.MutableData(Polymer.Elemen
 			this._futureStartIndex = startIndex;
 			this.scrollToFuture();
 		} else {
-			this.remainderItems = typeof endIndex === 'number' ?
+			this.remainderItems = endIndex > -1 ?
 				schedule.value.slice(startIndex, startIndex + endIndex + 1) :
 				schedule.value.slice(startIndex);
 		}

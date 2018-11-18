@@ -112,7 +112,7 @@ compositingOBS.on('SwitchScenes', (data) => {
         });
     }
 });
-function cycleRecording(obs) {
+async function cycleRecording(obs) {
     return new Promise((resolve, reject) => {
         let rejected = false;
         const timeout = setTimeout(() => {

@@ -24,10 +24,10 @@ moment.updateLocale('en', {
 @customElement('ui-timeago')
 export default class UiTimeagoElement extends Polymer.Element {
 	@property({type: String, notify: true})
-	timeago: string = '';
+	timeago = '';
 
 	@property({type: String, observer: UiTimeagoElement.prototype._datetimeChanged})
-	datetime: string = '0000-00-00T00:00:00.000Z';
+	datetime = '0000-00-00T00:00:00.000Z';
 
 	private interval?: number;
 

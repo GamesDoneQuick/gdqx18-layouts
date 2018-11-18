@@ -7,7 +7,7 @@ import * as path from 'path';
 
 // Packages
 import equals = require('deep-equal');
-import * as osc from 'osc';
+import osc = require('osc');
 import * as CasparCG from 'casparcg-connection';
 import debounce = require('lodash.debounce');
 
@@ -71,11 +71,11 @@ export function play(filename: string) {
 	});
 }
 
-export function info() {
+export async function info() {
 	return connection.info(1);
 }
 
-export function loadbgAuto(filename: string) {
+export async function loadbgAuto(filename: string) {
 	return connection.loadbgAuto(1, undefined, filename, false, CasparCG.Enum.Transition.CUT);
 }
 
@@ -86,7 +86,7 @@ export async function clear(doResetState = true) {
 	}
 }
 
-export function stop() {
+export async function stop() {
 	return connection.stop(1).then(resetState);
 }
 
@@ -122,7 +122,7 @@ const emitForegroundChanged = debounce(() => {
 	oscEvents.emit('foregroundChanged', foregroundFileName);
 }, 250);
 
-udpPort.on('message', (message: osc.OscMessage) => {
+udpPort.on('message', message => {
 	const args = message.args as {[key: string]: any}[];
 
 	if (message.address === '/channel/1/stage/layer/0/file/frame') {
@@ -149,7 +149,7 @@ udpPort.on('message', (message: osc.OscMessage) => {
 	}
 });
 
-udpPort.on('error', (error: Error) => {
+udpPort.on('error', error => {
 	log.warn('[osc] Error:', error.stack);
 });
 

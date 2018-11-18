@@ -1,6 +1,6 @@
 import {Prize} from '../../../../src/types';
 import {Interview3AprizePlaylist} from '../../../../src/types/schemas/interview%3AprizePlaylist';
-import MapSortMixin from '../../../mixins/MapSortMixin';
+import MapSortMixin from '../../../mixins/map-sort-mixin';
 
 const {customElement, property} = Polymer.decorators;
 const allPrizesRep = nodecg.Replicant<Prize[]>('allPrizes');

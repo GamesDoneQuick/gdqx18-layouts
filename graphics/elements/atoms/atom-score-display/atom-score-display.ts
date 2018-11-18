@@ -22,7 +22,7 @@ export default class AtomScoreDisplayElement extends Polymer.Element {
 	 * seconds, and then the subsequent fade in will take another 0.33 seconds.
 	 */
 	@property({type: Number})
-	scoreFadeDuration: number = 0.33;
+	scoreFadeDuration = 0.33;
 
 	ready() {
 		super.ready();

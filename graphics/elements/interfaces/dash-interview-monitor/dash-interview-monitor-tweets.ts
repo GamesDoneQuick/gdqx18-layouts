@@ -1,5 +1,5 @@
 import {Tweet} from '../../../../src/types';
-import MapSortMixin from '../../../mixins/MapSortMixin';
+import MapSortMixin from '../../../mixins/map-sort-mixin';
 import {Interview3AquestionSortMap} from '../../../../src/types/schemas/interview%3AquestionSortMap';
 import DashInterviewMonitorTweetElement from './dash-interview-monitor-tweet';
 

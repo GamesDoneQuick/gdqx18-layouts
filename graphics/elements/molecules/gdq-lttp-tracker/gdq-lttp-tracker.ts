@@ -233,7 +233,7 @@ export default class GDQLttpTrackerElement extends Polymer.Element {
 		let src = itemOrPrize.name;
 		if (itemOrPrize.hasLevels) {
 			if (typeof itemOrPrize.level === 'number') {
-				src = String(src) + itemOrPrize.level;
+				src = String(src) + String(itemOrPrize.level);
 			} else {
 				return 'blank-pixel';
 			}

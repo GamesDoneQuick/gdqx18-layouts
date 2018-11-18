@@ -76,7 +76,7 @@ if (nodecg.bundleConfig.footpedal.enabled) {
     gamepad.init();
     usbDetect.startMonitoring();
     // Poll for events
-    setInterval(gamepad.processEvents, 16);
+    setInterval(gamepad.processEvents, 16); // tslint:disable-line no-string-based-set-interval
     // Update the list of gamepads when usb-detection sees a change.
     usbDetect.on('change', () => {
         nodecg.log.info('USB devices changed, checking for new gamepads.');

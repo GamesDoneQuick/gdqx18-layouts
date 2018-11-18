@@ -1,7 +1,7 @@
 import {BidElement} from './gdq-break-bids';
 import {TweenLite, TimelineLite, Sine, Power3, Power4} from 'gsap';
-import {typeAnim} from '../../../../shared/lib/TypeAnims';
-import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
+import {typeAnim} from '../../../../shared/lib/type-anims';
+import {createMaybeRandomTween} from '../../../../shared/lib/maybe-random';
 import {ParentBid} from '../../../../src/types/index';
 
 const {customElement, property} = Polymer.decorators;

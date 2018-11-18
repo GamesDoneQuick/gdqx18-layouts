@@ -6,7 +6,7 @@ export default class DashHostElement extends Polymer.MutableData(Polymer.Element
 	currentTime: string;
 
 	@property({type: Number})
-	selectedBidsAndPrizesTab: number = 0;
+	selectedBidsAndPrizesTab = 0;
 
 	connectedCallback() {
 		super.connectedCallback();

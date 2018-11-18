@@ -84,4 +84,4 @@ function createMaybeRandomTween({ target, propName, duration, ease = gsap_1.Line
     return gsap_1.TweenLite.to(proxy, duration, tweenProps);
 }
 exports.createMaybeRandomTween = createMaybeRandomTween;
-//# sourceMappingURL=MaybeRandom.js.map
+//# sourceMappingURL=maybe-random.js.map

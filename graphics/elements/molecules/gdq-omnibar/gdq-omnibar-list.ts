@@ -25,7 +25,7 @@ export default class GDQOmnibarListElement extends Polymer.Element {
 	 * How much space, in pixels, to put between items in the list.
 	 */
 	@property({type: Number, observer: GDQOmnibarListElement.prototype._marginSizeChanged})
-	marginSize: number = 6;
+	marginSize = 6;
 
 	enter(displayDuration: number, scrollHoldDuration: number) {
 		const listWidth = this.clientWidth;
@@ -76,9 +76,9 @@ export default class GDQOmnibarListElement extends Polymer.Element {
 
 			// Figure out how many items we need to exit before all items are visible.
 			let recoveredWidth = 0;
-			const leadingElementsToExit = [];
+			const leadingElementsToExit: GDQOmnibarListItemElement[] = [];
 			while (recoveredWidth < (contentOverflowWidth - MIN_CONTENT_SCROLL_DISTANCE)) {
-				const leadingElement: GDQOmnibarListItemElement = elements[leadingElementsToExit.length];
+				const leadingElement = elements[leadingElementsToExit.length];
 				leadingElementsToExit.push(leadingElement);
 				recoveredWidth += this.getPreciseElementWidth(leadingElement);
 			}
@@ -117,7 +117,7 @@ export default class GDQOmnibarListElement extends Polymer.Element {
 		return tl;
 	}
 
-	getListItems() {
+	getListItems(): GDQOmnibarListItemElement[] {
 		return Array.from((this.$.contentSlot as HTMLSlotElement).assignedElements()) as GDQOmnibarListItemElement[];
 	}
 

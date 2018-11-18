@@ -1,4 +1,4 @@
-import GDQBreakLoopMixin from '../../../mixins/GDQBreakLoopMixin';
+import GDQBreakLoopMixin from '../../../mixins/gdq-break-loop-mixin';
 import {TimelineLite, Power1, TweenLite} from 'gsap';
 import AtomGridmaskImageElement from '../../atoms/atom-gridmask-image/atom-gridmask-image';
 

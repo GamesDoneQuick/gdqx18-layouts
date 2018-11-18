@@ -1,4 +1,4 @@
-import MapSortMixin from '../../../mixins/MapSortMixin';
+import MapSortMixin from '../../../mixins/map-sort-mixin';
 import UiSortableListItemElement from './ui-sortable-list-item';
 
 const {customElement, property} = Polymer.decorators;
@@ -15,24 +15,25 @@ export default class UiSortableListElement extends MapSortMixin(Polymer.MutableD
 	replicantName: string;
 
 	@property({type: String})
-	replicantBundle: string = nodecg.bundleName;
+	replicantBundle = nodecg.bundleName;
 
 	@property({type: String})
-	itemIdField: string = '';
+	itemIdField = '';
 
 	@property({type: Array})
 	items: any[];
 
 	@property({type: Boolean, reflectToAttribute: true})
-	useSortMap: boolean = false;
+	useSortMap = false;
+
+	sort: Function;
+	_itemTemplateClass: (new() => TemplateInstanceBase);
 
 	@property({type: Array, computed: '_computeActualItems(items, _itemsReplicantValue)'})
 	protected _actualItems: any[];
 
-	sort: Function;
-	_itemTemplateClass: (new() => TemplateInstanceBase);
 	protected _itemsReplicantValue: any[];
-	private _templatized: boolean = false;
+	private _templatized = false;
 
 	static get observers() {
 		return [

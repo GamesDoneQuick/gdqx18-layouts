@@ -12,19 +12,19 @@ export default class AtomTextGreebleElement extends Polymer.Element {
 	 * The number of characters this greeble should be in length.
 	 */
 	@property({type: Number})
-	length: number = 15;
+	length = 15;
 
 	/**
 	 * How many times per second to update the text.
 	 */
 	@property({type: Number, observer: AtomTextGreebleElement.prototype._tickRateChanged})
-	tickRate: number = 5;
+	tickRate = 5;
 
 	/**
 	 * The set of characters from which to create the random strings.
 	 */
 	@property({type: String})
-	characters: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+	characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 	/**
 	 * The text currently being shown.

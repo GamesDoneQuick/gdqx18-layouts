@@ -5,7 +5,7 @@ import assign = require('lodash.assign');
 import * as clone from 'clone';
 import deepEqual = require('deep-equal');
 import {EventEmitter} from 'events';
-import * as RequestPromise from 'request-promise';
+import * as RequestPromise from 'request-promise-native';
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
@@ -41,7 +41,7 @@ update();
 updateInterval = setInterval(update, POLL_INTERVAL);
 
 // Dashboard can invoke manual updates
-nodecg.listenFor('updateSchedule', (_data: any, cb: ListenForCb) => {
+nodecg.listenFor('updateSchedule', (_data: unknown, cb: ListenForCb) => {
 	nodecg.log.info('Manual schedule update button pressed, invoking update...');
 	clearInterval(updateInterval);
 	updateInterval = setInterval(update, POLL_INTERVAL);
@@ -62,7 +62,7 @@ nodecg.listenFor('updateSchedule', (_data: any, cb: ListenForCb) => {
 	});
 });
 
-nodecg.listenFor('nextRun', (_data: any, cb: ListenForCb) => {
+nodecg.listenFor('nextRun', (_data: unknown, cb: ListenForCb) => {
 	if (!canSeekScheduleRep.value) {
 		nodecg.log.error('Attempted to seek to nextRun while seeking was forbidden.');
 		if (cb && !cb.handled) {
@@ -77,7 +77,7 @@ nodecg.listenFor('nextRun', (_data: any, cb: ListenForCb) => {
 	}
 });
 
-nodecg.listenFor('previousRun', (_data: any, cb: ListenForCb) => {
+nodecg.listenFor('previousRun', (_data: unknown, cb: ListenForCb) => {
 	if (!canSeekScheduleRep.value) {
 		nodecg.log.error('Attempted to seek to previousRun while seeking was forbidden.');
 		if (cb && !cb.handled) {
@@ -92,7 +92,15 @@ nodecg.listenFor('previousRun', (_data: any, cb: ListenForCb) => {
 	}
 });
 
-nodecg.listenFor('setCurrentRunByOrder', (order: number, cb: ListenForCb) => {
+nodecg.listenFor('setCurrentRunByOrder', (order: unknown, cb: ListenForCb) => {
+	if (typeof order !== 'number') {
+		nodecg.log.error('Attempted to seek to a non-numeric order:', order);
+		if (cb && !cb.handled) {
+			cb();
+		}
+		return;
+	}
+
 	if (!canSeekScheduleRep.value) {
 		nodecg.log.error('Attempted to seek to arbitrary run order %s while seeking was forbidden.', order);
 		if (cb && !cb.handled) {
@@ -165,7 +173,15 @@ nodecg.listenFor('modifyRun', (data: Partial<GDQTypes.Run>, cb: ListenForCb) => 
 	}
 });
 
-nodecg.listenFor('resetRun', (pk: number, cb: ListenForCb) => {
+nodecg.listenFor('resetRun', (pk: unknown, cb: ListenForCb) => {
+	if (typeof pk !== 'number') {
+		nodecg.log.error('Attempted to reset a run by a non-number pk:', pk);
+		if (cb && !cb.handled) {
+			cb();
+		}
+		return;
+	}
+
 	let runRep;
 	if (currentRunRep.value && currentRunRep.value.pk === pk) {
 		runRep = currentRunRep;
@@ -193,7 +209,7 @@ nodecg.listenFor('resetRun', (pk: number, cb: ListenForCb) => {
  * Gets the latest schedule info from the GDQ tracker.
  * @returns A a promise resolved with "true" if the schedule was updated, "false" if unchanged.
  */
-function update() {
+async function update() {
 	const runnersPromise = request({
 		uri: GDQUrls.runners,
 		json: true
@@ -216,9 +232,11 @@ function update() {
 			json: true
 		}) : Promise.resolve([]);
 
-	return Promise.all([
-		runnersPromise, runsPromise, adsPromise, interviewsPromise
-	]).then(([runnersJSON, runsJSON, adsJSON, interviewsJSON]) => {
+	try {
+		const [runnersJSON, runsJSON, adsJSON, interviewsJSON] = await Promise.all([
+			runnersPromise, runsPromise, adsPromise, interviewsPromise
+		]);
+
 		const formattedRunners: GDQTypes.Runner[] = [];
 		runnersJSON.forEach((obj: GDQTypes.TrackerObject) => {
 			formattedRunners[obj.pk] = {
@@ -298,7 +316,7 @@ function update() {
 		}
 
 		return true;
-	}).catch(error => {
+	} catch (error) {
 		const response = error.response;
 		const actualError = error.error || error;
 		if (response && response.statusCode === 403) {
@@ -309,7 +327,8 @@ function update() {
 		} else {
 			nodecg.log.error('[schedule] Failed to update:', actualError);
 		}
-	});
+		return false;
+	}
 }
 
 /**

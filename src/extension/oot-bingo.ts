@@ -1,7 +1,7 @@
 'use strict';
 
 // Packages
-import * as RequestPromise from 'request-promise';
+import * as RequestPromise from 'request-promise-native';
 import * as WebSocket from 'ws';
 import * as cheerio from 'cheerio';
 import equal = require('deep-equal');
@@ -226,7 +226,7 @@ async function joinRoom(
 	}
 }
 
-function createWebsocket(socketUrl: string, socketKey: string) {
+async function createWebsocket(socketUrl: string, socketKey: string) {
 	return new Promise((resolve, reject) => {
 		let settled = false;
 
@@ -241,7 +241,7 @@ function createWebsocket(socketUrl: string, socketKey: string) {
 			}
 		};
 
-		websocket.onmessage = (event: {data: WebSocket.Data; type: string; target: WebSocket}) => {
+		websocket.onmessage = event => {
 			let json;
 			try {
 				json = JSON.parse(event.data as string);
@@ -273,7 +273,7 @@ function createWebsocket(socketUrl: string, socketKey: string) {
 			}
 		};
 
-		websocket.onclose = (event: {wasClean: boolean; code: number; reason: string; target: WebSocket}) => {
+		websocket.onclose = event => {
 			socketRep.value.status = 'disconnected';
 			log.info(`Socket closed (code: ${event.code}, reason: ${event.reason})`);
 			destroyWebsocket();

@@ -37,13 +37,13 @@ export default class DashInterviewElement extends baseClass {
 	questionTimeRemaining: number;
 
 	@property({type: String})
-	_programSceneName: string = '';
+	_programSceneName = '';
 
 	@property({type: Boolean})
-	_markingTopQuestionAsDone: boolean = false;
+	_markingTopQuestionAsDone = false;
 
 	@property({type: Boolean})
-	_sendingTransitionCommand: boolean = false;
+	_sendingTransitionCommand = false;
 
 	@property({type: String})
 	_errorToastText: string;
@@ -137,11 +137,11 @@ export default class DashInterviewElement extends baseClass {
 		(this.$.interviewTransitionConfirmation as PaperDialogElement).open();
 	}
 
-	transitionToInterview() {
+	async transitionToInterview() {
 		return this.transitionToScene('Interview');
 	}
 
-	transitionToBreak() {
+	async transitionToBreak() {
 		return this.transitionToScene('Break');
 	}
 

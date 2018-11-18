@@ -14,21 +14,18 @@ type DIRECTION = 'up' | 'down' | 'left' | 'right';
 export default class AtomTronlinesElement extends Polymer.Element {
 	static BLOCK_SIZE = 50;
 	static WARNING_THRESHOLD = 500;
-	static getRandomUniform(min = 0, max = 1) {
-		return Random.real(min, max, true)(Random.engines.browserCrypto);
-	}
 
 	/**
 	 * The width of the canvas.
 	 */
 	@property({type: Number})
-	width: number = 450;
+	width = 450;
 
 	/**
 	 * The height of the canvas.
 	 */
 	@property({type: Number})
-	height: number = 300;
+	height = 300;
 
 	@property({type: Boolean, computed: '_computeInvertDimensions(direction)'})
 	_invertDimensions: boolean;
@@ -37,7 +34,7 @@ export default class AtomTronlinesElement extends Polymer.Element {
 	 * The solid background color of the canvas.
 	 */
 	@property({type: String, observer: AtomTronlinesElement.prototype._backgroundColorChanged})
-	backgroundColor: string = '#050505';
+	backgroundColor = '#050505';
 
 	/**
 	 * The direction of travel for the nodes.
@@ -50,74 +47,74 @@ export default class AtomTronlinesElement extends Polymer.Element {
 	 * The width and height of each node, in pixels.
 	 */
 	@property({type: Number})
-	nodeSize: number = 2;
+	nodeSize = 2;
 
 	/**
 	 * Nodes created per second.
 	 */
 	@property({type: Number, observer: AtomTronlinesElement.prototype._creationRateChanged})
-	creationRate: number = 20;
+	creationRate = 20;
 
 	/**
 	 * Expected distance traveled per frame, in pixels.
 	 * This is the "mu" value of the normal distribution.
 	 */
 	@property({type: Number})
-	speed: number = 1.5;
+	speed = 1.5;
 
 	/**
 	 * Variance in speed per node.
 	 * This is the "sigma" of the normal distribution.
 	 */
 	@property({type: Number})
-	speedRandomness: number = 0.25;
+	speedRandomness = 0.25;
 
 	/**
 	 * Expected distance tail length, in pixels.
 	 * This is the "mu" value of the normal distribution.
 	 */
 	@property({type: Number})
-	tailLength: number = 200;
+	tailLength = 200;
 
 	/**
 	 * Variance in tail length per node.
 	 * This is the "sigma" of the normal distribution.
 	 */
 	@property({type: Number})
-	tailLengthRandomness: number = 5;
+	tailLengthRandomness = 5;
 
 	/**
 	 * The opacity of each node at the start of its path.
 	 */
 	@property({type: Number})
-	opacityStart: number = 0.5;
+	opacityStart = 0.5;
 
 	/**
 	 * The opacity of each node at the end of its path.
 	 */
 	@property({type: Number})
-	opacityEnd: number = 0.2;
+	opacityEnd = 0.2;
 
 	/**
 	 * The color of the head of each node.
 	 */
 	@property({type: String})
-	nodeColor: string = '#6082d6';
+	nodeColor = '#6082d6';
 
 	/**
 	 * The starting color of the tail of each node.
 	 */
 	@property({type: String})
-	tailStartColor: string = '#02a6ff';
+	tailStartColor = '#02a6ff';
 
 	/**
 	 * The ending color of the tail of each node.
 	 */
 	@property({type: String})
-	tailEndColor: string = '#0079ff';
+	tailEndColor = '#0079ff';
 
 	@property({type: Boolean, reflectToAttribute: true})
-	debug: boolean = false;
+	debug = false;
 
 	/**
 	 * An array containing all nodes currently being drawn to the stage.
@@ -139,6 +136,10 @@ export default class AtomTronlinesElement extends Polymer.Element {
 	private bgRectCommand: any;
 	private stage: createjs.Stage;
 	private _creationInterval?: number;
+
+	static getRandomUniform(min = 0, max = 1) {
+		return Random.real(min, max, true)(Random.engines.browserCrypto);
+	}
 
 	ready() {
 		super.ready();

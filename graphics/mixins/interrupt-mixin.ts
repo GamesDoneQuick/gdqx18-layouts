@@ -25,7 +25,7 @@ const EMPTY_OBJ = {};
  * @mixinFunction
  * @polymer
  */
-export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
+export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => { // tslint:disable-line:no-unnecessary-type-annotation
 	/**
 	 * @mixinClass
 	 * @polymer
@@ -47,7 +47,7 @@ export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
 		 * How long, in seconds, to hold items for after they have finished entering.
 		 */
 		@property({type: Number})
-		itemDisplayDuration: number = 9;
+		itemDisplayDuration = 9;
 
 		/**
 		 * If true, it means that we're currently showing an item,
@@ -55,7 +55,7 @@ export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
 		 * without performing a full exit/enter cycle again.
 		 */
 		@property({type: Boolean, notify: true, observer: InterruptMixin.prototype._canExtendChanged, readOnly: true})
-		canExtend: boolean = false;
+		canExtend = false;
 
 		abstract _createEntranceAnim(item: any): TimelineLite;
 		abstract _createChangeAnim(item: any): TimelineLite;

@@ -1,5 +1,5 @@
 import {TimelineLite, Sine, SlowMo} from 'gsap';
-import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
+import {createMaybeRandomTween} from '../../../../shared/lib/maybe-random';
 
 const {customElement} = Polymer.decorators;
 

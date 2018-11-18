@@ -70,4 +70,4 @@ export declare function getMaybeRandomNumber({ probability, normalValue, minValu
  * });
  */
 export declare function createMaybeRandomTween({ target, propName, duration, ease, delay, start, end, onUpdate }: MaybeRandomTweenParams): TweenLite;
-//# sourceMappingURL=MaybeRandom.d.ts.map
+//# sourceMappingURL=maybe-random.d.ts.map

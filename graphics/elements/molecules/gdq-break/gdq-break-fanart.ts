@@ -1,8 +1,8 @@
 import {TimelineLite, Linear, Sine, Power2} from 'gsap';
-import InterruptMixin, {IInterruptMixin} from '../../../mixins/InterruptMixin';
+import InterruptMixin, {IInterruptMixin} from '../../../mixins/interrupt-mixin';
 import {Tweet} from '../../../../src/types/Twitter';
 import AtomGridmaskImageElement from '../../atoms/atom-gridmask-image/atom-gridmask-image';
-import {typeAnim} from '../../../../shared/lib/TypeAnims';
+import {typeAnim} from '../../../../shared/lib/type-anims';
 import GDQTweetElement from '../gdq-tweet/gdq-tweet';
 import * as DrawSVGPlugin from '../../../../shared/lib/vendor/DrawSVGPlugin';
 
@@ -18,7 +18,7 @@ const SVG = ((window as any).svgjs || (window as any).SVG) as svgjs.Library;
 @customElement('gdq-break-fanart')
 export default class GDQBreakFanartElement extends InterruptMixin(Polymer.Element) {
 	@property({type: Number})
-	backgroundOpacity: number = 0.25;
+	backgroundOpacity = 0.25;
 
 	_bgRect: svgjs.Rect;
 

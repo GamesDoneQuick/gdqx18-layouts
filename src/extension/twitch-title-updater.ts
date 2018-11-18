@@ -1,5 +1,5 @@
 // Packages
-import * as request from 'request-promise';
+import * as request from 'request-promise-native';
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';

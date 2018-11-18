@@ -8,10 +8,10 @@ const currentRun = nodecg.Replicant<Run>('currentRun');
 @customElement('gdq-runinfo')
 export default class GDQRuninfoElement extends Polymer.Element {
 	@property({type: Number})
-	maxNameSize: number = 45;
+	maxNameSize = 45;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	forceSingleLineName: boolean = false;
+	forceSingleLineName = false;
 
 	@property({type: String})
 	estimate: string;
@@ -26,9 +26,9 @@ export default class GDQRuninfoElement extends Polymer.Element {
 	category: string;
 
 	@property({type: String})
-	name: string = '?';
+	name = '?';
 
-	private initialized: boolean = false;
+	private initialized = false;
 
 	ready() {
 		super.ready();

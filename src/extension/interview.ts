@@ -7,7 +7,7 @@ import * as firebase from 'firebase-admin';
 import * as nodecgApiContext from './util/nodecg-api-context';
 import * as TimeUtils from './lib/time';
 import * as GDQTypes from '../types';
-import {ListenForCb} from '../types/nodecg';
+import {ListenForCb, Replicant} from '../types/nodecg';
 import {Interview3AthrowIncoming} from '../types/schemas/interview%3AthrowIncoming';
 import {Interview3AquestionSortMap} from '../types/schemas/interview%3AquestionSortMap';
 import {Interview3AquestionTweets} from '../types/schemas/interview%3AquestionTweets';
@@ -197,7 +197,7 @@ nodecg.listenFor('interview:end', () => {
 	database.ref('/active_tweet_id').set(0);
 });
 
-nodecg.listenFor('interview:addPrizeToPlaylist', (prizeId: number) => {
+nodecg.listenFor('interview:addPrizeToPlaylist', (prizeId: unknown) => {
 	if (typeof prizeId !== 'number' || prizeId < 0) {
 		return;
 	}
@@ -213,7 +213,7 @@ nodecg.listenFor('interview:addPrizeToPlaylist', (prizeId: number) => {
 	});
 });
 
-nodecg.listenFor('interview:removePrizeFromPlaylist', (prizeId: number) => {
+nodecg.listenFor('interview:removePrizeFromPlaylist', (prizeId: unknown) => {
 	if (typeof prizeId !== 'number' || prizeId < 0) {
 		return;
 	}
@@ -226,7 +226,7 @@ nodecg.listenFor('interview:removePrizeFromPlaylist', (prizeId: number) => {
 	prizePlaylist.value.splice(existingIndex, 1);
 });
 
-nodecg.listenFor('interview:markPrizeAsDone', (prizeId: number) => {
+nodecg.listenFor('interview:markPrizeAsDone', (prizeId: unknown) => {
 	if (typeof prizeId !== 'number' || prizeId < 0) {
 		return;
 	}
@@ -237,7 +237,7 @@ nodecg.listenFor('interview:markPrizeAsDone', (prizeId: number) => {
 	}
 });
 
-nodecg.listenFor('interview:markPrizeAsNotDone', (prizeId: number) => {
+nodecg.listenFor('interview:markPrizeAsNotDone', (prizeId: unknown) => {
 	if (typeof prizeId !== 'number' || prizeId < 0) {
 		return;
 	}
@@ -327,7 +327,7 @@ function updateQuestionSortMap() {
  * @param duration - The desired duration of the pulse in seconds.
  * @returns A promise which resolves when the pulse has completed.
  */
-function pulse(showingRep: any, pulseTimeRemainingRep: any, duration: number) {
+async function pulse(showingRep: Replicant<boolean>, pulseTimeRemainingRep: Replicant<number>, duration: number) {
 	return new Promise(resolve => {
 		// Don't stack pulses
 		if (showingRep.value) {

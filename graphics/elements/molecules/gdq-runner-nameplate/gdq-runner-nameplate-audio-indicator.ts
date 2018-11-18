@@ -12,13 +12,13 @@ export default class GDQNameplateAudioIndicatorElement extends Polymer.Element {
 	showing: boolean;
 
 	@property({type: String, reflectToAttribute: true})
-	vertPos: string = 'top';
+	vertPos = 'top';
 
 	@property({type: String, reflectToAttribute: true})
-	horizPos: string = 'left';
+	horizPos = 'left';
 
 	@property({type: Number})
-	animationDuration: number = 0.25;
+	animationDuration = 0.25;
 
 	@property({type: Array})
 	private readonly _maskProxy = [-10, -10, 0];

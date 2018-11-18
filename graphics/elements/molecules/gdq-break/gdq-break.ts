@@ -1,5 +1,5 @@
 import {TimelineLite, TimelineMax} from 'gsap';
-import {ICompanionElement, IInterruptMixin} from '../../../mixins/InterruptMixin';
+import {ICompanionElement, IInterruptMixin} from '../../../mixins/interrupt-mixin';
 import PQueue from '../../../../shared/lib/vendor/p-queue';
 
 const {customElement, property} = Polymer.decorators;
@@ -56,12 +56,14 @@ export default class GDQBreakElement extends Polymer.Element {
 						queue = [];
 					}, {once: true, passive: true});
 					return this._promisifyTimeline(interruptElement.playItem(payload));
+				}).catch(error => {
+					nodecg.log.error(error);
 				});
 			}
 		});
 	}
 
-	_promisifyTimeline(tl: TimelineLite | TimelineMax) {
+	async _promisifyTimeline(tl: TimelineLite | TimelineMax) {
 		return new Promise(resolve => {
 			tl.call(resolve, undefined, null, '+=0.03');
 		});

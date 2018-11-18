@@ -11,7 +11,7 @@ export default class GDQOmnibarMilestoneTrackerPointElement extends Polymer.Elem
 	amount: number;
 
 	@property({type: Boolean})
-	dropTrailingZeroes: boolean = false;
+	dropTrailingZeroes = false;
 
 	_alignChanged(newVal: Alignment) {
 		const bodyElem = this.$.body as HTMLDivElement;

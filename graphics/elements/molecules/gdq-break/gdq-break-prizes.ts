@@ -1,7 +1,7 @@
-import GDQBreakLoopMixin from '../../../mixins/GDQBreakLoopMixin';
+import GDQBreakLoopMixin from '../../../mixins/gdq-break-loop-mixin';
 import {Prize} from '../../../../src/types/index';
 import {TimelineLite, Power2, Sine, TweenLite} from 'gsap';
-import {typeAnim} from '../../../../shared/lib/TypeAnims';
+import {typeAnim} from '../../../../shared/lib/type-anims';
 import AtomGridmaskImageElement from '../../atoms/atom-gridmask-image/atom-gridmask-image';
 import {preloadImage} from '../../../../shared/lib/gdq-utils';
 

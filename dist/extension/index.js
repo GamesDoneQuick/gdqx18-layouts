@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // Packages
 const cheerio = require("cheerio");
-const RequestPromise = require("request-promise");
+const RequestPromise = require("request-promise-native");
 // Ours
 const nodecgApiContext = require("./util/nodecg-api-context");
 const request = RequestPromise.defaults({ jar: true }); // <= Automatically saves and re-uses cookies.
@@ -99,7 +99,7 @@ async function init() {
 // Fetch the login page, and run the response body through cheerio
 // so we can extract the CSRF token from the hidden input field.
 // Then, POST with our username, password, and the csrfmiddlewaretoken.
-function loginToTracker() {
+async function loginToTracker() {
     const nodecg = nodecgApiContext.get();
     const loginLog = new nodecg.Logger(`${nodecg.bundleName}:tracker`);
     if (isFirstLogin) {

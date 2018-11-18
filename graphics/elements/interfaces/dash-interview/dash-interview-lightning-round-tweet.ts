@@ -28,7 +28,7 @@ export default class DashInterviewLightningRoundTweetElement extends Polymer.Mut
 	@property({type: Array})
 	_questionSortMap: Interview3AquestionSortMap;
 
-	private _initialized: boolean = false;
+	private _initialized = false;
 
 	connectedCallback() {
 		super.connectedCallback();

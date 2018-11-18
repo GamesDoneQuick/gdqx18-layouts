@@ -9,19 +9,19 @@ const timeSince = nodecg.Replicant<TimeStruct>('twitch:timeSinceLastAd');
 @customElement('dash-host-twitch-ads')
 export default class DashHostTwitchAdsElement extends Polymer.Element {
 	@property({type: Boolean})
-	canPlay: boolean = false;
+	canPlay = false;
 
 	@property({type: String})
-	cantPlayReason: string = '';
+	cantPlayReason = '';
 
 	@property({type: String})
-	timeLeft: string = '8:88';
+	timeLeft = '8:88';
 
 	@property({type: String})
-	timeSince: string = '8:88:88';
+	timeSince = '8:88:88';
 
 	@property({type: Boolean, reflectToAttribute: true})
-	hideControls: boolean = false;
+	hideControls = false;
 
 	ready() {
 		super.ready();

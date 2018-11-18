@@ -1,6 +1,6 @@
 import {ParentBid} from '../../../../src/types';
 import {TweenLite, TimelineLite, Sine, Linear, Power2, Power4} from 'gsap';
-import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
+import {createMaybeRandomTween} from '../../../../shared/lib/maybe-random';
 import AtomArrowBlockElement from '../../atoms/atom-arrow-block/atom-arrow-block';
 import AtomChevronElement from '../../atoms/atom-chevron/atom-chevron';
 import AtomInnerGlowTextElement from '../../atoms/atom-inner-glow-text/atom-inner-glow-text';

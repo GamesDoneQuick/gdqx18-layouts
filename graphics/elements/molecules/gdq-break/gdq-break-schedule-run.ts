@@ -14,10 +14,10 @@ export default class GDQBreakScheduleRunElement extends Polymer.MutableData(Poly
 	run: Run;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	upNext: boolean = false;
+	upNext = false;
 
 	@property({type: Number})
-	_currentRunnerIndex: number = 0;
+	_currentRunnerIndex = 0;
 
 	_runnerTimeline: TimelineMax | null;
 

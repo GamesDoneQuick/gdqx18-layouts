@@ -1,5 +1,5 @@
 import {CustomEase} from '../../../../shared/lib/vendor/CustomEase';
-import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
+import {createMaybeRandomTween} from '../../../../shared/lib/maybe-random';
 import {TimelineLite, Sine, TweenLite, Linear, Power4} from 'gsap';
 import {ChildBid} from '../../../../src/types';
 import AtomChevronElement from '../../atoms/atom-chevron/atom-chevron';

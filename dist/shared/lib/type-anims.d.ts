@@ -26,4 +26,4 @@ export declare function typeAnim(element: HTMLElement, { splitType, typeInterval
  * @returns A GSAP TimelineLite instance.
  */
 export declare function untypeAnim(element: HTMLElement, typeInterval?: number): TimelineLite;
-//# sourceMappingURL=TypeAnims.d.ts.map
+//# sourceMappingURL=type-anims.d.ts.map

@@ -5,7 +5,7 @@ const assign = require("lodash.assign");
 const clone = require("clone");
 const deepEqual = require("deep-equal");
 const events_1 = require("events");
-const RequestPromise = require("request-promise");
+const RequestPromise = require("request-promise-native");
 // Ours
 const nodecgApiContext = require("./util/nodecg-api-context");
 const timer = require("./timekeeping");
@@ -79,6 +79,13 @@ nodecg.listenFor('previousRun', (_data, cb) => {
     }
 });
 nodecg.listenFor('setCurrentRunByOrder', (order, cb) => {
+    if (typeof order !== 'number') {
+        nodecg.log.error('Attempted to seek to a non-numeric order:', order);
+        if (cb && !cb.handled) {
+            cb();
+        }
+        return;
+    }
     if (!canSeekScheduleRep.value) {
         nodecg.log.error('Attempted to seek to arbitrary run order %s while seeking was forbidden.', order);
         if (cb && !cb.handled) {
@@ -146,6 +153,13 @@ nodecg.listenFor('modifyRun', (data, cb) => {
     }
 });
 nodecg.listenFor('resetRun', (pk, cb) => {
+    if (typeof pk !== 'number') {
+        nodecg.log.error('Attempted to reset a run by a non-number pk:', pk);
+        if (cb && !cb.handled) {
+            cb();
+        }
+        return;
+    }
     let runRep;
     if (currentRunRep.value && currentRunRep.value.pk === pk) {
         runRep = currentRunRep;
@@ -168,7 +182,7 @@ nodecg.listenFor('resetRun', (pk, cb) => {
  * Gets the latest schedule info from the GDQ tracker.
  * @returns A a promise resolved with "true" if the schedule was updated, "false" if unchanged.
  */
-function update() {
+async function update() {
     const runnersPromise = request({
         uri: urls_1.GDQUrls.runners,
         json: true
@@ -187,9 +201,10 @@ function update() {
             uri: urls_1.GDQUrls.interviews,
             json: true
         }) : Promise.resolve([]);
-    return Promise.all([
-        runnersPromise, runsPromise, adsPromise, interviewsPromise
-    ]).then(([runnersJSON, runsJSON, adsJSON, interviewsJSON]) => {
+    try {
+        const [runnersJSON, runsJSON, adsJSON, interviewsJSON] = await Promise.all([
+            runnersPromise, runsPromise, adsPromise, interviewsPromise
+        ]);
         const formattedRunners = [];
         runnersJSON.forEach((obj) => {
             formattedRunners[obj.pk] = {
@@ -264,7 +279,8 @@ function update() {
             }
         }
         return true;
-    }).catch(error => {
+    }
+    catch (error) {
         const response = error.response;
         const actualError = error.error || error;
         if (response && response.statusCode === 403) {
@@ -277,7 +293,8 @@ function update() {
         else {
             nodecg.log.error('[schedule] Failed to update:', actualError);
         }
-    });
+        return false;
+    }
 }
 /**
  * Seeks to the previous run in the schedule, updating currentRun and nextRun accordingly.

@@ -14,7 +14,7 @@ const currentRun = nodecg.Replicant<Run>('currentRun');
 @customElement('dash-host-currentrun')
 export default class DashHostCurrentrunElement extends Polymer.MutableData(Polymer.Element) {
 	@property({type: Boolean, reflectToAttribute: true})
-	checklistComplete: boolean = false;
+	checklistComplete = false;
 
 	@property({type: String})
 	stopwatchTime: string;

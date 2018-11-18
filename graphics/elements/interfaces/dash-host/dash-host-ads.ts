@@ -13,7 +13,7 @@ export default class DashHostAdsElement extends Polymer.MutableData(Polymer.Elem
 	content: IntermissionContentItem[];
 
 	@property({type: Boolean})
-	private _connectedToNodeCG: boolean = true;
+	private _connectedToNodeCG = true;
 	private _adBreakIdBeingConfirmed: number;
 
 	ready() {

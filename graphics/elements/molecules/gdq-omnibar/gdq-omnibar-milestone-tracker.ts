@@ -1,6 +1,6 @@
 import {TweenLite, TimelineLite, Power2, Power1} from 'gsap';
 import GDQOmnibarMilestoneTrackerPointElement from './gdq-omnibar-milestone-tracker-point';
-import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
+import {createMaybeRandomTween} from '../../../../shared/lib/maybe-random';
 
 const {customElement, property} = Polymer.decorators;
 

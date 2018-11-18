@@ -1,6 +1,6 @@
 import {TimelineLite, Power4} from 'gsap';
 import {BidElement} from './gdq-break-bids';
-import {createMaybeRandomTween} from '../../../../shared/lib/MaybeRandom';
+import {createMaybeRandomTween} from '../../../../shared/lib/maybe-random';
 import {ParentBid} from '../../../../src/types/index';
 import GDQBreakBidManyOptionElement from './gdq-break-bid-many-option';
 

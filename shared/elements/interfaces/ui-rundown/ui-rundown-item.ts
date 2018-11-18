@@ -7,14 +7,14 @@ export default class UiRundownItemElement extends Polymer.Element {
 	@property({type: Object, observer: UiRundownItemElement.prototype._itemChanged})
 	item: ScheduleItem;
 
-	@property({type: Object, reflectToAttribute: true})
-	protected itemType: 'run' | 'adBreak' | 'interview' | '';
-
 	@property({type: Boolean, reflectToAttribute: true})
 	current: boolean;
 
 	@property({type: String})
 	name: string;
+
+	@property({type: Object, reflectToAttribute: true})
+	protected itemType: 'run' | 'adBreak' | 'interview' | '';
 
 	_itemChanged(item: ScheduleItem) {
 		this.itemType = (item ? item.type : '');

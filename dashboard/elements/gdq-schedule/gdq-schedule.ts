@@ -246,8 +246,7 @@ export default class GDQScheduleElement extends Polymer.Element {
 	}
 
 	_typeaheadKeyup(e: KeyboardEvent) {
-		// Enter key
-		if (e.which === 13 && (this.$.typeahead as any).inputValue) {
+		if (e.key === 'Enter' && (this.$.typeahead as any).inputValue) {
 			this.takeTypeahead();
 		}
 	}

@@ -84,4 +84,4 @@ function untypeAnim(element, typeInterval = 0.03) {
     return tl;
 }
 exports.untypeAnim = untypeAnim;
-//# sourceMappingURL=TypeAnims.js.map
+//# sourceMappingURL=type-anims.js.map

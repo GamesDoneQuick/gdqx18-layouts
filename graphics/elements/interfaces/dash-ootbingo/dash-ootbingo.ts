@@ -17,7 +17,7 @@ export default class DashOotbingoElement extends Polymer.MutableData(Polymer.Ele
 	@property({type: String, reflectToAttribute: true, computed: '_computeStatus(socket)'})
 	status: string;
 
-	protected _submitting: boolean = false;
+	protected _submitting = false;
 	private _$lineSelectors: PaperButtonElement[];
 
 	ready() {

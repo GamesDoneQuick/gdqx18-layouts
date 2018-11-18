@@ -19,7 +19,7 @@ export default class DashInterviewPrizesElement extends Polymer.MutableData(Poly
 	prizePlaylist: Interview3AprizePlaylist;
 
 	@property({type: String})
-	searchString: string = '';
+	searchString = '';
 
 	ready() {
 		super.ready();

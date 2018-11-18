@@ -20,7 +20,7 @@ const scheduleRep = nodecg.Replicant<ScheduleItem[]>('schedule');
 @customElement('dash-interview-lowerthird')
 export default class DashInterviewLowerthirdElement extends Polymer.Element {
 	@property({type: Boolean, notify: true})
-	lowerthirdShowing: boolean = false;
+	lowerthirdShowing = false;
 
 	@property({type: Boolean})
 	questionShowing: boolean;

@@ -3,7 +3,7 @@ const {customElement, property, observe} = Polymer.decorators;
 @customElement('time-input')
 export default class TimeInputElement extends Polymer.mixinBehaviors([Polymer.IronValidatableBehavior], Polymer.Element) {
 	@property({type: Boolean, reflectToAttribute: true})
-	invalid: boolean = false;
+	invalid = false;
 
 	@property({type: String, notify: true})
 	value: string;

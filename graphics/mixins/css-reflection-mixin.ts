@@ -2,7 +2,7 @@
  * @mixinFunction
  * @polymer
  */
-export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
+export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => { // tslint:disable-line:no-unnecessary-type-annotation
 	/**
 	 * @mixinClass
 	 * @polymer

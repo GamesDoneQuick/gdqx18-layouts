@@ -3,8 +3,7 @@
 // Packages
 import equal = require('deep-equal');
 import * as numeral from 'numeral';
-import * as request from 'request-promise';
-import * as BB from 'bluebird';
+import * as request from 'request-promise-native';
 
 // Ours
 import * as nodecgApiContext from './util/nodecg-api-context';
@@ -24,7 +23,7 @@ update();
 /**
  * Grabs the latest bids from the Tracker.
  */
-function update() {
+async function update() {
 	nodecg.sendMessage('bids:updating');
 
 	const currentPromise = request({
@@ -37,9 +36,10 @@ function update() {
 		json: true
 	});
 
-	return BB.all([
-		currentPromise, allPromise
-	]).then(([currentBidsJSON, allBidsJSON]) => {
+	try {
+		const [currentBidsJSON, allBidsJSON] = await Promise.all([
+			currentPromise, allPromise
+		]);
 		const currentBids = processRawBids(currentBidsJSON);
 		const allBids = processRawBids(allBidsJSON);
 
@@ -63,12 +63,12 @@ function update() {
 		if (!equal(currentBidsRep.value, currentBids)) {
 			currentBidsRep.value = currentBids;
 		}
-	}).catch(err => {
-		nodecg.log.error('Error updating bids:', err);
-	}).finally(() => {
+	} catch (error) {
+		nodecg.log.error('Error updating bids:', error);
+	} finally {
 		nodecg.sendMessage('bids:updated');
 		setTimeout(update, POLL_INTERVAL);
-	});
+	}
 }
 
 function processRawBids(bids: TrackerObject[]) {

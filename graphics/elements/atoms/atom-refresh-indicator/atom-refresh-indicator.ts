@@ -7,10 +7,10 @@ const {customElement, property} = Polymer.decorators;
 @customElement('atom-refresh-indicator')
 export default class AtomRefreshIndicatorElement extends Polymer.Element {
 	@property({type: Boolean, reflectToAttribute: true, observer: AtomRefreshIndicatorElement.prototype._indeterminateChanged})
-	indeterminate: boolean = true;
+	indeterminate = true;
 
 	@property({type: String})
-	timeUntilRefresh: string = ':??';
+	timeUntilRefresh = ':??';
 
 	private _countdownInterval?: number;
 

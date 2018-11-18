@@ -86,7 +86,7 @@ export default class GDQOmnibarContentLabelElement extends Polymer.Element {
 		return labelHtml.replace(/\\n/g, '<br/>');
 	}
 
-	calcBodyWidth(labelHtml: string = '') {
+	calcBodyWidth(labelHtml = ''): number {
 		if (memoizedYardstickWidths.has(labelHtml)) {
 			return memoizedYardstickWidths.get(labelHtml);
 		}
@@ -101,7 +101,7 @@ export default class GDQOmnibarContentLabelElement extends Polymer.Element {
 		return width;
 	}
 
-	calcBodyTweenDuration(labelHtml?: string) {
+	calcBodyTweenDuration(labelHtml?: string): number {
 		if (memoizedBodyTweenDurations.has(labelHtml)) {
 			return memoizedBodyTweenDurations.get(labelHtml);
 		}

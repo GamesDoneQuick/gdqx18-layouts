@@ -1,7 +1,7 @@
 'use strict';
 
 // Packages
-import * as request from 'request-promise';
+import * as request from 'request-promise-native';
 
 // Ours
 import {formatDollars} from './util';

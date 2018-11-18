@@ -1,4 +1,4 @@
-import CSSReflectionMixin from '../../../mixins/CSSReflectionMixin';
+import CSSReflectionMixin from '../../../mixins/css-reflection-mixin';
 
 const {customElement, property} = Polymer.decorators;
 const SVG = (window as any).SVG as svgjs.Library;
@@ -9,15 +9,15 @@ const SVG = (window as any).SVG as svgjs.Library;
  */
 @customElement('atom-arrow-block')
 export default class AtomArrowBlockElement extends CSSReflectionMixin(Polymer.Element) {
+	static DEFAULT_STROKE_SIZE = 1;
+	static DEFAULT_CHEVRON_WIDTH = 17;
+	static DEFAULT_SHADOW_SIZE = 12;
+
 	@property({type: Boolean})
 	glow = true;
 
 	svgDoc: svgjs.Doc;
 	arrowBlock: svgjs.Element;
-
-	static DEFAULT_STROKE_SIZE = 1;
-	static DEFAULT_CHEVRON_WIDTH = 17;
-	static DEFAULT_SHADOW_SIZE = 12;
 
 	/**
 	 * Creates a new arrow block shape as an SVG.js Polygon.

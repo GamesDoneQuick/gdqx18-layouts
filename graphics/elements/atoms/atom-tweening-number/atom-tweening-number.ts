@@ -32,20 +32,20 @@ export default class AtomTweeningNumberElement extends Polymer.Element {
 	displayValueTransform: DisplayValueTransform = defaultDisplayValueTransform;
 
 	@property({type: Number})
-	intervalLength: number = 1;
+	intervalLength = 1;
 
 	/**
 	 * How much time to add to the duration of the tween for
 	 * each "interval" in the value. (Default interval length is 1).
 	 */
 	@property({type: Number})
-	timePerValueInterval: number = 0.03;
+	timePerValueInterval = 0.03;
 
 	/**
 	 * The maximum duration, in seconds, that a single value tween can be.
 	 */
 	@property({type: Number})
-	maxDuration: number = 3;
+	maxDuration = 3;
 
 	/**
 	 * The ease to use when tweening between the old value and the new value.
@@ -57,20 +57,20 @@ export default class AtomTweeningNumberElement extends Polymer.Element {
 	 * If true, doesn't tween the first time value is set.
 	 */
 	@property({type: Boolean})
-	skipInitial: boolean = true;
+	skipInitial = true;
 
 	/**
 	 * The value displaying right now, this is what actually gets tweened.
 	 */
 	@property({type: Number})
-	_displayValue: number = 0;
+	_displayValue = 0;
 
 	/**
 	 * Whether or not we have done the first-time setup of the value, which simply sets
 	 * it with no tween.
 	 */
 	@property({type: Boolean})
-	_initialized: boolean = false;
+	_initialized = false;
 
 	_tween: TweenLite | null = null;
 

@@ -16,7 +16,7 @@ export interface IGDQBreakLoopMixin<ItemType> extends Polymer.Element {
  * @mixinFunction
  * @polymer
  */
-export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
+export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => { // tslint:disable-line:no-unnecessary-type-annotation
 	/**
 	 * @mixinClass
 	 * @polymer
@@ -33,16 +33,16 @@ export default Polymer.dedupingMixin((base: (new () => Polymer.Element)) => {
 		currentItem: ItemType | null;
 
 		@property({type: Boolean})
-		noAutoLoop: boolean = false;
+		noAutoLoop = false;
 
 		@property({type: Number})
-		maxNoMoreItemsRetries: number = Infinity;
+		maxNoMoreItemsRetries = Infinity;
 
 		@property({type: String})
 		itemIdField: keyof ItemType = 'id' as keyof ItemType;
 
 		@property({type: Number})
-		_noMoreItemsRetries: number = 0;
+		_noMoreItemsRetries = 0;
 
 		_loopRetryTimeout: number | undefined;
 		_currentLoopIterationTimeline?: TimelineLite;

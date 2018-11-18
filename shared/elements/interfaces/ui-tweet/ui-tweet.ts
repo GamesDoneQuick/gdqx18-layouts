@@ -14,7 +14,7 @@ export default class UiTweetElement extends Polymer.Element {
 	tweetUrl: string;
 
 	@property({type: Boolean, reflectToAttribute: true})
-	noAvatar: boolean = false;
+	noAvatar = false;
 
 	computeProfileUrl(tweet?: Tweet) {
 		if (!tweet || !tweet.user) {

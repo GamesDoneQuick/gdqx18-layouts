@@ -3,8 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Packages
 const equal = require("deep-equal");
 const numeral = require("numeral");
-const request = require("request-promise");
-const BB = require("bluebird");
+const request = require("request-promise-native");
 // Ours
 const nodecgApiContext = require("./util/nodecg-api-context");
 const urls_1 = require("./urls");
@@ -18,7 +17,7 @@ update();
 /**
  * Grabs the latest bids from the Tracker.
  */
-function update() {
+async function update() {
     nodecg.sendMessage('bids:updating');
     const currentPromise = request({
         uri: urls_1.GDQUrls.currentBids,
@@ -28,9 +27,10 @@ function update() {
         uri: urls_1.GDQUrls.allBids,
         json: true
     });
-    return BB.all([
-        currentPromise, allPromise
-    ]).then(([currentBidsJSON, allBidsJSON]) => {
+    try {
+        const [currentBidsJSON, allBidsJSON] = await Promise.all([
+            currentPromise, allPromise
+        ]);
         const currentBids = processRawBids(currentBidsJSON);
         const allBids = processRawBids(allBidsJSON);
         // Bits incentives are always marked as "hidden", so they will never show in "current".
@@ -50,12 +50,14 @@ function update() {
         if (!equal(currentBidsRep.value, currentBids)) {
             currentBidsRep.value = currentBids;
         }
-    }).catch(err => {
-        nodecg.log.error('Error updating bids:', err);
-    }).finally(() => {
+    }
+    catch (error) {
+        nodecg.log.error('Error updating bids:', error);
+    }
+    finally {
         nodecg.sendMessage('bids:updated');
         setTimeout(update, POLL_INTERVAL);
-    });
+    }
 }
 function processRawBids(bids) {
     // The response from the tracker is flat. This is okay for donation incentives, but it requires

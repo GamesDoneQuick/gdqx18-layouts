@@ -91,7 +91,7 @@ udpPort.on('raw', (buf: Buffer) => {
 	}
 });
 
-udpPort.on('error', (error: Error) => {
+udpPort.on('error', error => {
 	nodecg.log.warn('[osc] Error:', error.stack);
 });
 
