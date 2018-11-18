@@ -160,31 +160,40 @@
 		<script>
 			const currentRun = nodecg.Replicant('currentRun');
 
-			Polymer({
-				is: 'layout-app',
+			class StandardOne extends Polymer.Element {
+				static get is() {
+					return 'layout-app';
+				}
 
-				properties: {
-					numRunners: {
-						type: Number,
-						reflectToAttribute: true,
-						value: 1
+				static get properties() {
+					return {
+						numRunners: {
+							type: Number,
+							reflectToAttribute: true,
+							value: 1
+						}
 					}
-				},
+				}
 
-				ready() {
-					currentRun.on('change', newVal => {
-						if (!newVal) {
-							return;
-						}
+				connectedCallback() {
+					super.connectedCallback();
+					Polymer.RenderStatus.beforeNextRender(this, () => {
+						currentRun.on('change', newVal => {
+							if (!newVal) {
+								return;
+							}
 
-						if (newVal.runners.length !== 3 && newVal.runners.length <= 4) {
-							this.numRunners = newVal.runners.length;
-							this.$.sponsors.resize();
-							this.$.tweet.resize();
-						}
+							if (newVal.runners.length !== 3 && newVal.runners.length <= 4) {
+								this.numRunners = newVal.runners.length;
+								this.$.sponsors.resize();
+								this.$.tweet.resize();
+							}
+						});
 					});
 				}
-			});
+			}
+
+			customElements.define(StandardOne.is, StandardOne);
 		</script>
 	</dom-module>
 

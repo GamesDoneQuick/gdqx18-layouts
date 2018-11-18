@@ -47,14 +47,10 @@ export default class AtomGridmaskImageElement extends Polymer.Element {
 		bgRect: svgjs.Rect;
 	};
 
-	ready() {
-		super.ready();
-		this._initSVG();
-	}
-
 	connectedCallback() {
 		super.connectedCallback();
 		Polymer.RenderStatus.beforeNextRender(this, () => {
+			this._initSVG();
 			TweenLite.set(this.$svg.imageMaskCells, {opacity: 0});
 		});
 	}
