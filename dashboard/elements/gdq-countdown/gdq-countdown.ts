@@ -8,28 +8,30 @@ const countdown = nodecg.Replicant<Countdown>('countdown');
 
 @customElement('gdq-countdown')
 export default class GDQCountdownElement extends Polymer.Element {
-	ready() {
-		super.ready();
+	connectedCallback() {
+		super.connectedCallback();
 
-		countdown.on('change', newVal => {
-			if (newVal) {
-				const timeInput = this.$.timeInput as TimeInputElement;
-				timeInput.setMS(newVal.minutes, newVal.seconds);
-			}
-		});
+		Polymer.RenderStatus.beforeNextRender(this, () => {
+			countdown.on('change', newVal => {
+				if (newVal) {
+					const timeInput = this.$.timeInput as TimeInputElement;
+					timeInput.setMS(newVal.minutes, newVal.seconds);
+				}
+			});
 
-		countdownRunning.on('change', newVal => {
-			if (newVal) {
-				this.$.countdownContainer.setAttribute('disabled', 'true');
-				this.$.start.setAttribute('disabled-running', 'true');
-				this.$.stop.removeAttribute('disabled');
-			} else {
-				this.$.countdownContainer.removeAttribute('disabled');
-				this.$.start.removeAttribute('disabled-running');
-				this.$.stop.setAttribute('disabled', 'true');
-			}
+			countdownRunning.on('change', newVal => {
+				if (newVal) {
+					this.$.countdownContainer.setAttribute('disabled', 'true');
+					this.$.start.setAttribute('disabled-running', 'true');
+					this.$.stop.removeAttribute('disabled');
+				} else {
+					this.$.countdownContainer.removeAttribute('disabled');
+					this.$.start.removeAttribute('disabled-running');
+					this.$.stop.setAttribute('disabled', 'true');
+				}
 
-			this.checkStartButton();
+				this.checkStartButton();
+			});
 		});
 	}
 

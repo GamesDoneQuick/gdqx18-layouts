@@ -32,6 +32,7 @@ export default class UiTimeagoElement extends Polymer.Element {
 	private interval?: number;
 
 	ready() {
+		super.ready();
 		this.restartInterval();
 	}
 
