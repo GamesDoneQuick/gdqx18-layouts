@@ -157,6 +157,9 @@ Our ATEM operators sometimes use [`atem-compositor`](https://github.com/Tipofthe
 gdqx18-layouts is provided under the Apache v2 license, which is available to read in the [LICENSE](LICENSE) file.
 
 ## Credits
-Designed & developed by [Support Class](https://supportclass.net/)
+Designed & developed by [Support Class](https://supportclass.net/):
  - [Alex "Lange" Van Camp](https://twitter.com/VanCamp/)  
  - [Chris Hanel](https://twitter.com/ChrisHanel)
+
+Additional help from:
+ - [Keiichiro "Hoishin" Amemiya](https://github.com/Hoishin)
