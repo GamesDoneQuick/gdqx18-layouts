@@ -26,45 +26,43 @@ export default class GDQScheduleElement extends Polymer.Element {
 	@property({type: Boolean})
 	_pendingPreviousRunMessageResponse: boolean;
 
-	ready() {
-		super.ready();
-
-		canSeekSchedule.on('change', () => {
-			this._checkButtons();
-		});
-
-		schedule.on('change', newVal => {
-			if (!newVal) {
-				return;
-			}
-
-			// We don't have typings for vaadin-combo-box@^2.0.0
-			(this.$.typeahead as any).items = newVal
-				.filter(item => item.type === 'run')
-				.map(speedrun => (speedrun as Run).name);
-			this._checkButtons();
-		});
-
-		nextRun.on('change', newVal => {
-			if (!newVal) {
-				return;
-			}
-
-			// Disable "next" button if at end of schedule
-			const nextRunEl = this.$.nextRun as GDQScheduleRuninfoElement;
-			if (newVal) {
-				nextRunEl.setRun(newVal as Run);
-				this.$.editNext.removeAttribute('disabled');
-			} else {
-				nextRunEl.setRun({} as Run);
-				this.$.editNext.setAttribute('disabled', 'true');
-			}
-
-			this._checkButtons();
-		});
-
-		// This one needs to be slightly delayed to avoid a bootup race condition.
+	connectedCallback() {
+		super.connectedCallback();
 		Polymer.RenderStatus.beforeNextRender(this, () => {
+			canSeekSchedule.on('change', () => {
+				this._checkButtons();
+			});
+
+			schedule.on('change', newVal => {
+				if (!newVal) {
+					return;
+				}
+
+				// We don't have typings for vaadin-combo-box@^2.0.0
+				(this.$.typeahead as any).items = newVal
+					.filter(item => item.type === 'run')
+					.map(speedrun => (speedrun as Run).name);
+				this._checkButtons();
+			});
+
+			nextRun.on('change', newVal => {
+				if (!newVal) {
+					return;
+				}
+
+				// Disable "next" button if at end of schedule
+				const nextRunEl = this.$.nextRun as GDQScheduleRuninfoElement;
+				if (newVal) {
+					nextRunEl.setRun(newVal as Run);
+					this.$.editNext.removeAttribute('disabled');
+				} else {
+					nextRunEl.setRun({} as Run);
+					this.$.editNext.setAttribute('disabled', 'true');
+				}
+
+				this._checkButtons();
+			});
+
 			currentRun.on('change', newVal => {
 				if (!newVal) {
 					return;
